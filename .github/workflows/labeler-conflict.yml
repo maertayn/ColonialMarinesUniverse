@@ -3,19 +3,53 @@ name: Check Merge Conflicts
 on:
   pull_request_target:
     types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
+    - opened
+    - synchronize
+    - reopened
+    - ready_for_review
 
 jobs:
-  Label:
-    if: ( github.event.pull_request.draft == false ) && ( github.actor != 'PJBot' )
+  label:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
-      - name: Check for Merge Conflicts
-        uses: eps1lon/actions-label-merge-conflict@v3.0.0
-        with:
-          dirtyLabel: "S: Merge Conflict"
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          commentOnDirty: "This pull request has conflicts, please resolve those before we can evaluate the pull request."
+    - name: Check for Merge Conflicts
+      uses: actions/github-script@v9
+      with:
+        script: |
+          const pr = context.payload.pull_request;
+          const label = 'S: Merge Conflict';
+          const labels = pr.labels.map(l => l.name);
+
+          const repo = {
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: pr.number
+          };
+
+          if (pr.mergeable === false) {
+            if (!labels.includes(label)) {
+              await github.rest.issues.addLabels({
+                ...repo,
+                labels: [label]
+              });
+              await github.rest.issues.createComment({
+                ...repo,
+                body: "This pull request has conflicts, please resolve those before we can evaluate the pull request."
+              });
+            }
+          }
+          else {
+            if (labels.includes(label)) {
+              await github.rest.issues.removeLabel({
+                ...repo,
+                name: label
+              });
+              await github.rest.issues.createComment({
+                ...repo,
+                body: 'The conflicts for this pull request have been resolved, it is safe to merge again.'
+              });
+            }
+          }
