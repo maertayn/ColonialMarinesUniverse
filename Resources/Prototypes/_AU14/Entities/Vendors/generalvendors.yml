@@ -287,7 +287,7 @@
       - id: CMHeadCapMP
       - id: CMHeadBeretRed
     - name: Armor
-      choices: { AU14vest: 1}
+      choices: { AU14vest: 1 }
       entries:
       - id: CMArmorM2MP
       - id: CMArmorM3VLBallistics
