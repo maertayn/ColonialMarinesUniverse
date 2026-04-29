@@ -15,41 +15,49 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-    - name: Check for Merge Conflicts
-      uses: actions/github-script@v9
-      with:
-        script: |
-          const pr = context.payload.pull_request;
-          const label = 'S: Merge Conflict';
-          const labels = pr.labels.map(l => l.name);
+      - name: Check for Merge Conflicts
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const label = 'S: Merge Conflict';
+            const repo = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number
+            };
 
-          const repo = {
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: pr.number
-          };
+            let pr;
+            for (let i=0; i<5; i++) {
+              const { data } = await github.rest.pulls.get({
+                owner: repo.owner,
+                repo: repo.repo,
+                pull_number: repo.issue_number
+              });
+              pr = data;
+              if (pr.mergeable !== null) break;
+              await new Promise(r => setTimeout(r, 5000));
+            }
 
-          if (pr.mergeable === false) {
-            if (!labels.includes(label)) {
-              await github.rest.issues.addLabels({
-                ...repo,
-                labels: [label]
-              });
-              await github.rest.issues.createComment({
-                ...repo,
-                body: "This pull request has conflicts, please resolve those before we can evaluate the pull request."
-              });
+            if (pr.mergeable === null) {
+              core.warning('Could not determine mergeability after retries, skipping.');
+              return;
             }
-          }
-          else {
-            if (labels.includes(label)) {
-              await github.rest.issues.removeLabel({
-                ...repo,
-                name: label
-              });
-              await github.rest.issues.createComment({
-                ...repo,
-                body: 'The conflicts for this pull request have been resolved, it is safe to merge again.'
-              });
+
+            const labels = pr.labels.map(l => l.name);
+            if (pr.mergeable === false) {
+              if (!labels.includes(label)) {
+                await github.rest.issues.addLabels({ ...repo, labels: [label] });
+                await github.rest.issues.createComment({
+                  ...repo,
+                  body: 'This pull request has conflicts, please resolve those before we can evaluate the pull request.'
+                });
+              }
+            } else {
+              if (labels.includes(label)) {
+                await github.rest.issues.removeLabel({ ...repo, name: label });
+                await github.rest.issues.createComment({
+                  ...repo,
+                  body: 'The conflicts for this pull request have been resolved, it is safe to merge again.'
+                });
+              }
             }
-          }

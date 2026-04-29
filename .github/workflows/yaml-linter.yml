@@ -17,26 +17,26 @@ concurrency:
 jobs:
   linter:
     name: YAML Linter
-    if: ${{ github.event.pull_request.draft == false }}
+    if: ${{ github.event_name != "pull_request" || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
-    - name: Initialize Content Submodules
-      run: |
-        git submodule update --init --recursive
-    - name: Pull engine updates
-      uses: space-wizards/submodule-dependency@v0.1.5
-    - name: Initialize Engine Submodules
-      run: |
-        cd RobustToolbox/
-        git submodule update --init --recursive
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v5
-      with:
-        dotnet-version: 9.0.x
-    - name: Install Dependencies
-      run: dotnet restore
-    - name: Build Release
-      run: dotnet build --configuration Release --no-restore /p:WarningsAsErrors= /m
-    - name: Run YAML Linter
-      run: dotnet run --project Content.YAMLLinter/Content.YAMLLinter.csproj --no-build
+      - uses: actions/checkout@v6
+      - name: Initialize Content Submodules
+        run: |
+          git submodule update --init --recursive
+      - name: Pull engine updates
+        uses: space-wizards/submodule-dependency@v0.1.5
+      - name: Initialize Engine Submodules
+        run: |
+          cd RobustToolbox/
+          git submodule update --init --recursive
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 9.0.x
+      - name: Install Dependencies
+        run: dotnet restore
+      - name: Build Release
+        run: dotnet build --configuration Release --no-restore /p:WarningsAsErrors= /m
+      - name: Run YAML Linter
+        run: dotnet run --project Content.YAMLLinter/Content.YAMLLinter.csproj --no-build
