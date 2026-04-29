@@ -60,6 +60,7 @@
     id: AU14IDCardGOVFORMilitaryPoliceMan
     ears: RMCM5CameraGear
     ears2: AU14HeadsetSectionLeader
+    jumpsuit: CMJumpsuitMP
 
 - type: entity
   parent: CMSpawnPointJobBase
