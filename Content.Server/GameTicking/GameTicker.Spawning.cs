@@ -307,7 +307,7 @@ namespace Content.Server.GameTicking
 
             // Defensive: same rationale as the SpawnThreatAtRoundStart try/catch above. Without
             // this, an exception inside third-party spawning kills the entire round at start.
-            if (_aurRoundSystem.selectedThread != null)
+            if (_auRoundSystem.selectedThread != null)
             {
                 try
                 {
