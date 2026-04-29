@@ -231,13 +231,19 @@ namespace Content.Server.GameTicking
             // EXCEPTION_TOLERANCE catch (only enabled in Release/Tools builds), which calls
             // RestartRound() — making the round appear to "instantly restart at start" in
             // production. Wrap the threat spawn so a single subsystem can't take the round down.
-            try
+            if (_auRoundSystem._selectedthreat != null)
             {
-                _auThreatSystem.SpawnThreatAtRoundStart(_auRoundSystem._selectedthreat, DefaultMap, assignedJobs);
+                try
+                {
+                    _auThreatSystem.SpawnThreatAtRoundStart(_auRoundSystem._selectedthreat, DefaultMap, assignedJobs);
+                }
+                catch (Exception threatEx)
+                {
+                    Log.Error($"SpawnThreatAtRoundStart threw — round will continue without threat spawn. {threatEx}");
+                }
             }
-            catch (Exception threatEx)
-            {
-                Log.Error($"SpawnThreatAtRoundStart threw — round will continue without threat spawn. {threatEx}");
+            else {
+                Log.Debug("SpawnThreatAtRoundStart debug — no threat selected, skipping threat spawn.");
             }
 
             _stationJobs.AssignOverflowJobs(ref assignedJobs, playerNetIds, profiles, spawnableStations);
