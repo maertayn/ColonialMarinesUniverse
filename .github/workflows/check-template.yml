@@ -24,6 +24,7 @@ jobs:
               'remove: Removed fun!',
               'tweak: Changed fun!',
               'fix: Fixed fun!',
+              'map: Mapped fun!',
               'admin: Admin related change!',
               'code: Code related change for contributors!'
             ];
