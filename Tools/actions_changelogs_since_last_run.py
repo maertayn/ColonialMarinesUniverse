@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-
 """
 Sends updates to a Discord webhook for new changelog entries since the last GitHub Actions publish run.
-
 Automatically figures out the last run and changelog contents with the GitHub API.
 """
 
@@ -23,9 +21,17 @@ GITHUB_API_URL = os.environ.get("GITHUB_API_URL", "https://api.github.com")
 DISCORD_SPLIT_LIMIT = 2000
 DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
 
-CHANGELOG_FILE = "Resources/Changelog/RMC14.yml"
+CHANGELOG_FILE = "Resources/Changelog/CMU.yml"
 
-TYPES_TO_EMOJI = {"Fix": "🐛", "Add": "🆕", "Remove": "❌", "Tweak": "⚒️"}
+TYPES_TO_EMOJI = {
+    "Fix": "🔧",
+    "Add": "✨",
+    "Remove": "🔥",
+    "Tweak": "🎚️",
+    "Code": "🛠️",
+    "Map": "📍",
+    "Admin": "🛡️",
+}
 
 ChangelogEntry = dict[str, Any]
 
@@ -33,7 +39,7 @@ ChangelogEntry = dict[str, Any]
 def main():
     if not DISCORD_WEBHOOK_URL:
         print("No discord webhook URL found, skipping discord send")
-        return
+        exit(1)
 
     if DEBUG:
         # to debug this script locally, you can use
@@ -156,7 +162,9 @@ def send_discord_webhook(lines: list[str]):
         while response.status_code == 429:
             retry_attempt += 1
             if retry_attempt > 20:
-                print("Too many retries on a single request despite following retry_after header... giving up")
+                print(
+                    "Too many retries on a single request despite following retry_after header... giving up"
+                )
                 exit(1)
             retry_after = response.json().get("retry_after", 5)
             print(f"Rate limited, retrying after {retry_after} seconds")
