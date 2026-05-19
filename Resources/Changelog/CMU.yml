@@ -1,4 +1,4 @@
-﻿Entries:
+Entries:
 - author: maertayn
   changes:
   - message: Added funny things!
@@ -24,7 +24,7 @@
     type: Remove
   - message: Tweaked the changelog.
     type: Tweak
-  - message: Fixed the changelogs.
+  - message: Fixed the changelogs!
     type: Fix
   - message: Mapped a changelog.
     type: Map
