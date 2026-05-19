@@ -46,11 +46,3 @@ jobs:
         env:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-
-      - name: Publish changelog (Discord)
-        continue-on-error: true
-        run: Tools/actions_changelogs_since_last_run.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.CHANGELOG_DISCORD_WEBHOOK }}
