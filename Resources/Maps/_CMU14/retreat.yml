@@ -175791,7 +175791,7 @@ entities:
     - type: Transform
       pos: -106.5,58.5
       parent: 1
-- proto: RMCCommunicationsTowerOn
+- proto: AU14CommunicationsTowerColony
   entities:
   - uid: 50799
     components:
@@ -189271,7 +189271,7 @@ entities:
     - type: Transform
       pos: 6.5,-72.5
       parent: 1
-- proto: RMCSpawnerCommunicationsTowerTwo
+- proto: AU14SpawnerCommunicationsTowerTwo
   entities:
   - uid: 60379
     components:
