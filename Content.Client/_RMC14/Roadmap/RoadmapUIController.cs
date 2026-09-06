@@ -21,7 +21,7 @@ public sealed partial class RoadmapUIController : UIController, IOnStateEntered<
     public override void Initialize()
     {
         base.Initialize();
-        _infoUIController.Accepted += OnAccepted;
+        // _infoUIController.Accepted += OnAccepted; // CMU Disabled
     }
 
     public void OnStateEntered(LobbyState state)
