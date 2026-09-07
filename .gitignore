@@ -331,3 +331,7 @@ pr1600_reviews.json
 
 # C# Dev Kit cache file
 *.lscache
+
+# personal agent configs, never tracked
+AGENTS.md
+CLAUDE.md
