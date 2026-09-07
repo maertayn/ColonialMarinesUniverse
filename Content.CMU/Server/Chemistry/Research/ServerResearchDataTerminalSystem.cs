@@ -56,6 +56,9 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
     [ViewVariables(VVAccess.ReadOnly)]
     public float ResearchCashRewardMult = 500;
 
+    [ViewVariables(VVAccess.ReadOnly)]
+    public TimeSpan XClearanceLockout = TimeSpan.FromMinutes(60);
+
     /// <summary>
     /// legend = (ID, text, scan/sim time, scan or sim, data, valid, completed)
     /// </summary>
@@ -78,6 +81,7 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
     [Dependency] private ILogManager _logman = default!;
     [Dependency] private SharedTransformSystem _xform = default!;
     [Dependency] private XRFScannerSystem _scanner = default!;
+    [Dependency] private SharedGameTicker _ticker = default!;
 
     private Dictionary<Entity<ResearchDataTerminalComponent>, int> _printing = [];
     private HashSet<Entity<ResearchDataTerminalComponent>> _printingLast = [];
@@ -87,6 +91,8 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
     private bool _upgrading = false;
     private NetEntity _cipherPicker = NetEntity.Invalid;
     private EntityUid _cipherActor = EntityUid.Invalid;
+
+    private int UpgradeCost => (_researchLevelIncreaseMult * Clearance) + 1;
     public override void Initialize()
     {
         base.Initialize();
@@ -106,6 +112,7 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
         Subs.CVar(_cfg, CCVars.RefreshTime, time => RerollTime = TimeSpan.FromSeconds(time), true);
         Subs.CVar(_cfg, CCVars.TerminalChems, chems => ResearchChemAmount = chems, true);
         Subs.CVar(_cfg, CCVars.CashRewardMult, dosh => ResearchCashRewardMult = dosh, true);
+        Subs.CVar(_cfg, CCVars.XClearanceLockout, t => XClearanceLockout = TimeSpan.FromSeconds(t), true);
     }
 
     private void OnTerminalUpdate(UpdateResearchConsoleEvent args)
@@ -146,13 +153,14 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
 
     private void OnUpgradeAttempt(Entity<ResearchDataTerminalComponent> ent, ref ResearchDataTerminalAttemptUpgradeBuiMsg args)
     {
-        int cost = 1;
-        if (Clearance == 5)
+        if (Clearance == 5
+            && _ticker.RoundDuration() < XClearanceLockout)
         {
-            cost = 5;
+            UpdateUI(ent);
+            return;
         }
-        else cost = (_researchLevelIncreaseMult * Clearance) + 1;
-        if (Credits >= cost)
+
+        if (Credits >= UpgradeCost)
         {
             if (Clearance == 5)
             {
@@ -168,12 +176,6 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
         base.Update(frameTime);
         if (_upgrading)
         {
-            int cost = 1;
-            if (Clearance == 5)
-            {
-                cost = 5;
-            }
-            else cost = (_researchLevelIncreaseMult * Clearance) + 1;
             if (Clearance < 6)
             {
                 bool ciph = false;
@@ -181,7 +183,7 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
                 {
                     ciph = true;
                 }
-                UpdateClearance(Credits - cost, Clearance + 1);
+                UpdateClearance(Credits - UpgradeCost, Clearance + 1);
                 var query = EntityQueryEnumerator<ResearchDataTerminalComponent>();
                 EntityUid cip = GetEntity(_cipherPicker);
                 while(query.MoveNext(out var ent, out var comp))
@@ -323,32 +325,17 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
     }
 
     private void UpdateUI(Entity<ResearchDataTerminalComponent> ent)
-    {
-        int cost = 1;
-        if (Clearance == 5)
-        {
-            cost = 5;
-        }
-        else cost = (_researchLevelIncreaseMult * Clearance) + 1;
-        var state = new ResearchDataTerminalBuiState(
-            ids: _selectable,
-            data: ResearchData,
-            nextUpdate: NextReroll,
-            lastTime: LastTime,
-            credits: Credits,
-            clearance: Clearance,
-            upgradecost: cost,
-            picked: Picked);
-        _ui.SetUiState(ent.Owner, ResearchDataTerminalUI.Key, state);
-    }
+        => UpdateUI(ent.Owner);
+
     private void UpdateUI(EntityUid ent)
     {
-        int cost = 1;
-        if (Clearance == 5)
+        TimeSpan? xLockedUntil = null;
+        if (Clearance == 5
+            && _ticker.RoundDuration() < XClearanceLockout)
         {
-            cost = 5;
+            xLockedUntil = _timer.CurTime + (XClearanceLockout - _ticker.RoundDuration());
         }
-        else cost = (_researchLevelIncreaseMult * Clearance) + 1;
+
         var state = new ResearchDataTerminalBuiState(
             ids: _selectable,
             data: ResearchData,
@@ -356,7 +343,8 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
             lastTime: LastTime,
             credits: Credits,
             clearance: Clearance,
-            upgradecost: cost,
+            upgradecost: UpgradeCost,
+            xLockedUntil: xLockedUntil,
             picked: Picked);
         _ui.SetUiState(ent, ResearchDataTerminalUI.Key, state);
     }
@@ -390,7 +378,7 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
 
     private void OnPrintLast(Entity<ResearchDataTerminalComponent> ent, ref ResearchDataTerminalPrintLastBuiMsg args)
     {
-        
+
         _printingLast.Add(ent);
     }
 
