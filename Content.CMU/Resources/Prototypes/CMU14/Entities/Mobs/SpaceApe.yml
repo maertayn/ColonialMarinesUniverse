@@ -84,6 +84,8 @@
       - ActionApeCharge
       - ActionApeRam
       - ActionApeHeadbite
+      - ActionApeLimbRip
+      - ActionApeHurl
   - type: MeleeWeapon
     soundHit:
       path: /Audio/Weapons/punch1.ogg
@@ -153,23 +155,17 @@
     - type: IdExaminable
     - type: MonkeyAccent
     - type: Internals
+    - type: Woundable
+    - type: Satiation
+      satiations: { }
+    - type: SatiationSpeedModifier
+      satiations: { }
   - type: PermanentStatusEffects
     statusEffects:
     - StatusEffectClumsyMonkey
-  - type: Satiation
-    satiations:
-      Hunger:
-        prototype: CMUApeHunger
-  - type: SatiationSpeedModifier
-    satiations:
-      Hunger:
-        thresholds:
-          Peckish: 0.9
-          Starving: 0.675
   - type: Prying
     pryPowered: true
     speedModifier: 2.7
-    useSound: null
   - type: ApeLeap
     delay: 0
     knockdownTime: 2
@@ -219,6 +215,22 @@
   - type: Vocal
     emoteSounds: ApeEmotes
   - type: NoSlip
+  - type: XenoClaws
+    clawType: Sharp
+  - type: CMUXenoZJump
+  - type: CMUThrownStun
+    stunTime: 1
+    knockdownTime: 2
+  - type: CMUPickupBlocker
+    blocked:
+      components:
+      - Gun
+      - TriggerOnUse
+      - WoundTreater
+      - RMCFlamerTank
+      - CMUCombatDroneAmmoBox
+  - type: ApeLimbRip
+  - type: ApeHurl
 
 - type: emoteSounds
   id: ApeEmotes
