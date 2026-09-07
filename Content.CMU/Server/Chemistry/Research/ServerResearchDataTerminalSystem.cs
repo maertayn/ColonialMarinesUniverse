@@ -6,6 +6,7 @@ using Content.Server.GameTicking;
 using Content.Shared.CMU14.Chemistry.Reagents;
 using Content.Shared.CMU14.Chemistry.Research;
 using Content.Shared.CMU14.Chemistry.Reagent;
+using Content.Shared._RMC14.Marines;
 using Content.Shared._RMC14.Requisitions;
 using Content.Shared._RMC14.Requisitions.Components;
 using Content.Shared.CCVar;
@@ -85,6 +86,7 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
 
     private bool _upgrading = false;
     private NetEntity _cipherPicker = NetEntity.Invalid;
+    private EntityUid _cipherActor = EntityUid.Invalid;
     public override void Initialize()
     {
         base.Initialize();
@@ -133,6 +135,7 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
         _printing.Clear();
         _printingLast.Clear();
         _cipherPicker = NetEntity.Invalid;
+        _cipherActor = EntityUid.Invalid;
     }
 
     public void OnLoadingMaps(PostGameMapLoad args)
@@ -153,8 +156,8 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
         {
             if (Clearance == 5)
             {
-                NetEntity net = GetNetEntity(ent.Owner);
-                _cipherPicker = net;
+                _cipherPicker = GetNetEntity(ent.Owner);
+                _cipherActor = args.Actor;
             }
             _upgrading = true;
         }
@@ -188,29 +191,16 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
                     {
                         if (ent == cip)
                         {
-                            var xrf = GetNearestXRF(cip);
-                            if (xrf == EntityUid.Invalid)
-                                SpawnNextToOrDrop("CMUCipherHintPaper", ent);
-                            else
+                            if (TryGetCipherElevator(cip, out var elevator))
                             {
-                                var elev = _scanner.GetFactionElevator(xrf, null);
-                                if (elev == NetEntity.Invalid)
-                                    SpawnNextToOrDrop("CMUCipherHintPaper", ent);
-                                else
-                                {
-                                    var elevint = GetEntity(elev);
-                                    if (!TryComp<RequisitionsElevatorComponent>(elevint, out var elevcomp))
-                                        SpawnNextToOrDrop("CMUCipherHintPaper", ent);
-                                    else
-                                    {
-                                        var order = new RequisitionsEntry();
-                                        order.Cost = 0;
-                                        order.Crate = "CMUCrateSecureCipheringExperiment";
-                                        elevcomp.Orders.Add(order);
-                                        SpawnNextToOrDrop("CMUCipherHintPaperInformDeliv", ent);
-                                    }
-                                }
+                                var order = new RequisitionsEntry();
+                                order.Cost = 0;
+                                order.Crate = "CMUCrateSecureCipheringExperiment";
+                                elevator.Comp.Orders.Add(order);
+                                SpawnNextToOrDrop("CMUCipherHintPaperInformDeliv", ent);
                             }
+                            else
+                                SpawnNextToOrDrop("CMUCipherHintPaper", ent);
                         }
                         else
                         {
@@ -519,6 +509,38 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
             datcomp.Completed = value.Item7;
             datcomp.Data = value.Item5;
         }
+    }
+
+    private bool TryGetCipherElevator(EntityUid terminal, out Entity<RequisitionsElevatorComponent> elevator)
+    {
+        if (TryComp<MarineComponent>(_cipherActor, out var marine)
+            && !string.IsNullOrEmpty(marine.Faction))
+        {
+            var actorQuery = EntityQueryEnumerator<RequisitionsElevatorComponent>();
+            while (actorQuery.MoveNext(out var elevUid, out var elevComp))
+            {
+                if (elevComp.Faction.Equals(marine.Faction, StringComparison.OrdinalIgnoreCase))
+                {
+                    elevator = (elevUid, elevComp);
+                    return true;
+                }
+            }
+        }
+
+        var xrf = GetNearestXRF(terminal);
+        if (xrf != EntityUid.Invalid)
+        {
+            var net = _scanner.GetFactionElevator(xrf, null);
+            if (net != NetEntity.Invalid
+                && TryComp<RequisitionsElevatorComponent>(GetEntity(net), out var xrfComp))
+            {
+                elevator = (GetEntity(net), xrfComp);
+                return true;
+            }
+        }
+
+        elevator = default;
+        return false;
     }
 
     public EntityUid GetNearestXRF(EntityUid ent)

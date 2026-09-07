@@ -558,12 +558,16 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
 
             var query = EntityQueryEnumerator<RequisitionsCustomDeliveryComponent>();
 
-            while (query.MoveNext(out var entityUid, out _))
+            while (query.MoveNext(out var entityUid, out var deliveryComp)) // CMU14
             {
                 // If elevator is full, abort and break out of the loop. Any remaining custom deliveries will be on
                 // the next elevator shipment.
                 if (remainingDeliveries <= 0)
                     break;
+
+                if (!string.IsNullOrEmpty(deliveryComp.Faction) // CMU14
+                    && !deliveryComp.Faction.Equals(comp.Faction, StringComparison.OrdinalIgnoreCase))
+                    continue;
 
                 // Remove the component so it doesn't get "delivered" again next elevator cycle.
                 RemCompDeferred<RequisitionsCustomDeliveryComponent>(entityUid);
