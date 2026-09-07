@@ -129,7 +129,7 @@ public sealed partial class RMCCVars : CVars
         CVarDef.Create("rmc.evolution_points_accumulate_before_minutes", 15, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<bool> RMCAtmosTileEqualize =
-        CVarDef.Create("rmc.atmos_tile_equalize", false, CVar.REPLICATED | CVar.SERVER);
+        CVarDef.Create("rmc.atmos_tile_equalize", true, CVar.REPLICATED | CVar.SERVER); // CMU14: equalize on under everything-sim (was an RMC perf cut); see Docs/SYSTEMS.md
 
     public static readonly CVarDef<int> RMCWithdrawTimerMinutes =
         CVarDef.Create("rmc.withdraw_timer_minutes", 6, CVar.REPLICATED | CVar.SERVER);
