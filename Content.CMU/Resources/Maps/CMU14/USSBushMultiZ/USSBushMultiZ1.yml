@@ -811,14 +811,14 @@ entities:
       data:
         chunkSize: 4
     - type: MapAtmosphere
-      space: False
+      space: True
       mixture:
         volume: 2500
         immutable: True
-        temperature: 293.15
+        temperature: 2.72525
         moles:
-        - 21.8124
-        - 81.1594
+        - 0
+        - 0
         - 0
         - 0
         - 0
@@ -33069,7 +33069,7 @@ entities:
 
         2. You must be fully dressed to obtain service. Cryosleep underwear is non-permissible.
 
-        3. The Chief Medical Officer has the final say and the right to decline service. Only the Acting Commander may override their decisions.            
+        3. The Chief Medical Officer has the final say and the right to decline service. Only the Acting Commander may override their decisions.
 
         4. Please treat your Chemistry and Medical staff with respect. They work hard.
       name: chemistry line guidelines
