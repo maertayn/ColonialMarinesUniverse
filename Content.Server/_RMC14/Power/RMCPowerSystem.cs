@@ -7,6 +7,7 @@ using Content.Shared._RMC14.Areas;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Power;
 using Content.Shared.Audio;
+using Content.Shared.CMU14.Power;
 using Content.Shared.Examine;
 using Content.Shared.Power;
 using Content.Shared.Power.Components;
@@ -94,7 +95,14 @@ public sealed partial class RMCPowerSystem : SharedRMCPowerSystem
 
     protected override void OnReceiverMapInit(Entity<RMCPowerReceiverComponent> ent, ref MapInitEvent args)
     {
+        if (Transform(ent).MapUid is { } map && HasComp<CMUMapUsesTilePowerComponent>(map)) // CMU14: maps opt-out of area power
+        {
+            RemComp<RMCPowerReceiverComponent>(ent);
+            return;
+        }
+
         base.OnReceiverMapInit(ent, ref args); // CMU14: newly initialized receivers still need area registration.
+
         if (!TryComp(ent, out ApcPowerReceiverComponent? receiver))
             return;
 
@@ -113,6 +121,28 @@ public sealed partial class RMCPowerSystem : SharedRMCPowerSystem
 
         if (_appearanceQuery.TryComp(ent, out var appearance))
             _appearance.SetData(ent, PowerDeviceVisuals.Powered, true, appearance);
+    }
+
+    // CMU14 Method: Adopt bare wizden power receivers into area power on a map without CMUMapUsesTilePower,
+    // every APCPowerReceiver becomes a channel with its powerLoad as active load.
+    private void OnApcReceiverStartup(Entity<ApcPowerReceiverComponent> ent, ref ComponentStartup args)
+    {
+        if (!ent.Comp.NeedsPower)
+            return;
+
+        if (Transform(ent).MapUid is { } map && HasComp<CMUMapUsesTilePowerComponent>(map))
+        {
+            EnsureComp<ExtensionCableReceiverComponent>(ent);
+            return;
+        }
+
+        if (HasComp<RMCPowerReceiverComponent>(ent))
+            return;
+
+        var receiver = EnsureComp<RMCPowerReceiverComponent>(ent);
+        receiver.Channel = RMCPowerChannel.Environment;
+        receiver.ActiveLoad = (int) ent.Comp.Load;
+        ToUpdate.Add(ent);
     }
 
     protected override void PowerUpdated(Entity<RMCAreaPowerComponent> area, RMCPowerChannel channel, bool on)
