@@ -1,9 +1,19 @@
 - type: job
   parent: CMJobBase
   id: CMUJobColonyRiotControlOfficer
+  name: cmu-colony-name-riot-control-officer
+  description: cmu-colony-description-riot-control-officer
   roundSide: Civilian
   roundForce: COLONY
   roundRole: ColonyRiotControlOfficer
+  setPreference: true
+  startingGear: CMUGearColonyRiotControlOfficer
+  icon: RMCJobIconBureauDeputy
+  supervisors: cmu-colony-supervisors-colonist
+  spawnMenuRoleName: Colony Riot Control Officer (CMU)
+  playTimeTracker: CMUJobColonyRiotControlOfficer
+  ranks:
+    RMCRankCivilian: []
   roundComponents:
   - type: Skills
     preset: RMCSkillPresetSurvivorMarshal
@@ -16,21 +26,10 @@
     background:
       sprite: /Textures/_RMC14/Interface/map_blips.rsi
       state: background_cmb
-  name: cmu-colony-name-riot-control-officer
-  description: cmu-colony-description-riot-control-officer
-  setPreference: true
-  playTimeTracker: CMUJobColonyRiotControlOfficer
-  ranks:
-    RMCRankCivilian: []
-  startingGear: CMUGearColonyRiotControlOfficer
-  icon: RMCJobIconBureauDeputy
-  requireAdminNotify: false
-  joinNotifyCrew: false
-  supervisors: cmu-colony-supervisors-colonist
-  spawnMenuRoleName: Colony Riot Control Officer (CMU)
   accessGroups:
   - Colonist
-  roleWeight: 0.25
+  - auorbitalmanagement
+  - aucmb
 
 - type: startingGear
   id: CMUGearColonyRiotControlOfficer

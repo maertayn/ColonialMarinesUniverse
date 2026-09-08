@@ -1,9 +1,19 @@
 - type: job
   parent: CMJobBase
   id: CMUJobColonyRiotControlTeamLeader
+  name: cmu-colony-name-riot-control-team-leader
+  description: cmu-colony-description-riot-control-team-leader
   roundSide: Civilian
   roundForce: COLONY
   roundRole: ColonyRiotControlTeamLeader
+  setPreference: true
+  startingGear: CMUGearColonyRiotControlTeamLeader
+  icon: RMCJobIconBureauDeputy
+  supervisors: cmu-colony-supervisors-colonist
+  spawnMenuRoleName: Colony Riot Control Team Leader (CMU)
+  playTimeTracker: CMUJobColonyRiotControlTeamLeader
+  ranks:
+    RMCRankCivilian: []
   roundComponents:
   - type: Skills
     preset: RMCSkillPresetSurvivorRiotControlTeamLeader
@@ -16,21 +26,10 @@
     background:
       sprite: /Textures/_RMC14/Interface/map_blips.rsi
       state: background_cmb
-  name: cmu-colony-name-riot-control-team-leader
-  description: cmu-colony-description-riot-control-team-leader
-  setPreference: true
-  playTimeTracker: CMUJobColonyRiotControlTeamLeader
-  ranks:
-    RMCRankCivilian: []
-  startingGear: CMUGearColonyRiotControlTeamLeader
-  icon: RMCJobIconBureauDeputy
-  requireAdminNotify: false
-  joinNotifyCrew: false
-  supervisors: cmu-colony-supervisors-colonist
-  spawnMenuRoleName: Colony Riot Control Team Leader (CMU)
   accessGroups:
   - Colonist
-  roleWeight: 0.25
+  - auorbitalmanagement
+  - aucmb
 
 - type: startingGear
   id: CMUGearColonyRiotControlTeamLeader

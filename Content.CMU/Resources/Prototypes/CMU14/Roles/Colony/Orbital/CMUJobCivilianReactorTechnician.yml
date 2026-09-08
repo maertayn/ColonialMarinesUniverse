@@ -1,9 +1,19 @@
 - type: job
   parent: CMJobBase
   id: CMUJobColonyReactorTechnician
+  name: cmu-colony-name-reactor-technician
+  description: cmu-colony-description-reactor-technician
   roundSide: Civilian
   roundForce: COLONY
   roundRole: ColonyReactorTechnician
+  setPreference: true
+  startingGear: CMUGearColonyReactorTechnician
+  icon: AU14JobIconColonyColonist
+  supervisors: cmu-colony-supervisors-colonist
+  spawnMenuRoleName: Colony Reactor Technician (CMU)
+  playTimeTracker: CMUJobColonyReactorTechnician
+  ranks:
+    RMCRankCivilian: []
   roundComponents:
   - type: Skills
     skills:
@@ -16,21 +26,9 @@
     icon:
       sprite: /Textures/CMU14/Interface/cmucolonyblips.rsi
       state: colonist
-  name: cmu-colony-name-reactor-technician
-  description: cmu-colony-description-reactor-technician
-  setPreference: true
-  playTimeTracker: CMUJobColonyReactorTechnician
-  ranks:
-    RMCRankCivilian: []
-  startingGear: CMUGearColonyReactorTechnician
-  icon: AU14JobIconColonyColonist
-  requireAdminNotify: false
-  joinNotifyCrew: false
-  supervisors: cmu-colony-supervisors-colonist
-  spawnMenuRoleName: Colony Reactor Technician (CMU)
   accessGroups:
   - Colonist
-  roleWeight: 0.25
+  - auorbitalmanagement
 
 - type: startingGear
   id: CMUGearColonyReactorTechnician
