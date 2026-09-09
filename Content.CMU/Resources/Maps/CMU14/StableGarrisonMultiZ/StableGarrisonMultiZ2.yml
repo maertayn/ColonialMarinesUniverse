@@ -66138,7 +66138,7 @@ entities:
     - type: Transform
       pos: 184.5,-91.5
       parent: 1
-- proto: RMCGasPipeStraight
+- proto: CMUGasPipeStraight
   entities:
   - uid: 1149
     components:

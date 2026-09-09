@@ -60389,6 +60389,23 @@ entities:
     - type: Transform
       pos: 41.5,92.5
       parent: 1
+- proto: CMUSpawnPointCivilianAtmosian
+  entities:
+  - uid: 354488
+    components:
+    - type: Transform
+      pos: 41.5,96.5
+      parent: 1
+  - uid: 354489
+    components:
+    - type: Transform
+      pos: 41.5,94.5
+      parent: 1
+  - uid: 354490
+    components:
+    - type: Transform
+      pos: 41.5,92.5
+      parent: 1
 - proto: AU14SpawnPointCivilianEthicsAndWellnessAdvisor
   entities:
   - uid: 344636

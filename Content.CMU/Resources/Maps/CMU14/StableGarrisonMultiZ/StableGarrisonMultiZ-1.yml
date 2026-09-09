@@ -50620,7 +50620,7 @@ entities:
     - type: Transform
       pos: 166.5,-100.5
       parent: 1
-- proto: RMCGasPipeStraight
+- proto: CMUGasPipeStraight
   entities:
   - uid: 10442
     components:
@@ -50639,7 +50639,7 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 165.5,-99.5
       parent: 1
-- proto: RMCGasPipeTJunction
+- proto: CMUGasPipeTJunction
   entities:
   - uid: 10464
     components:

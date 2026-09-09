@@ -63847,7 +63847,7 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 113.5,-81.5
       parent: 1
-- proto: RMCInflatableWall
+- proto: CMUInflatableWall
   entities:
   - uid: 4134
     components:
@@ -63859,7 +63859,7 @@ entities:
     - type: Transform
       pos: 111.5,-63.5
       parent: 1
-- proto: RMCInflatableWallBroken
+- proto: CMUInflatableWallBroken
   entities:
   - uid: 4136
     components:

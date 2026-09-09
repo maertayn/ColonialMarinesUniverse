@@ -30306,7 +30306,7 @@ entities:
     - type: Transform
       pos: 26.5,6.5
       parent: 1
-- proto: RMCGasPipeBend
+- proto: CMUGasPipeBend
   entities:
   - uid: 4172
     components:
@@ -30350,7 +30350,7 @@ entities:
       rot: 3.141592653589793 rad
       pos: 5.5,-58.5
       parent: 1
-- proto: RMCGasPipeStraight
+- proto: CMUGasPipeStraight
   entities:
   - uid: 4179
     components:
@@ -30517,7 +30517,7 @@ entities:
       rot: 1.5707963267948966 rad
       pos: -4.5,-48.5
       parent: 1
-- proto: RMCGasPipeTJunction
+- proto: CMUGasPipeTJunction
   entities:
   - uid: 4207
     components:

@@ -1,7 +1,7 @@
 - type: entity
   abstract: false
-  id: UPPCargoCatalog
-  parent: [ CMUASRSResearchGoodies, CMUASRSBotanyGoodies ]
+  id: CMBCIUCargoCatalog
+  parent: [ CMUASRSResearchGoodies, CMUASRSBotanyGoodies, CMUASRSAtmosGoodies ]
   components:
   - type: RequisitionsComputer
     categories:
@@ -23,10 +23,6 @@
       entries:
       - cost: 1000
         crate: AU14CrateFOBTentCrate
-#      - cost: 2000
-#        crate: RMCCrateFoldingBarricades
-#      - cost: 3000
-#        crate: RMCCrateSuperconductingMagneticCoil
       - cost: 700
         crate: RMCCrateElectricalMaintenance
       - cost: 700
@@ -45,24 +41,42 @@
         crate: RMCCrateHighCapacityPowerCell
       - cost: 1000
         crate: AU14CrateBoxFirefighting
+      - cost: 800
+        crate: CMUCrateAtmosSupplies
+      - cost: 600
+        crate: CMUCrateSCBA
+      - cost: 700
+        crate: CMUCrateHazardGear
+      - cost: 500
+        crate: CMUCrateEngineeringWiring
+      - cost: 1200
+        crate: AU14CBRNKitUA
+      - cost: 400
+        crate: CMUCrateGasMaskFilterHAZOPS
+      - cost: 300
+        crate: CMUCrateGasMaskFilter
+      - cost: 1000
+        crate: RMCCrateFoldingBarricades
     - name: Explosives
       entries:
-      - cost: 900
-        crate: AU14CrateGrenadesHighExplosiveUPP
-      - cost: 700
-        crate: AU14CrateGrenadesIncendiaryUPP
+      - cost: 1800
+        crate: RMCCrateGrenadesHighExplosive
+      - cost: 1500
+        crate: RMCCrateGrenadesIncendiary
+      - cost: 1700
+        crate: RMCCrateGrenadesFrag
       - cost: 5000
-        crate: AU14CrateGrenadesSmokeUPP
-      - cost: 4000
+        crate: RMCCrateGrenadesSmoke
+      - cost: 1000
+        crate: RMCCrateGrenadesFragOld
+      - cost: 1000
         crate: RMCCratePlasticExplosives
       - cost: 2000
         crate: RMCCrateBreachingCharges
-      - cost: 1500
-        crate: AU14CrateGrenadesHighExplosiveBoxUPP
-      - cost: 1300
-        crate: AU14CrateGrenadesIncendiaryBoxUPP
-      - cost: 1800
-        crate: AU14CrateGrenadesSmokeBoxUPP
+      - cost: 1000
+        crate: RMCCrateGrenadesHighExplosiveBox
+      - cost: 2000
+        crate: RMCCrateGrenadesBoxHEFA
       - cost: 1800
         crate: RMCCrateGrenadesAirburstFragBox
       - cost: 2000
@@ -91,10 +105,6 @@
         crate: RMCCrateFoodIngredients
     - name: Gear
       entries:
-      - cost: 300
-        crate: ANPRCFillCardResupplyCrateOPFOR
-      - cost: 1500
-        crate: ANPRCRadioResupplyCrateOPFOR
       - cost: 1200
         crate: AU14CrateTacticalMonocular
       - cost: 1700
@@ -142,19 +152,17 @@
     - name: Mortar
       entries:
       - cost: 3000
-        crate: AU14CrateMortarKitRMC
+        crate: RMCCrateMortarKit
       - cost: 500
-        crate: AU14CrateMortarShellFlareRMC # 12 shells
+        crate: RMCCrateMortarShellFlare
       - cost: 650
-        crate: AU14CrateMortarShellHERMC # 12 shells
+        crate: RMCCrateMortarShellHE
       - cost: 750
-        crate: AU14CrateMortarShellIncendiaryRMC # 12 shells
+        crate: RMCCrateMortarShellIncendiary
       - cost: 800
-        crate: AU14CrateMortarShellHEATRMC # 12 shells
+        crate: AU14CrateMortarShellHEATMP
       - cost: 950
-        crate: AU14CrateMortarMixed # 12 shells
-#    - name: Operations
-#      entries: []
+        crate: AU14CrateMortarShellMixed
     - name: Supplies
       entries:
       - cost: 200
@@ -174,14 +182,12 @@
       - cost: 1900
         crate: CMUCrateVehicleAmmoLTBCannonMixed
         maxStock: 2
-        stockReplenishDelay: 300
       - cost: 1900
         crate: CMUCrateVehicleAmmoLTBCannonAPFSDS
         maxStock: 2
       - cost: 1900
         crate: CMUCrateVehicleAmmoLTBCannonHEAT
         maxStock: 2
-        stockReplenishDelay: 300
       - cost: 1900
         crate: CMUCrateVehicleAmmoLTBCannonHE
         maxStock: 2
@@ -245,26 +251,30 @@
         stockReplenishDelay: 300
     - name: Weapons
       entries:
-      - cost: 850
-        crate: RMCCrateXM51
       - cost: 250
         crate: RMCCrateMK80
-      - cost: 400
-        crate: RMCCrateXM88
-      - cost: 800
-        crate: CMUCrateOlympiets
       - cost: 600
+        crate: RMCCrateXM88
+      - cost: 850
+        crate: RMCCrateXM51
+      - cost: 800
+        crate: RMCCrateMOU53
+      - cost: 400
         crate: RMCCrateM85A1
-      - cost: 200
+      - cost: 100
         crate: AU14CrateAssortedKnives
+      - cost: 1500
+        crate: AU14CrateM5A1SLAW
       - cost: 800
         crate: RMCCrateM34
       - cost: 2200
-        crate: AU14CrateHJRA12
-      - cost: 1200
-        crate: AU14CrateOG60
+        crate: AU14CrateM7SLAW
       - cost: 1500
-        crate: AU14CrateM5A1SLAW
+        crate: RMCCrateML66D
+      - cost: 1000
+        crate: RMCCrateM2C
+      - cost: 1700
+        crate: CMUCrateMk86
     - name: Ammo
       entries:
       - cost: 400
@@ -285,18 +295,22 @@
         crate: RMCCrateBoxShellsShotgunFlechette
       - cost: 300
         crate: RMCCrateBoxShellsShotgunBuckshot
-      - cost: 200
-        crate: AU14CrateHJRA12ATRocket
-      - cost: 350
-        crate: AU14CrateHJRA12MixedRocket
-      - cost: 150
-        crate: AU14CrateHJRA12HERocket
-      - cost: 1500
-        crate: AU14CrateHJRA12EIIRocket
-      - cost: 400
-        crate: AU14CrateMagazineType88
+      - cost: 1000
+        crate: AU14CrateM7SLAWAPRocket
+      - cost: 1250
+        crate: AU14CrateM7SLAWMixedRocket
+      - cost: 2000
+        crate: AU14CrateM7SLAWHERocket
       - cost: 250
-        crate: AU14CrateMagazineType23Mixed
+        crate: RMCCrateMagazineML66DDrum
+      - cost: 500
+        crate: RMCCrateMagazineM2C
+      - cost: 700
+        crate: CMUCrateMk86MagazineHornet
+      - cost: 400
+        crate: CMUCrateMk86MagazineFrag
+      - cost: 200
+        crate: CMUCrateMk86MagazineSmoke
       - cost: 200
         crate: RMCCrateMagazineNapthalUT
       - cost: 350
@@ -305,16 +319,8 @@
         crate: RMCCrateMagazineBGel
     - name: Specialist Ammo
       entries:
-      - cost: 700
-        crate: CMUCrateEMBLRAP
-      - cost: 600
-        crate: CMUCrateEMBLRMixed
-      - cost: 700
-        crate: CMUCrateEMBLRHE
-      - cost: 900
-        crate: CMUCrateEMBLRWP
       - cost: 2000
-        crate: RMCCratePyroTankMixedUPP
+        crate: RMCCratePyroTankMixed
       # Sniper
       - cost: 2000
         crate: AU14CrateMagazineSpecSniperM96S
@@ -350,8 +356,8 @@
         crate: AU14CrateBoxRSH9SL
     - name: AP Ammo
       entries:
-      - cost: 850
-        crate: AU14CrateBoxMagazineRifleAG80AP
+      - cost: 1000
+        crate: AU14CrateBoxMagazineSMGPDW90AP
     - name: Dropship Parts
       entries:
       - cost: 100

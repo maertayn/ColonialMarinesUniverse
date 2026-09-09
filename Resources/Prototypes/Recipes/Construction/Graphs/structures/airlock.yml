@@ -9,7 +9,7 @@
       - !type:SetAnchor
         value: false
       steps:
-      - material: Steel
+      - material: CMSteel # CMU14: fork metal (CMSheetMetal), not upstream Steel
         amount: 4
         doAfter: 2
 
@@ -32,7 +32,7 @@
         anchored: false
       completed:
       - !type:SpawnPrototype
-        prototype: SheetSteel1
+        prototype: CMSheetMetal1 # CMU14: refund fork metal
         amount: 4
       - !type:DeleteEntity {}
       steps:
@@ -108,7 +108,7 @@
         pickup: true
         emptyAtUser: true
       - !type:SpawnPrototype
-        prototype: SheetRGlass1
+        prototype: CMSheetGlassReinforced1 # CMU14: refund fork reinforced glass
         amount: 1
       steps:
       - tool: Prying
@@ -132,7 +132,7 @@
       - !type:AllWiresCut
       completed:
       - !type:SpawnPrototype
-        prototype: SheetRGlass1
+        prototype: CMSheetGlassReinforced1 # CMU14: refund fork reinforced glass
         amount: 1
       steps:
       - tool: Prying
@@ -142,7 +142,7 @@
       conditions:
       - !type:WirePanel {}
       steps:
-      - material: Steel
+      - material: CMSteel # CMU14: fork metal (CMSheetMetal), not upstream Steel
         amount: 2
         doAfter: 2
 
@@ -150,7 +150,7 @@
       conditions:
       - !type:WirePanel {}
       steps:
-      - material: Plasteel
+      - material: CMPlasteel # CMU14: fork plasteel (CMSheetPlasteel), not upstream Plasteel
         amount: 2
         doAfter: 2
 
@@ -182,7 +182,7 @@
       conditions:
       - !type:WirePanel {}
       steps:
-      - material: Steel
+      - material: CMSteel # CMU14: fork metal (CMSheetMetal), not upstream Steel
         amount: 2
         doAfter: 2
 
@@ -190,7 +190,7 @@
       conditions:
       - !type:WirePanel {}
       steps:
-      - material: Plasteel
+      - material: CMPlasteel # CMU14: fork plasteel (CMSheetPlasteel), not upstream Plasteel
         amount: 2
         doAfter: 2
 
@@ -204,7 +204,7 @@
       conditions:
       - !type:WirePanel {}
       steps:
-      - material: Steel
+      - material: CMSteel # CMU14: fork metal (CMSheetMetal), not upstream Steel
         amount: 2
         doAfter: 2
 
@@ -212,7 +212,7 @@
       conditions:
       - !type:WirePanel {}
       steps:
-      - material: Plasteel
+      - material: CMPlasteel # CMU14: fork plasteel (CMSheetPlasteel), not upstream Plasteel
         amount: 2
         doAfter: 2
 
@@ -226,7 +226,7 @@
     - to: glassAirlock
       completed:
       - !type:GivePrototype
-        prototype: SheetSteel1
+        prototype: CMSheetMetal1 # CMU14: refund fork metal
         amount: 2
       conditions:
       - !type:WirePanel {}
@@ -239,7 +239,7 @@
     - to: airlock
       completed:
       - !type:GivePrototype
-        prototype: SheetSteel1
+        prototype: CMSheetMetal1 # CMU14: refund fork metal
         amount: 2
       conditions:
       - !type:WirePanel {}
@@ -252,7 +252,7 @@
     - to: highSecDoor
       completed:
       - !type:GivePrototype
-        prototype: SheetSteel1
+        prototype: CMSheetMetal1 # CMU14: refund fork metal
         amount: 2
       conditions:
       - !type:WirePanel {}
@@ -292,7 +292,7 @@
     - to: glassAirlock
       completed:
       - !type:GivePrototype
-        prototype: SheetPlasteel1
+        prototype: CMSheetPlasteel1 # CMU14: refund fork plasteel
         amount: 2
       conditions:
       - !type:WirePanel {}
@@ -305,7 +305,7 @@
     - to: airlock
       completed:
       - !type:GivePrototype
-        prototype: SheetPlasteel1
+        prototype: CMSheetPlasteel1 # CMU14: refund fork plasteel
         amount: 2
       conditions:
       - !type:WirePanel {}
@@ -318,7 +318,7 @@
     - to: highSecDoor
       completed:
       - !type:GivePrototype
-        prototype: SheetPlasteel1
+        prototype: CMSheetPlasteel1 # CMU14: refund fork plasteel
         amount: 2
       conditions:
       - !type:WirePanel {}
@@ -352,7 +352,7 @@
       conditions:
       - !type:WirePanel {}
       steps:
-      - material: MetalRod
+      - material: CMRodMetal # CMU14: fork rods (CMRodMetal), not upstream MetalRod
         amount: 2
         doAfter: 1
 
@@ -367,7 +367,7 @@
       completed:
       - !type:AttemptElectrocute
       - !type:GivePrototype
-        prototype: PartRodMetal1
+        prototype: CMRodMetal # CMU14: refund fork rods
         amount: 2
       conditions:
       - !type:WirePanel {}
@@ -379,7 +379,7 @@
       conditions:
       - !type:WirePanel {}
       steps:
-      - material: Plasteel
+      - material: CMPlasteel # CMU14: fork plasteel (CMSheetPlasteel), not upstream Plasteel
         amount: 2
         doAfter: 2
 
@@ -393,7 +393,7 @@
     - to: maxSecurity
       completed:
       - !type:GivePrototype
-        prototype: SheetPlasteel1
+        prototype: CMSheetPlasteel1 # CMU14: refund fork plasteel
         amount: 2
       conditions:
       - !type:WirePanel {}

@@ -126696,6 +126696,33 @@ entities:
     - type: Transform
       pos: 67.5,-21.5
       parent: 1
+- proto: CMUSpawnPointCivilianAtmosian
+  entities:
+  - uid: 76466
+    components:
+    - type: Transform
+      pos: 46.5,-21.5
+      parent: 1
+  - uid: 76467
+    components:
+    - type: Transform
+      pos: 44.5,-19.5
+      parent: 1
+  - uid: 76468
+    components:
+    - type: Transform
+      pos: 45.5,-31.5
+      parent: 1
+  - uid: 76469
+    components:
+    - type: Transform
+      pos: 66.5,-20.5
+      parent: 1
+  - uid: 76470
+    components:
+    - type: Transform
+      pos: 67.5,-21.5
+      parent: 1
 - proto: AU14SpawnPointCivilianEthicsAndWellnessAdvisor
   entities:
   - uid: 9756
@@ -130298,6 +130325,10 @@ entities:
           crate: AU14CrateBoxFirefighting
           cost: 1000
           name: null
+        - cost: 800
+          crate: CMUCrateAtmosSupplies
+        - cost: 600
+          crate: CMUCrateSCBA
         name: Engineering
       - entries:
         - stockReplenishAmount: 1
@@ -183330,7 +183361,7 @@ entities:
       parent: 1
     - type: Physics
       canCollide: False
-- proto: RMCGasPipeBend
+- proto: CMUGasPipeBend
   entities:
   - uid: 68537
     components:
@@ -183344,7 +183375,7 @@ entities:
       rot: 4.71238898038469 rad
       pos: -99.5,44.5
       parent: 1
-- proto: RMCGasPipeTJunction
+- proto: CMUGasPipeTJunction
   entities:
   - uid: 68538
     components:

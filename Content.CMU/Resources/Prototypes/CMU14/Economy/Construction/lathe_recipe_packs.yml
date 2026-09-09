@@ -3,7 +3,14 @@
 # republished into these pack ids without committing generated server state.
 - type: latheRecipePack
   id: AU14AutolatheRecipes
-  recipes: []
+  recipes: # CMU14: baseline colony electronics - alarm, firelock, disposal, atmos computer boards
+  - AirAlarmElectronics
+  - FireAlarmElectronics
+  - FirelockElectronics
+  - MailingUnitElectronics
+  - DoorElectronics
+  - AlertsComputerCircuitboard
+  - AtmosMonitoringComputerCircuitboard
 
 - type: latheRecipePack
   id: AU14ArmylatheRecipes

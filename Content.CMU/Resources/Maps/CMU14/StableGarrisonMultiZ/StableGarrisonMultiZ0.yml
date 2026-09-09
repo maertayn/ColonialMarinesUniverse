@@ -97763,6 +97763,33 @@ entities:
     - type: Transform
       pos: 191.5,-148.5
       parent: 1
+- proto: CMUSpawnPointCivilianAtmosian
+  entities:
+  - uid: 84954
+    components:
+    - type: Transform
+      pos: 183.5,-143.5
+      parent: 1
+  - uid: 84955
+    components:
+    - type: Transform
+      pos: 181.5,-151.5
+      parent: 1
+  - uid: 84956
+    components:
+    - type: Transform
+      pos: 179.5,-147.5
+      parent: 1
+  - uid: 84957
+    components:
+    - type: Transform
+      pos: 186.5,-150.5
+      parent: 1
+  - uid: 84958
+    components:
+    - type: Transform
+      pos: 191.5,-148.5
+      parent: 1
 - proto: AU14SpawnPointCivilianEthicsAndWellnessAdvisor
   entities:
   - uid: 557
@@ -102613,6 +102640,12 @@ entities:
           crate: AU14CrateBoxFirefighting
           cost: 1000
           name: null
+        - cost: 800
+          crate: CMUCrateAtmosSupplies
+        - cost: 600
+          crate: CMUCrateSCBA
+        - cost: 300
+          crate: CMUCrateGasMaskFilter
         name: Engineering
       - entries:
         - stockReplenishAmount: 1
@@ -103796,6 +103829,10 @@ entities:
           crate: AU14CrateBoxFirefighting
           cost: 1000
           name: null
+        - cost: 800
+          crate: CMUCrateAtmosSupplies
+        - cost: 600
+          crate: CMUCrateSCBA
         name: Engineering
       - entries:
         - stockReplenishAmount: 1
@@ -165492,7 +165529,7 @@ entities:
     - type: Transform
       pos: 25.435915,-6.3903565
       parent: 1
-- proto: RMCGasPipeBend
+- proto: CMUGasPipeBend
   entities:
   - uid: 16218
     components:
@@ -165506,7 +165543,7 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 83.5,-12.5
       parent: 1
-- proto: RMCGasPipeStraight
+- proto: CMUGasPipeStraight
   entities:
   - uid: 16220
     components:
@@ -165680,7 +165717,7 @@ entities:
       rot: 3.141592653589793 rad
       pos: 293.5,-108.5
       parent: 1
-- proto: RMCGasPipeTJunction
+- proto: CMUGasPipeTJunction
   entities:
   - uid: 16271
     components:

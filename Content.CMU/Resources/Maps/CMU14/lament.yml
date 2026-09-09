@@ -144189,6 +144189,18 @@ entities:
     - type: Transform
       pos: -56.5,5.5
       parent: 1
+- proto: CMUSpawnPointCivilianAtmosian
+  entities:
+  - uid: 91088
+    components:
+    - type: Transform
+      pos: -56.5,9.5
+      parent: 1
+  - uid: 91089
+    components:
+    - type: Transform
+      pos: -56.5,5.5
+      parent: 1
 - proto: AU14SpawnPointCivilianEthicsAndWellnessAdvisor
   entities:
   - uid: 201
@@ -151363,6 +151375,10 @@ entities:
           crate: AU14CrateBoxFirefighting
           cost: 1000
           name: null
+        - cost: 800
+          crate: CMUCrateAtmosSupplies
+        - cost: 600
+          crate: CMUCrateSCBA
         name: Engineering
       - entries:
         - entities: []

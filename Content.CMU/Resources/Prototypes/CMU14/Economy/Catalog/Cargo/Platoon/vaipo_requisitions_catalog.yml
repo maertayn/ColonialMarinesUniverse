@@ -1,7 +1,7 @@
 - type: entity
   abstract: false
-  id: CMBCIUCargoCatalog
-  parent: [ CMUASRSResearchGoodies, CMUASRSBotanyGoodies ]
+  id: VAIPOCargoCatalog
+  parent: [ CMUASRSResearchGoodies, CMUASRSBotanyGoodies, CMUASRSAtmosGoodies ]
   components:
   - type: RequisitionsComputer
     categories:
@@ -41,6 +41,22 @@
         crate: RMCCrateHighCapacityPowerCell
       - cost: 1000
         crate: AU14CrateBoxFirefighting
+      - cost: 800
+        crate: CMUCrateAtmosSupplies
+      - cost: 600
+        crate: CMUCrateSCBA
+      - cost: 700
+        crate: CMUCrateHazardGear
+      - cost: 500
+        crate: CMUCrateEngineeringWiring
+      - cost: 1200
+        crate: AU14CBRNKitUA
+      - cost: 400
+        crate: CMUCrateGasMaskFilterHAZOPS
+      - cost: 300
+        crate: CMUCrateGasMaskFilter
+      - cost: 1000
+        crate: RMCCrateFoldingBarricades
     - name: Explosives
       entries:
       - cost: 1800
@@ -166,12 +182,14 @@
       - cost: 1900
         crate: CMUCrateVehicleAmmoLTBCannonMixed
         maxStock: 2
+        stockReplenishDelay: 300
       - cost: 1900
         crate: CMUCrateVehicleAmmoLTBCannonAPFSDS
         maxStock: 2
       - cost: 1900
         crate: CMUCrateVehicleAmmoLTBCannonHEAT
         maxStock: 2
+        stockReplenishDelay: 300
       - cost: 1900
         crate: CMUCrateVehicleAmmoLTBCannonHE
         maxStock: 2
@@ -235,12 +253,12 @@
         stockReplenishDelay: 300
     - name: Weapons
       entries:
-      - cost: 250
+      - cost: 850
+        crate: RMCCrateXM51
+      - cost: 800
         crate: RMCCrateMK80
       - cost: 600
         crate: RMCCrateXM88
-      - cost: 850
-        crate: RMCCrateXM51
       - cost: 800
         crate: RMCCrateMOU53
       - cost: 400
@@ -263,7 +281,7 @@
       entries:
       - cost: 400
         crate: RMCCrateBoxShellsShotgunBreaching
-      - cost: 650
+      - cost: 250
         crate: RMCCrateBoxMagazinePistolMK80
       - cost: 800
         crate: RMCCrateBoxAmmo458
@@ -340,8 +358,10 @@
         crate: AU14CrateBoxRSH9SL
     - name: AP Ammo
       entries:
+      - cost: 1150
+        crate: AU14CrateBoxMagazineRifleL42AAP
       - cost: 1000
-        crate: AU14CrateBoxMagazineSMGPDW90AP
+        crate: RMCCrateBoxMagazineRifleM54CAP
     - name: Dropship Parts
       entries:
       - cost: 100

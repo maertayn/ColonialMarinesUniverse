@@ -80520,7 +80520,7 @@ entities:
     - type: Transform
       pos: 286.76135,-121.336075
       parent: 1
-- proto: RMCGasPipeStraight
+- proto: CMUGasPipeStraight
   entities:
   - uid: 4172
     components:
@@ -80637,7 +80637,7 @@ entities:
     - type: Transform
       pos: 105.5,-38.5
       parent: 1
-- proto: RMCGasPipeTJunction
+- proto: CMUGasPipeTJunction
   entities:
   - uid: 4193
     components:

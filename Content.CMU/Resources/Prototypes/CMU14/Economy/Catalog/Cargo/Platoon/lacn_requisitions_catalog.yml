@@ -1,7 +1,7 @@
 - type: entity
   abstract: false
   id: LACNCargoCatalog
-  parent: [ CMUASRSResearchGoodies, CMUASRSBotanyGoodies ]
+  parent: [ CMUASRSResearchGoodies, CMUASRSBotanyGoodies, CMUASRSAtmosGoodies ]
   components:
   - type: RequisitionsComputer
     categories:
@@ -41,6 +41,22 @@
         crate: RMCCrateHighCapacityPowerCell
       - cost: 1000
         crate: AU14CrateBoxFirefighting
+      - cost: 800
+        crate: CMUCrateAtmosSupplies
+      - cost: 600
+        crate: CMUCrateSCBA
+      - cost: 700
+        crate: CMUCrateHazardGear
+      - cost: 500
+        crate: CMUCrateEngineeringWiring
+      - cost: 1200
+        crate: AU14CBRNKitUA
+      - cost: 400
+        crate: CMUCrateGasMaskFilterHAZOPS
+      - cost: 300
+        crate: CMUCrateGasMaskFilter
+      - cost: 1000
+        crate: RMCCrateFoldingBarricades
     - name: Explosives
       entries:
       - cost: 1800

@@ -1,7 +1,7 @@
 - type: entity
   abstract: false
-  id: HAZOPSCargoCatalog
-  parent: [ CMUASRSResearchGoodies, CMUASRSBotanyGoodies ]
+  id: WYPMCCargoCatalog
+  parent: [ CMUASRSResearchGoodies, CMUASRSBotanyGoodies, CMUASRSAtmosGoodies ]
   components:
   - type: RequisitionsComputer
     categories:
@@ -41,6 +41,22 @@
         crate: RMCCrateHighCapacityPowerCell
       - cost: 1000
         crate: AU14CrateBoxFirefighting
+      - cost: 800
+        crate: CMUCrateAtmosSupplies
+      - cost: 600
+        crate: CMUCrateSCBA
+      - cost: 700
+        crate: CMUCrateHazardGear
+      - cost: 500
+        crate: CMUCrateEngineeringWiring
+      - cost: 1200
+        crate: AU14CBRNKitWeYu
+      - cost: 400
+        crate: CMUCrateGasMaskFilterHAZOPS
+      - cost: 300
+        crate: CMUCrateGasMaskFilter
+      - cost: 1000
+        crate: RMCCrateFoldingBarricades
     - name: Explosives
       entries:
       - cost: 1800
@@ -108,7 +124,7 @@
     - name: Pouches
       entries:
       - cost: 150
-        crate: RMCCrateClothingMagazinePouchesLarge
+        crate: RMCCrateClothingMagazinePouchesLargePMC
     - name: Medical
       entries:
       - cost: 3000
@@ -239,16 +255,16 @@
       entries:
       - cost: 850
         crate: RMCCrateXM51
-      - cost: 250
+      - cost: 800
         crate: RMCCrateMK80
       - cost: 600
         crate: RMCCrateXM88
       - cost: 800
         crate: RMCCrateMOU53
-      - cost: 800
-        crate: RMCCrateM54CE2
       - cost: 400
         crate: RMCCrateM85A1
+      - cost: 1200
+        crate: AU14KitWeaponRXFM
       - cost: 100
         crate: AU14CrateAssortedKnives
       - cost: 1500
@@ -271,10 +287,6 @@
         crate: RMCCrateBoxMagazinePistolMK80
       - cost: 800
         crate: RMCCrateBoxAmmo458
-      - cost: 300
-        crate: RMCCrateMagazineRifleM54CE2
-      - cost: 300
-        crate: RMCCrateMagazineRifleM54CE2HT
       - cost: 600
         crate: RMCCrateBoxMagazineSentry
       - cost: 600
@@ -312,7 +324,7 @@
     - name: Specialist Ammo
       entries:
       - cost: 2000
-        crate: RMCCratePyroTankMixedHAZOPS
+        crate: RMCCratePyroTankMixedWY
       # Sniper
       - cost: 2000
         crate: AU14CrateMagazineSpecSniperM96S
@@ -348,8 +360,8 @@
         crate: AU14CrateBoxRSH9SL
     - name: AP Ammo
       entries:
-      - cost: 1000
-        crate: RMCCrateBoxMagazineRifleM54CAP
+      - cost: 850
+        crate: RMCCrateBoxMagazineSMGM63AP
     - name: Dropship Parts
       entries:
       - cost: 100

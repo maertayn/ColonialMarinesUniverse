@@ -30339,7 +30339,7 @@ entities:
     - type: Transform
       pos: 268.43903,-123.54408
       parent: 1
-- proto: RMCGasPipeStraight
+- proto: CMUGasPipeStraight
   entities:
   - uid: 2292
     components:
@@ -30428,7 +30428,7 @@ entities:
     - type: Transform
       pos: 210.5,-101.5
       parent: 1
-- proto: RMCGasPipeTJunction
+- proto: CMUGasPipeTJunction
   entities:
   - uid: 2307
     components:

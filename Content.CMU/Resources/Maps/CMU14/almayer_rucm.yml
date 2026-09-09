@@ -30269,7 +30269,7 @@ entities:
     - type: Transform
       pos: 24.5,117.5
       parent: 1
-- proto: AirCanister
+- proto: CMUCanisterAir
   entities:
   - uid: 385
     components:
@@ -142544,7 +142544,7 @@ entities:
     - type: Transform
       pos: -45.5,79.5
       parent: 1
-- proto: RMCGasPipeBend
+- proto: CMUGasPipeBend
   entities:
   - uid: 19633
     components:
@@ -144544,7 +144544,7 @@ entities:
       parent: 1
     - type: AtmosPipeColor
       color: '#0000FFFF'
-- proto: RMCGasPipeFourway
+- proto: CMUGasPipeFourway
   entities:
   - uid: 19893
     components:
@@ -144588,7 +144588,7 @@ entities:
       parent: 1
     - type: AtmosPipeColor
       color: '#0000FFFF'
-- proto: RMCGasPipeStraight
+- proto: CMUGasPipeStraight
   entities:
   - uid: 19899
     components:
@@ -162937,7 +162937,7 @@ entities:
       parent: 1
     - type: AtmosPipeColor
       color: '#0000FFFF'
-- proto: RMCGasPipeTJunction
+- proto: CMUGasPipeTJunction
   entities:
   - uid: 22260
     components:
@@ -165361,7 +165361,7 @@ entities:
     - type: Transform
       pos: 22.713614,-21.58561
       parent: 1
-- proto: RMCInflatableWall
+- proto: CMUInflatableWall
   entities:
   - uid: 24876
     components:

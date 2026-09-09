@@ -78453,6 +78453,23 @@ entities:
     - type: Transform
       pos: 2.5,-101.5
       parent: 1
+- proto: CMUSpawnPointCivilianAtmosian
+  entities:
+  - uid: 33619
+    components:
+    - type: Transform
+      pos: 2.5,-99.5
+      parent: 1
+  - uid: 33620
+    components:
+    - type: Transform
+      pos: 2.5,-100.5
+      parent: 1
+  - uid: 33621
+    components:
+    - type: Transform
+      pos: 2.5,-101.5
+      parent: 1
 - proto: AU14SpawnPointCivilianEthicsAndWellnessAdvisor
   entities:
   - uid: 192
@@ -80727,6 +80744,12 @@ entities:
           crate: AU14CrateBoxFirefighting
           cost: 1000
           name: null
+        - cost: 800
+          crate: CMUCrateAtmosSupplies
+        - cost: 600
+          crate: CMUCrateSCBA
+        - cost: 300
+          crate: CMUCrateGasMaskFilter
         name: Engineering
       - entries:
         - entities: []
@@ -244325,7 +244348,7 @@ entities:
       rot: 3.141592653589793 rad
       pos: -110.5,-55.5
       parent: 1
-- proto: RMCInflatableDoor
+- proto: CMUInflatableDoor
   entities:
   - uid: 30323
     components:
@@ -244336,7 +244359,7 @@ entities:
     - type: Door
       secondsUntilStateChange: -9012.947
       state: Opening
-- proto: RMCInflatableWall
+- proto: CMUInflatableWall
   entities:
   - uid: 30324
     components:

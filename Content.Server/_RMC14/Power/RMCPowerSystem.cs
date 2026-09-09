@@ -14,6 +14,7 @@ using Content.Shared.Power.Components;
 using Content.Shared.PowerCell;
 using Content.Shared.PowerCell.Components;
 using Robust.Shared.Configuration;
+using Robust.Shared.GameObjects; // CMU14
 using Robust.Shared.Containers;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
@@ -65,6 +66,7 @@ public sealed partial class RMCPowerSystem : SharedRMCPowerSystem
         SubscribeLocalEvent<RMCPowerReceiverComponent, PowerChangedEvent>(OnReceiverPowerChanged);
         SubscribeLocalEvent<RMCPowerUsageDisplayComponent, ExaminedEvent>(OnUsageDisplayEvent);
         SubscribeLocalEvent<CMUZLevelNetworkUpdatedEvent>(OnZLevelNetworkUpdated);
+        SubscribeLocalEvent<ApcPowerReceiverComponent, ComponentStartup>(OnApcReceiverStartup); // CMU14
 
         Subs.CVar(_config, RMCCVars.RMCPowerUpdateEverySeconds, v => _updateEvery = TimeSpan.FromSeconds(v), true);
         Subs.CVar(_config, RMCCVars.RMCPowerLoadMultiplier, v => _powerLoadMultiplier = v, true);
