@@ -9,6 +9,7 @@ namespace Content.IntegrationTests.CMU14.Construction;
 [TestOf(typeof(EntityIdConstructionGraphStep))]
 public sealed class EntityIdConstructionGraphStepRegressionTest : GameTest
 {
+<<<<<<< HEAD
     [TestPrototypes]
     private const string Prototypes = """
         - type: constructionGraph
@@ -25,6 +26,28 @@ public sealed class EntityIdConstructionGraphStepRegressionTest : GameTest
           - node: target
         """;
 
+||||||| parent of 200a9e1cc4 (❌ fix integration test fixtures broken by deleted graphs, new solution system and deployment crates)
+=======
+    [TestPrototypes]
+    private const string Prototypes = @"
+- type: constructionGraph
+  id: AU14CustomGraph_CMPosterMissApril__AU14__Debug
+  start: start
+  graph:
+  - node: start
+    edges:
+    - to: target
+      completed:
+      - !type:SnapToGrid
+      steps:
+      - entityId: CMPosterMissApril
+        consume: true
+        doAfter: 1
+  - node: target
+    entity: CMPosterMissApril
+";
+
+>>>>>>> 200a9e1cc4 (❌ fix integration test fixtures broken by deleted graphs, new solution system and deployment crates)
     [Test]
     public async Task MissAprilGraphPreservesExactPrototypeMatchingStep()
     {
