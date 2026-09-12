@@ -15,6 +15,7 @@ using Content.Shared.GameTicking.Components;
 using Robust.Shared.EntitySerialization.Systems;
 using Content.Server._RMC14.Requisitions;
 using Content.Shared._RMC14.Telephone;
+using Content.Shared._RMC14.SupplyDrop;
 using Content.Shared._RMC14.Ladder;
 using Content.Shared.CMU14;
 
@@ -31,6 +32,7 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
     [Dependency] private SharedMapSystem _mapSystem = default!;
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private CMUZLevelsSystem _zLevels = default!;
+    [Dependency] private SharedSupplyDropSystem _supplyDrop = default!;
 
     // Store selected platoons in the system
     private PlatoonPrototype? _selectedGovforPlatoon;
@@ -378,6 +380,9 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
                         continue;
                     }
                 }
+
+                if (shipFaction.Faction == "opfor")
+                    ConvertGovforEntitiesToOpfor(shipUid);
             }
         }
 
@@ -711,6 +716,57 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
             phoneComp.Faction = faction;
             Dirty(phoneUid, phoneComp);
         }
+    }
+
+    // Ship maps are built Govfor and shared by both factions; when a grid flies for Opfor the
+    // baked-in Govfor machines must become their Opfor variants or that force cannot use them.
+    // One-directional on purpose: no ship map bakes Opfor entities for a Govfor crew today.
+    private static readonly Dictionary<string, string> OpforShipPrototypeSwaps = new()
+    {
+        ["AU14WithdrawConsoleGovFor"] = "AU14WithdrawConsoleOpFor",
+        ["AU14AllianceConsoleGovfor"] = "AU14AllianceConsoleOpfor",
+        ["AU14TabletGovfor"] = "AU14TabletOpfor",
+        ["AU14OrbitalCannonGovfor"] = "AU14OrbitalCannonOpfor",
+        ["RMCComputerIntelGovfor"] = "RMCComputerIntelOpfor",
+        ["ComputerObjectivesGovfor"] = "ComputerObjectivesOpfor",
+        ["CMUXRFScannerGovfor"] = "CMUXRFScannerOpfor",
+        ["AU14CommsMastGovfor"] = "AU14CommsMastOpfor",
+        ["AU14AICoreApolloGOVFOR"] = "AU14AICoreApolloOPFOR",
+        ["ANPRC117GRadio"] = "ANPRC117GRadioOPFOR",
+    };
+
+    private void ConvertGovforEntitiesToOpfor(EntityUid shipUid)
+    {
+        // Covers markers spawned above and entities baked into the map; swapping (not editing
+        // components) so MapInit-derived state such as alliance controllable factions is correct.
+        var toSwap = new List<(EntityUid uid, string opforProtoId, TransformComponent transform)>();
+        var supplyDrops = new List<EntityUid>();
+        var query = AllEntityQuery<MetaDataComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out var meta, out var transform))
+        {
+            if (transform.GridUid != shipUid || meta.EntityPrototype is not { } proto)
+                continue;
+
+            if (OpforShipPrototypeSwaps.TryGetValue(proto.ID, out var opforProtoId))
+                toSwap.Add((uid, opforProtoId, transform));
+            else if (proto.ID == "RMCSupplyDropConsole")
+                supplyDrops.Add(uid);
+        }
+
+        foreach (var (uid, opforProtoId, transform) in toSwap)
+        {
+            // A renamed target must leave the Govfor entity in place, not delete it unreplaced
+            if (!_prototypeManager.TryIndex<EntityPrototype>(opforProtoId, out _))
+                continue;
+
+            _entityManager.SpawnAttachedTo(opforProtoId, transform.Coordinates, rotation: transform.LocalRotation);
+            _entityManager.DeleteEntity(uid);
+        }
+
+        // No Opfor supply drop console prototype exists; retarget the marine squad binding so
+        // launches resolve the ship pads via SquadOpfor's supplyDropPadSquad.
+        foreach (var uid in supplyDrops)
+            _supplyDrop.SetSquad(uid, "SquadOpfor");
     }
 
     private void SetPhonesFactionForParent(EntityUid parent, string faction)
