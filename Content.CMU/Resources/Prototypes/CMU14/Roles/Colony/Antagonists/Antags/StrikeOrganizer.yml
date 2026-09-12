@@ -5,6 +5,7 @@
   - AllGovforJobs
   - AllOpforJobs
   - AllCLFJobs
+  - AllWeYuJobs
   briefing:
     text: strikeorganizer-role-greeting
     color: DarkRed
@@ -12,6 +13,7 @@
   startingGear: AU14GearStrikeOrganizer
   components:
   - type: StrikeOrganizer
+  - type: SynthGunAccess
   mindRoles:
   - MindRoleStrikeOrganizer
 

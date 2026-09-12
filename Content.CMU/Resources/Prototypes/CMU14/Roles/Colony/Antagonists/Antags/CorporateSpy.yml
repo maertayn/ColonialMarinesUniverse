@@ -5,6 +5,8 @@
   - AllGovforJobs
   - AllOpforJobs
   - AllCLFJobs
+  jobBlacklist:
+  - AU14JobCivilianCorporateLiaison
   briefing:
     text: spy-role-greeting
     color: DarkSlateGray
@@ -22,6 +24,7 @@
     recordName: Laselle Operative (Unknown)
     includePrints: true
     capturedFaxPaper: CMUPaperColonyAntagCaptured
+  - type: SynthGunAccess
   mindRoles:
   - MindRoleCorporateSpy
 

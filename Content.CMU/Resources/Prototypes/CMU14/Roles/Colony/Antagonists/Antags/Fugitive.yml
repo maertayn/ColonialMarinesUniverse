@@ -5,6 +5,8 @@
   - AllGovforJobs
   - AllOpforJobs
   - AllCLFJobs
+  - AllWeYuJobs
+  - AllSynthJobs
   briefing:
     text: fugitive-role-greeting
     color: CornflowerBlue

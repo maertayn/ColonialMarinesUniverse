@@ -5,6 +5,7 @@
   - AllGovforCommandStaff
   - AllOpforCommandStaff
   - AllCLFJobs
+# - AllColonyDepartmentHeadJobs
   briefing:
     text: cannibal-role-greeting
     color: DarkRed
@@ -12,6 +13,7 @@
   startingGear: AU14GearCannibal
   components:
   - type: Cannibal
+  - type: SynthGunAccess
   mindRoles:
   - MindRoleCannibal
 

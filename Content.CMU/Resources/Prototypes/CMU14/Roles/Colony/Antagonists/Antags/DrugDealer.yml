@@ -5,11 +5,16 @@
   - AllGovforJobs
   - AllOpforJobs
   - AllCLFJobs
+  - AllWeYuJobs
+  - AllSynthJobs
   briefing:
     text: dealer-role-greeting
     color: MediumVioletRed
     sound: "/Audio/Ambience/Antag/headrev_start.ogg"
   startingGear: AU14GearDrugDealer
+  startingSkills:
+  - type: RMCSkillMedical
+    level: 1
   components:
   - type: DrugDealer
   - type: ColonyBounty

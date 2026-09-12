@@ -9,6 +9,37 @@
     - AU14JobCLFSurgeon
 
 - type: antagJobBlacklist
+  id: AllWeYuJobs
+  jobs:
+    - AU14JobCivilianCorporateLiaison
+    - AU14JobCivilianCorporateAdminAssistant
+    - AU14JobCivilianCorporateAssistant
+    - AU14JobWYGuard
+    - AU14JobCivilianScientist
+
+- type: antagJobBlacklist
+  id: AllColonyDepartmentHeadJobs
+  jobs:
+    - AU14JobCivilianCorporateLiaison
+    - AU14JobCivilianHeadOfService
+    - AU14JobCivilianHeadPhysician
+    - AU14JobCivilianHeadOfEngineering
+    - AU14JobCivilianColonyAdministrator
+#   - AU14JobCivilianColonyAdminAssistant
+    - AU14JobCivilianOrbitalArbiter
+    - AU14JobCivilianCMBMarshal
+
+- type: antagJobBlacklist
+  id: AllSynthJobs
+  jobs:
+    - AU14JobColonyWorkingJoe
+    - AU14JobCivilianColonySynthetic
+    - AU14JobGOVFORAuxSupportSynth
+    - AU14JobOPFORAuxSupportSynth
+    - AU14JobGOVFORWorkingJoe
+    - AU14JobOPFORWorkingJoe
+
+- type: antagJobBlacklist
   id: AllGovforJobs
   jobs:
     - AU14JobGOVFORPlatCo
@@ -24,6 +55,7 @@
     - AU14JobGOVFOROfficerLogistics
     - AU14JobGOVFOROfficerMedical
     - AU14JobGOVFORMilitaryDoctor
+    - AU14JobGOVFORPlatoonCorpsman
     - AU14JobGOVFORNurse
     - AU14JobGOVFOROfficerMP
     - AU14JobGOVFORMilitaryPoliceMan
@@ -64,10 +96,17 @@
     - AU14JobOPFORRadioTelephoneOperator
     - AU14JobOPFORSquadAutomaticRifleman
     - AU14JobOPFORSquadCombatTech
-#   - AU14JobOPFORWeaponsSpecialist
+    - AU14JobOPFORWeaponsSpecialist
     - AU14JobOPFORPlatoonCorpsman
     - AU14JobOPFORSquadRifleman
-#   - CMUJobOPFORDroneOperator
+    - CMUJobOPFORDroneOperator
+    - AU14JobOPFOREngineeringTech
+    - AU14JobOPFORNurse
+    - AU14JobOPFORCombatCorrespondent
+    - AU14JobOPFORVehicleCommander
+    - CMUJobOPFORAdjutantDress
+    - CMUJobOPFORBrigadierGeneral
+    - CMUJobOPFORVipEscort
     - AU14JobOPFORAuxSupportSynth
     - AU14JobOPFORWorkingJoe
     - AU14JobOPFORDSPilot
@@ -84,17 +123,15 @@
     - CMUJobGOVFORBrigadierGeneral
     - CMUJobGOVFORVipEscort
     - AU14JobGOVFORadvisor
-    - AU14JobGOVFOROfficerEngi
-    - AU14JobGOVFOROfficerIntel
-    - AU14JobGOVFOROfficerLogistics
-    - AU14JobGOVFOROfficerMedical
-    - AU14JobGOVFORMilitaryDoctor
+#   - AU14JobGOVFOROfficerEngi
+#   - AU14JobGOVFOROfficerIntel
+#   - AU14JobGOVFOROfficerLogistics
+#   - AU14JobGOVFOROfficerMedical
+#   - AU14JobGOVFORMilitaryDoctor
     - AU14JobGOVFOROfficerMP
     - AU14JobGOVFORMilitaryPoliceMan
     - AU14JobGOVFORSectionSergeant
     - AU14JobGOVFORSquadSergeant
-    - AU14JobGOVFORAuxSupportSynth
-    - AU14JobGOVFORWorkingJoe
     - AU14JobGOVFORDSPilot
     - AU14JobGOVFORDCC
     - AU14JobGOVFORVehicleCrewman
@@ -106,18 +143,20 @@
     - AU14JobOPFORPlatCo
     - AU14JobOPFORPlatOp
     - AU14JobOPFORAdjutant
+    - CMUJobOPFORAdjutantDress
+    - CMUJobOPFORBrigadierGeneral
+    - CMUJobOPFORVipEscort
     - AU14JobOPFORadvisor
-    - AU14JobOPFOROfficerEngi
-    - AU14JobOPFOROfficerIntel
-    - AU14JobOPFOROfficerLogistics
-    - AU14JobOPFOROfficerMedical
-    - AU14JobOPFORMilitaryDoctor
+#   - AU14JobOPFOROfficerEngi
+#   - AU14JobOPFOROfficerIntel
+#   - AU14JobOPFOROfficerLogistics
+#   - AU14JobOPFOROfficerMedical
+#   - AU14JobOPFORMilitaryDoctor
     - AU14JobOPFOROfficerMP
     - AU14JobOPFORMilitaryPoliceMan
     - AU14JobOPFORSectionSergeant
     - AU14JobOPFORSquadSergeant
-    - AU14JobOPFORAuxSupportSynth
-    - AU14JobOPFORWorkingJoe
     - AU14JobOPFORDSPilot
     - AU14JobOPFORDCC
     - AU14JobOPFORVehicleCrewman
+    - AU14JobOPFORVehicleCommander

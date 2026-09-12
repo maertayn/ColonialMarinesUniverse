@@ -5,6 +5,8 @@
   - AllGovforJobs
   - AllOpforJobs
   - AllCLFJobs
+# - AllColonyDepartmentHeadJobs
+  - AllSynthJobs
   briefing:
     text: serialkiller-role-greeting
     color: DarkRed

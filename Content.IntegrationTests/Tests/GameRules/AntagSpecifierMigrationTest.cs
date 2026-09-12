@@ -58,7 +58,7 @@ public sealed class AntagSpecifierMigrationTest : AntagTest
         ["Fugitive"] = ["Fugitive", "ColonyBounty"],
         ["DrugDealer"] = ["DrugDealer", "ColonyBounty"],
         ["CorporateSpy"] = ["CorporateAgent", "ColonyBounty"],
-        ["CLFVeteran"] = ["CLFVeteran", "Skills", "ColonyBounty"],
+        ["CLFVeteran"] = ["CLFVeteran", "ColonyBounty"],
         ["StrikeOrganizer"] = ["StrikeOrganizer"],
         ["Cannibal"] = ["Cannibal"],
         ["SerialKiller"] = ["SerialKiller", "ColonyBounty"],
@@ -202,7 +202,6 @@ public sealed class AntagSpecifierMigrationTest : AntagTest
             var runaway = SProtoMan.Index<AntagSpecifierPrototype>("RunawaySynth");
             var synth = (SynthComponent) runaway.Components["Synth"].Component;
             var runawaySkills = (SkillsComponent) runaway.Components["Skills"].Component;
-            var veteranSkills = (SkillsComponent) veteran.Components["Skills"].Component;
             Assert.Multiple(() =>
             {
                 Assert.That(synth.ChangeBrain, Is.False);
@@ -231,7 +230,7 @@ public sealed class AntagSpecifierMigrationTest : AntagTest
                         ["RMCSkillDomestics"] = 2,
                         ["RMCSkillNavigations"] = 1,
                     }));
-                Assert.That(veteranSkills.Skills.ToDictionary(pair => pair.Key.Id, pair => pair.Value),
+                Assert.That(veteran.StartingSkills.ToDictionary(skill => skill.Type.Id, skill => skill.Level),
                     Is.EquivalentTo(new Dictionary<string, int>
                     {
                         ["RMCSkillFirearms"] = 3,
