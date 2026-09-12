@@ -4,6 +4,7 @@
   jobBlacklistGroup:
   - AllGovforJobs
   - AllOpforJobs
+  - AllCLFJobs
   briefing:
     text: cmu-antag-arsonist-greeting
     color: DarkOrange

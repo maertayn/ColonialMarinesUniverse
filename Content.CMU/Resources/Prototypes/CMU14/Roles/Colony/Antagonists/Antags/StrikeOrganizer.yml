@@ -4,6 +4,7 @@
   jobBlacklistGroup:
   - AllGovforJobs
   - AllOpforJobs
+  - AllCLFJobs
   briefing:
     text: strikeorganizer-role-greeting
     color: DarkRed

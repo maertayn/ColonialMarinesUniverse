@@ -1,8 +1,10 @@
 - type: antagSpecifier
   id: Cannibal
   prefRoles: [ CannibalRole ]
-  jobWhitelist:
-  - AU14JobCivilianFoodServiceWorker
+  jobBlacklistGroup:
+  - AllGovforCommandStaff
+  - AllOpforCommandStaff
+  - AllCLFJobs
   briefing:
     text: cannibal-role-greeting
     color: DarkRed

@@ -4,6 +4,7 @@
   jobBlacklistGroup:
   - AllGovforJobs
   - AllOpforJobs
+  - AllCLFJobs
   briefing:
     text: cmu-antag-bounty-hunter-greeting
     color: Goldenrod

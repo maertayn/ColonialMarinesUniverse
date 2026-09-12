@@ -4,6 +4,7 @@
   jobBlacklistGroup:
   - AllGovforJobs
   - AllOpforJobs
+  - AllCLFJobs
   briefing:
     text: spy-role-greeting
     color: DarkSlateGray
