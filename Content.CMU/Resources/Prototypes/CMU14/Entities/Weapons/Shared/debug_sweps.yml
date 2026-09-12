@@ -74,3 +74,27 @@
       PuddleBlood:
         min: 12
         max: 24
+
+# Get their attention with this one. Doesn't harm, but does thunder across the entire map.
+- type: entity
+  name: zeus stick
+  parent: BaseItem
+  id: CMUDebugLightningStick
+  description: harmless thunder strike ye
+  suffix: DEBUG, CMU
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Melee/debug.rsi
+    state: icon
+  - type: Item
+    size: Tiny
+    sprite: Objects/Weapons/Melee/debug.rsi
+  - type: DebugLightning
+
+- type: entity
+  name: zeus bolt
+  parent: Lightning
+  id: CMUDebugLightningBolt
+  components:
+  - type: Electrified
+    enabled: false
