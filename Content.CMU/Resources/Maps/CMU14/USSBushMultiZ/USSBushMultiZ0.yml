@@ -4,8 +4,8 @@ meta:
   engineVersion: v289.0.0
   forkId: ""
   forkVersion: ""
-  time: 09/10/2026 03:45:53
-  entityCount: 6218
+  time: 09/11/2026 20:05:01
+  entityCount: 6221
 maps:
 - 1
 grids:
@@ -7992,6 +7992,8 @@ entities:
       - 4258
       - 4259
       - 4260
+    - type: TileHistory
+      chunkHistory: {}
 - proto: ActionToggleLight
   entities:
   - uid: 3
@@ -15685,6 +15687,50 @@ entities:
     - type: Transform
       parent: 1
       pos: 21.5,-22.5
+- proto: CMUPipeRiserDown
+  entities:
+  - uid: 4135
+    components:
+    - type: Transform
+      parent: 1
+      pos: 1.5,-68.5
+    - type: AtmosPipeColor
+      color: '#03FCD3FF'
+    - type: ContainerContainer
+      containers:
+        machine_board: !type:Container
+          ents: []
+          showEnts: False
+          occludes: True
+        machine_parts: !type:Container
+          ents: []
+          showEnts: False
+          occludes: True
+        rmc_vent_container: !type:Container
+          ents: []
+          showEnts: False
+          occludes: True
+  - uid: 4704
+    components:
+    - type: Transform
+      parent: 1
+      pos: 4.5,-68.5
+    - type: AtmosPipeColor
+      color: '#990000FF'
+    - type: ContainerContainer
+      containers:
+        machine_board: !type:Container
+          ents: []
+          showEnts: False
+          occludes: True
+        machine_parts: !type:Container
+          ents: []
+          showEnts: False
+          occludes: True
+        rmc_vent_container: !type:Container
+          ents: []
+          showEnts: False
+          occludes: True
 - proto: CMUPodDoorButtonAdjutantLock
   entities:
   - uid: 1211
@@ -15706,6 +15752,22 @@ entities:
     - type: Transform
       parent: 1
       pos: 8.5,-15.5
+- proto: CMUZLevelLadderThroughDown3
+  entities:
+  - uid: 4264
+    components:
+    - type: Transform
+      parent: 1
+      pos: 2.5,-68.5
+    - type: Fixtures
+      fixtures: {}
+  - uid: 4265
+    components:
+    - type: Transform
+      parent: 1
+      pos: 3.5,-68.5
+    - type: Fixtures
+      fixtures: {}
 - proto: CMUZLevelLadderThroughUp3
   entities:
   - uid: 1214
@@ -27973,7 +28035,7 @@ entities:
         DoorStatus: True
     - type: Door
       state: Opening
-      secondsUntilStateChange: -171974.08
+      secondsUntilStateChange: -173784.94
   - uid: 3587
     components:
     - type: Transform
@@ -31047,11 +31109,6 @@ entities:
       pos: -10.5,-65.5
 - proto: RMCCrateResearchPhoron
   entities:
-  - uid: 4135
-    components:
-    - type: Transform
-      parent: 1
-      pos: 1.5,-68.5
   - uid: 4136
     components:
     - type: Transform
@@ -31059,13 +31116,18 @@ entities:
       pos: -27.5,24.5
     - type: Lock
       locked: False
-- proto: RMCCrateSupplyJanitor
-  entities:
-  - uid: 4264
+  - uid: 4203
     components:
     - type: Transform
       parent: 1
-      pos: 4.5,-68.5
+      pos: 7.5,-67.5
+- proto: RMCCrateSupplyJanitor
+  entities:
+  - uid: 4655
+    components:
+    - type: Transform
+      parent: 1
+      pos: 7.5,-66.5
 - proto: RMCCrateWoodenBuildable
   entities:
   - uid: 4139
@@ -31089,7 +31151,7 @@ entities:
       pos: -5.5,-11.5
     - type: Door
       state: Closing
-      secondsUntilStateChange: -189534.27
+      secondsUntilStateChange: -191345.12
   - uid: 4142
     components:
     - type: Transform
@@ -31447,7 +31509,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 26.5,6.5
-- proto: CMUGasPipeBend
+- proto: RMCGasPipeBend
   entities:
   - uid: 4199
     components:
@@ -31471,15 +31533,6 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: 8.5,-62.5
-  - uid: 4203
-    components:
-    - type: Transform
-      parent: 1
-      pos: 9.5,-62.5
-      anchored: False
-    - type: Physics
-      canCollide: True
-      bodyType: Dynamic
   - uid: 4204
     components:
     - type: Transform
@@ -31509,7 +31562,7 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: -2.5,52.5
-- proto: CMUGasPipeStraight
+- proto: RMCGasPipeStraight
   entities:
   - uid: 4209
     components:
@@ -33403,7 +33456,7 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: -2.5,33.5
-- proto: CMUGasPipeTJunction
+- proto: RMCGasPipeTJunction
   entities:
   - uid: 4545
     components:
@@ -33963,8 +34016,8 @@ entities:
       - CMAccessSEA
       accessList:
       - CMAccessRequisitions
-      - CMAccessDropship
       - RMCAccessCommand
+      - CMAccessDropship
       - CMAccessAlpha
       - RMCAccessLogs
       - CMAccessCMO

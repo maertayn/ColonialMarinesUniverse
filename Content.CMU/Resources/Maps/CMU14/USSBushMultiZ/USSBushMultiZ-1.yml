@@ -4,8 +4,8 @@ meta:
   engineVersion: v289.0.0
   forkId: ""
   forkVersion: ""
-  time: 09/10/2026 03:48:24
-  entityCount: 107
+  time: 09/11/2026 20:05:04
+  entityCount: 125
 maps:
 - 1
 grids:
@@ -351,6 +351,32 @@ entities:
       parent: 91
     - type: Action
       container: 91
+- proto: AirAlarm
+  entities:
+  - uid: 115
+    components:
+    - type: Transform
+      parent: 1
+      rot: -1.5707963267948966 rad
+      pos: 8.5,-66.5
+    - type: DeviceList
+      devices:
+      - 97
+    - type: RMCPowerReceiver
+      channel: Environment
+      activeLoad: 100
+  - uid: 117
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: -2.5,-66.5
+    - type: DeviceList
+      devices:
+      - 107
+    - type: RMCPowerReceiver
+      channel: Environment
+      activeLoad: 100
 - proto: CMApcConstructed
   entities:
   - uid: 67
@@ -371,6 +397,70 @@ entities:
       target: 95
     - type: EmitSoundOnCollide
       nextSound: -38.8993403
+- proto: CMUGasMixerFlipped
+  entities:
+  - uid: 101
+    components:
+    - type: Transform
+      parent: 1
+      rot: -1.5707963267948966 rad
+      pos: 0.5,-68.5
+    - type: GasMixer
+      targetPressure: 200
+      inletTwoConcentration: 0.22000003
+      inletOneConcentration: 0.78
+      enabled: True
+    - type: AtmosPipeColor
+      color: '#03FCD3FF'
+- proto: CMUGasPipeBend
+  entities:
+  - uid: 114
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: 0.5,-67.5
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 116
+    components:
+    - type: Transform
+      parent: 1
+      pos: 5.5,-67.5
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 118
+    components:
+    - type: Transform
+      parent: 1
+      rot: 3.141592653589793 rad
+      pos: 5.5,-68.5
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 125
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: 4.5,-65.5
+    - type: AtmosPipeColor
+      color: '#990000FF'
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
 - proto: CMUGasPipeStraight
   entities:
   - uid: 29
@@ -379,6 +469,18 @@ entities:
       parent: 1
       rot: -1.5707963267948966 rad
       pos: -3.5,-65.5
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 30
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: 2.5,-67.5
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         rmc_vent_container: !type:Container
@@ -407,12 +509,22 @@ entities:
     components:
     - type: Transform
       parent: 1
-      rot: -1.5707963267948966 rad
-      pos: -2.5,-68.5
-      anchored: False
-    - type: Physics
-      canCollide: True
-      bodyType: Dynamic
+      rot: 1.5707963267948966 rad
+      pos: 1.5,-67.5
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 75
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: 3.5,-67.5
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         rmc_vent_container: !type:Container
@@ -423,6 +535,8 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: -2.5,-68.5
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         rmc_vent_container: !type:Container
@@ -433,6 +547,8 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: 9.5,-68.5
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         rmc_vent_container: !type:Container
@@ -443,16 +559,8 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: 8.5,-68.5
-    - type: ContainerContainer
-      containers:
-        rmc_vent_container: !type:Container
-          ents: []
-  - uid: 97
-    components:
-    - type: Transform
-      parent: 1
-      rot: -1.5707963267948966 rad
-      pos: -0.5,-67.5
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         rmc_vent_container: !type:Container
@@ -463,6 +571,8 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: -3.5,-68.5
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         rmc_vent_container: !type:Container
@@ -477,6 +587,104 @@ entities:
       containers:
         rmc_vent_container: !type:Container
           ents: []
+  - uid: 106
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: 4.5,-67.5
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 108
+    components:
+    - type: Transform
+      parent: 1
+      rot: -1.5707963267948966 rad
+      pos: 9.5,-64.5
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 111
+    components:
+    - type: Transform
+      parent: 1
+      rot: -1.5707963267948966 rad
+      pos: 8.5,-64.5
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 112
+    components:
+    - type: Transform
+      parent: 1
+      rot: -1.5707963267948966 rad
+      pos: -3.5,-64.5
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 113
+    components:
+    - type: Transform
+      parent: 1
+      rot: -1.5707963267948966 rad
+      pos: -2.5,-64.5
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 120
+    components:
+    - type: Transform
+      parent: 1
+      pos: 4.5,-67.5
+    - type: AtmosPipeColor
+      color: '#990000FF'
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 121
+    components:
+    - type: Transform
+      parent: 1
+      pos: 4.5,-66.5
+    - type: AtmosPipeColor
+      color: '#990000FF'
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 123
+    components:
+    - type: Transform
+      parent: 1
+      rot: -1.5707963267948966 rad
+      pos: 5.5,-65.5
+    - type: AtmosPipeColor
+      color: '#990000FF'
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
+  - uid: 124
+    components:
+    - type: Transform
+      parent: 1
+      rot: -1.5707963267948966 rad
+      pos: 6.5,-65.5
+    - type: AtmosPipeColor
+      color: '#990000FF'
+    - type: ContainerContainer
+      containers:
+        rmc_vent_container: !type:Container
+          ents: []
 - proto: CMUGasPressureRegulator
   entities:
   - uid: 99
@@ -485,12 +693,6 @@ entities:
       parent: 1
       rot: -1.5707963267948966 rad
       pos: -1.5,-65.5
-  - uid: 101
-    components:
-    - type: Transform
-      parent: 1
-      rot: 1.5707963267948966 rad
-      pos: 7.5,-65.5
 - proto: CMUGasValve
   entities:
   - uid: 70
@@ -499,16 +701,44 @@ entities:
       parent: 1
       rot: -1.5707963267948966 rad
       pos: 7.5,-68.5
-    - type: GasValve
-      open: False
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
   - uid: 95
     components:
     - type: Transform
       parent: 1
       rot: -1.5707963267948966 rad
       pos: -1.5,-68.5
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
+  - uid: 109
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: -1.5,-64.5
     - type: GasValve
       open: False
+  - uid: 110
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: 7.5,-64.5
+    - type: GasValve
+      open: False
+- proto: CMUGasVolumePump
+  entities:
+  - uid: 122
+    components:
+    - type: Transform
+      parent: 1
+      rot: 1.5707963267948966 rad
+      pos: 7.5,-65.5
+    - type: GasVolumePump
+      enabled: True
+    - type: AtmosPipeColor
+      color: '#990000FF'
 - proto: CMUPaperYellow
   entities:
   - uid: 80
@@ -582,6 +812,8 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: -4.5,-68.5
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
     - type: ContainerContainer
       containers:
         rmc_vent_container: !type:Container
@@ -592,10 +824,56 @@ entities:
       parent: 1
       rot: -1.5707963267948966 rad
       pos: 10.5,-68.5
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
     - type: ContainerContainer
       containers:
         rmc_vent_container: !type:Container
           ents: []
+- proto: CMUPipeRiserUp
+  entities:
+  - uid: 25
+    components:
+    - type: Transform
+      parent: 1
+      pos: 1.5,-68.5
+    - type: AtmosPipeColor
+      color: '#03FCD3FF'
+    - type: ContainerContainer
+      containers:
+        machine_board: !type:Container
+          ents: []
+          showEnts: False
+          occludes: True
+        machine_parts: !type:Container
+          ents: []
+          showEnts: False
+          occludes: True
+        rmc_vent_container: !type:Container
+          ents: []
+          showEnts: False
+          occludes: True
+  - uid: 119
+    components:
+    - type: Transform
+      parent: 1
+      pos: 4.5,-68.5
+    - type: AtmosPipeColor
+      color: '#990000FF'
+    - type: ContainerContainer
+      containers:
+        machine_board: !type:Container
+          ents: []
+          showEnts: False
+          occludes: True
+        machine_parts: !type:Container
+          ents: []
+          showEnts: False
+          occludes: True
+        rmc_vent_container: !type:Container
+          ents: []
+          showEnts: False
+          occludes: True
 - proto: CMUZLevelLadderThrough
   entities:
   - uid: 3
@@ -612,6 +890,24 @@ entities:
       pos: 2.5,-68.5
     - type: Fixtures
       fixtures: {}
+- proto: CMVentScrubber
+  entities:
+  - uid: 97
+    components:
+    - type: Transform
+      parent: 1
+      pos: 10.5,-64.5
+    - type: DeviceNetwork
+      deviceLists:
+      - 115
+  - uid: 107
+    components:
+    - type: Transform
+      parent: 1
+      pos: -4.5,-64.5
+    - type: DeviceNetwork
+      deviceLists:
+      - 117
 - proto: CMWallReinforcedHeavyAlmayer
   entities:
   - uid: 2
@@ -956,11 +1252,6 @@ entities:
     - type: Transform
       parent: 1
       pos: 8.5,-65.5
-  - uid: 75
-    components:
-    - type: Transform
-      parent: 1
-      pos: -2.5,-67.5
   - uid: 76
     components:
     - type: Transform
@@ -976,18 +1267,11 @@ entities:
     - type: Transform
       parent: 1
       pos: 8.5,-68.5
-- proto: CMWindowSolarisReinforced
-  entities:
-  - uid: 106
+  - uid: 90
     components:
     - type: Transform
       parent: 1
       pos: -2.5,-67.5
-  - uid: 107
-    components:
-    - type: Transform
-      parent: 1
-      pos: -2.5,-68.5
 - proto: GasMinerNitrogenStation
   entities:
   - uid: 88
@@ -1010,20 +1294,16 @@ entities:
       parent: 1
       rot: -1.5707963267948966 rad
       pos: 6.5,-68.5
+    - type: AtmosPipeColor
+      color: '#FF1212FF'
   - uid: 100
     components:
     - type: Transform
       parent: 1
       rot: -1.5707963267948966 rad
       pos: -0.5,-68.5
-- proto: CMUGasPipeHalf
-  entities:
-  - uid: 90
-    components:
-    - type: Transform
-      parent: 1
-      rot: 1.5707963267948966 rad
-      pos: 1.5,-65.5
+    - type: AtmosPipeColor
+      color: '#0335FCFF'
 - proto: RMCHardHat
   entities:
   - uid: 91
@@ -1045,16 +1325,4 @@ entities:
           showEnts: False
           occludes: True
     - type: ActionsContainer
-- proto: RMCWindowHybrisaSpacePortCell
-  entities:
-  - uid: 25
-    components:
-    - type: Transform
-      parent: 1
-      pos: -2.5,-68.5
-  - uid: 30
-    components:
-    - type: Transform
-      parent: 1
-      pos: -2.5,-67.5
 ...
