@@ -35394,7 +35394,7 @@ entities:
     - type: Transform
       parent: 1
       pos: -1.5,-70.5
-- proto: VMarkerGovforShipsideUniform
+- proto: VMarkershipShipsideUniform
   entities:
   - uid: 1276
     components:
@@ -35421,7 +35421,7 @@ entities:
     - type: Transform
       parent: 1
       pos: -7.5,47.5
-- proto: VMarkerShipLockedDoorMedical
+- proto: CMAirlockMedicalGovforLocked
   entities:
   - uid: 3554
     components:
@@ -35429,7 +35429,7 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: 1.5,49.5
-- proto: VMarkerShipLockedDoubleCommandDoor
+- proto: CMDoubleDoorCommandGovforLocked
   entities:
   - uid: 3313
     components:
@@ -35443,7 +35443,7 @@ entities:
       parent: 1
       rot: -1.5707963267948966 rad
       pos: 26.5,14.5
-- proto: VMarkerShipLockedDoubleEngineeringGlassDoor
+- proto: CMDoubleDoorEngineerGovforGlassLocked
   entities:
   - uid: 1478
     components:
@@ -35491,7 +35491,7 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: 12.5,-38.5
-- proto: VMarkerShipLockedDoubleMedicalDoor
+- proto: CMDoubleDoorMedicalGovforLocked
   entities:
   - uid: 3577
     components:
@@ -35504,7 +35504,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 4.5,52.5
-- proto: VMarkerShipLockedDoubleMedicalGlassDoor
+- proto: CMDoubleDoorMedicalGovforGlassLocked
   entities:
   - uid: 178
     components:
@@ -35552,7 +35552,7 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: 10.5,42.5
-- proto: VMarkerShipLockedGlassDoor
+- proto: CMAirlockGovforGlassLocked
   entities:
   - uid: 1016
     components:
@@ -35569,7 +35569,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 11.5,-5.5
-- proto: VMarkerShipLockedGlassDoorEngineering
+- proto: CMAirlockEngineerGovforGlassLocked
   entities:
   - uid: 3412
     components:
@@ -35583,7 +35583,7 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: -3.5,-38.5
-- proto: VMarkerShipLockedGlassDoorMedical
+- proto: CMAirlockMedicalGovforGlassLocked
   entities:
   - uid: 3108
     components:
@@ -35632,7 +35632,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 0.5,54.5
-- proto: VMarkerShipLockedNormalDoor
+- proto: CMAirlockGovforLocked
   entities:
   - uid: 916
     components:
@@ -35670,7 +35670,7 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: -1.5,-10.5
-- proto: VMarkerShipLockedSecurityDoorGlass
+- proto: CMAirlockSecurityGovforGlassLocked
   entities:
   - uid: 8
     components:
@@ -35721,7 +35721,7 @@ entities:
     - type: Transform
       parent: 1
       pos: -2.5,-21.5
-- proto: VMarkerShipRosterConsole
+- proto: CMUGovforRosterConsole
   entities:
   - uid: 1220
     components:

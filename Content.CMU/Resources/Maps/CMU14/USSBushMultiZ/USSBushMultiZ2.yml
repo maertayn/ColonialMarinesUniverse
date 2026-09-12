@@ -5925,14 +5925,14 @@ entities:
     - type: Transform
       parent: 1
       pos: 17.5,14.5
-- proto: VMarkerShipCommsArray
+- proto: AU14CommsArrayShipGovfor
   entities:
   - uid: 68
     components:
     - type: Transform
       parent: 1
       pos: 23.5,13.5
-- proto: VMarkerShipLockedDoubleCommandDoor
+- proto: CMDoubleDoorCommandGovforLocked
   entities:
   - uid: 71
     components:
@@ -5945,7 +5945,7 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: 29.5,10.5
-- proto: VMarkerShipRosterConsole
+- proto: CMUGovforRosterConsole
   entities:
   - uid: 139
     components:

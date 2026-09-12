@@ -24477,7 +24477,7 @@ entities:
           length: 0.4
     - type: RMCWeaponAccuracy
       modifiedAccuracyMultiplier: 0.85
-- proto: shipobjectivesconsolemarker
+- proto: ComputerObjectivesGovfor
   entities:
   - uid: 4082
     components:
@@ -24783,7 +24783,7 @@ entities:
     - type: Transform
       pos: 15.5,-1.5
       parent: 2
-- proto: VMarkerShipLockedCommandDoor
+- proto: CMAirlockCommandGovforLocked
   entities:
   - uid: 4143
     components:
@@ -24827,7 +24827,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -2.5,54.5
       parent: 2
-- proto: VMarkerShipLockedGlassDoor
+- proto: CMAirlockGovforGlassLocked
   entities:
   - uid: 4150
     components:
@@ -24859,7 +24859,7 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 6.5,-5.5
       parent: 2
-- proto: VMarkerShipLockedSecurityDoor
+- proto: CMAirlockSecurityGovforLocked
   entities:
   - uid: 4155
     components:
@@ -24916,7 +24916,7 @@ entities:
     - type: Transform
       pos: 12.5,-38.5
       parent: 2
-- proto: VMarkerShipOverwatchConsole
+- proto: RMCOverwatchConsoleGovforRotating
   entities:
   - uid: 4166
     components:

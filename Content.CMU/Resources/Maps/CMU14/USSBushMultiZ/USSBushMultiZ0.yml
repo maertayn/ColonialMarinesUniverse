@@ -42032,7 +42032,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 4.5,-65.5
-- proto: shipfetchreturnmarker
+- proto: fetchreturngovfor
   entities:
   - uid: 5958
     components:
@@ -42754,7 +42754,7 @@ entities:
     - type: Transform
       parent: 1
       pos: -0.5,54.5
-- proto: shipobjectivesconsolemarker
+- proto: ComputerObjectivesGovfor
   entities:
   - uid: 6102
     components:
@@ -42979,7 +42979,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 10.5,40.5
-- proto: VMarkerGovforShipsideUniform
+- proto: VMarkershipShipsideUniform
   entities:
   - uid: 6147
     components:
@@ -43021,14 +43021,14 @@ entities:
     - type: Transform
       parent: 1
       pos: -9.5,-4.5
-- proto: VMarkerShipAllianceConsoleGovfor
+- proto: AU14AllianceConsoleGovfor
   entities:
   - uid: 6155
     components:
     - type: Transform
       parent: 1
       pos: -0.5,64.5
-- proto: VMarkerShipAnalyzer
+- proto: AU14AnalyzerMachine
   entities:
   - uid: 6156
     components:
@@ -43124,7 +43124,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 3.5,-9.5
-- proto: VMarkerShipCommandTabletGovfor
+- proto: AU14TabletGovfor
   entities:
   - uid: 6174
     components:
@@ -43174,14 +43174,14 @@ entities:
     - type: Transform
       parent: 1
       pos: -4.5,48.5
-- proto: VMarkerShipLaptopCallsign
+- proto: AU14ItemLaptopCallsignGOVFOR
   entities:
   - uid: 6182
     components:
     - type: Transform
       parent: 1
       pos: -2.5,67.5
-- proto: VMarkerShipLockedCommandDoor
+- proto: CMAirlockCommandGovforLocked
   entities:
   - uid: 6183
     components:
@@ -43203,7 +43203,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 15.5,49.5
-- proto: VMarkerShipLockedCommandDoorGlass
+- proto: CMAirlockCommandGovforGlassLocked
   entities:
   - uid: 6187
     components:
@@ -43232,7 +43232,7 @@ entities:
     - type: Transform
       parent: 1
       pos: -1.5,49.5
-- proto: VMarkerShipLockedDoorEngineering
+- proto: CMAirlockEngineerGovforLocked
   entities:
   - uid: 6192
     components:
@@ -43256,7 +43256,7 @@ entities:
     - type: Transform
       parent: 1
       pos: -0.5,-36.5
-- proto: VMarkerShipLockedDoubleEngineeringDoor
+- proto: CMDoubleDoorEngineerGovforLocked
   entities:
   - uid: 6196
     components:
@@ -43281,7 +43281,7 @@ entities:
       parent: 1
       rot: 1.5707963267948966 rad
       pos: 3.5,-56.5
-- proto: VMarkerShipLockedDoubleEngineeringGlassDoor
+- proto: CMDoubleDoorEngineerGovforGlassLocked
   entities:
   - uid: 6200
     components:
@@ -43294,7 +43294,7 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: -23.5,11.5
-- proto: VMarkerShipLockedDoubleGlassDoor
+- proto: CMDoubleDoorGovforGlassLocked
   entities:
   - uid: 6202
     components:
@@ -43307,7 +43307,7 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: -10.5,-13.5
-- proto: VMarkerShipLockedDoubleLogisticsGlassDoor
+- proto: CMDoubleDoorLogisticsGovforGlassLocked
   entities:
   - uid: 392
     components:
@@ -43344,7 +43344,7 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: 22.5,11.5
-- proto: VMarkerShipLockedGlassDoor
+- proto: CMAirlockGovforGlassLocked
   entities:
   - uid: 6206
     components:
@@ -43381,7 +43381,7 @@ entities:
     - type: Transform
       parent: 1
       pos: -9.5,-15.5
-- proto: VMarkerShipLockedGlassDoorEngineering
+- proto: CMAirlockEngineerGovforGlassLocked
   entities:
   - uid: 6213
     components:
@@ -43393,14 +43393,14 @@ entities:
     - type: Transform
       parent: 1
       pos: 7.5,-4.5
-- proto: VMarkerShipLockedGlassDoorMedical
+- proto: CMAirlockMedicalGovforGlassLocked
   entities:
   - uid: 6215
     components:
     - type: Transform
       parent: 1
       pos: 11.5,-4.5
-- proto: VMarkerShipLockedSecurityDoorGlass
+- proto: CMAirlockSecurityGovforGlassLocked
   entities:
   - uid: 6216
     components:
@@ -43433,7 +43433,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 9.5,46.5
-- proto: VMarkerShipOverwatchConsole
+- proto: RMCOverwatchConsoleGovforRotating
   entities:
   - uid: 6221
     components:
@@ -43479,14 +43479,14 @@ entities:
     - type: Transform
       parent: 1
       pos: 14.5,-3.5
-- proto: VMarkerShipRequisitionsConsole
+- proto: CMASRSConsoleGovfor
   entities:
   - uid: 6229
     components:
     - type: Transform
       parent: 1
       pos: 23.5,20.5
-- proto: VMarkerShipRequisitionsLift
+- proto: CMCargoElevatorGovfor
   entities:
   - uid: 6230
     components:
@@ -43567,7 +43567,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 0.5,-9.5
-- proto: VMarkerShipRosterConsole
+- proto: CMUGovforRosterConsole
   entities:
   - uid: 721
     components:
@@ -43601,14 +43601,14 @@ entities:
     - type: Transform
       parent: 1
       pos: 5.5,-9.5
-- proto: VMarkerShipTacticalMap
+- proto: CMUTacticalMapTableGovfor
   entities:
   - uid: 6257
     components:
     - type: Transform
       parent: 1
       pos: -1.5,67.5
-- proto: VMarkerShipTechTree
+- proto: RMCTechTreeConsoleGovfor
   entities:
   - uid: 6248
     components:
@@ -43632,7 +43632,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 5.5,-10.5
-- proto: VMarkerShipWithdrawConsoleGovfor
+- proto: AU14WithdrawConsoleGovFor
   entities:
   - uid: 6252
     components:

@@ -52043,7 +52043,7 @@ entities:
     - type: Transform
       pos: 80.5,11.5
       parent: 1
-- proto: shipfetchreturnmarker
+- proto: fetchreturngovfor
   entities:
   - uid: 191
     components:
@@ -52720,7 +52720,7 @@ entities:
     - type: Transform
       pos: 36.5,-19.5
       parent: 1
-- proto: shipobjectivesconsolemarker
+- proto: ComputerObjectivesGovfor
   entities:
   - uid: 6398
     components:
@@ -52850,7 +52850,7 @@ entities:
     - type: Transform
       pos: 53.5,1.5
       parent: 1
-- proto: VMarkerShipOverwatchConsole
+- proto: RMCOverwatchConsoleGovforRotating
   entities:
   - uid: 6412
     components:
