@@ -170,7 +170,7 @@
     guides:
     - RMCGuideRoleRunner
   - type: MobThresholds
-    thresholds:
+    thresholds: # CMU14
       0: Alive
       270: Critical
       360: Dead
