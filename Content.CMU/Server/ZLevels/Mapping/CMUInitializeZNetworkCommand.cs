@@ -14,17 +14,18 @@ public sealed partial class CMUInitializeZNetworkCommand : LocalizedEntityComman
     [Dependency] private MapSystem _map = default!;
 
     public override string Command => "znetwork-initialize";
+    public override string Description => "Initialize all zNetwork maps. Warning! This will not add all components, that writed in gamemap prototype! So i think this command is useless, because all maps dont have lightning or even atmos :(";
 
     public override CompletionResult GetCompletion(IConsoleShell shell, string[] args)
     {
         var options = new List<CompletionOption>();
         var query = _entities.EntityQueryEnumerator<CMUZLevelsNetworkComponent, MetaDataComponent>();
-        while (query.MoveNext(out var uid, out _, out var meta))
+        while (query.MoveNext(out var uid, out var zLevelComp, out var meta))
         {
             options.Add(new CompletionOption(_entities.GetNetEntity(uid).ToString(), meta.EntityName));
         }
 
-        return CompletionResult.FromHintOptions(options, Loc.GetString("cmu-cmd-znetwork-entity-hint"));
+        return CompletionResult.FromHintOptions(options, "zNetwork net entity");
     }
 
     public override void Execute(IConsoleShell shell, string argStr, string[] args)
@@ -35,17 +36,19 @@ public sealed partial class CMUInitializeZNetworkCommand : LocalizedEntityComman
             return;
         }
 
+        // get the target
         EntityUid? target;
+
         if (!NetEntity.TryParse(args[0], out var targetNet) ||
             !_entities.TryGetEntity(targetNet, out target))
         {
-            shell.WriteError(Loc.GetString("cmu-cmd-znetwork-entity-missing", ("entity", args[0])));
+            shell.WriteError($"Unable to find entity {args[0]}");
             return;
         }
 
         if (!_entities.TryGetComponent<CMUZLevelsNetworkComponent>(target, out var levelComp))
         {
-            shell.WriteError(Loc.GetString("cmu-cmd-znetwork-component-missing", ("entity", args[0])));
+            shell.WriteError($"Target entity doesnt have CMUZLevelsNetworkComponent {args[0]}");
             return;
         }
 
@@ -53,28 +56,23 @@ public sealed partial class CMUInitializeZNetworkCommand : LocalizedEntityComman
         {
             if (!_entities.TryGetComponent<MapComponent>(mapUid, out var mapComp))
             {
-                shell.WriteError(Loc.GetString("cmu-cmd-znetwork-initialize-map-component-missing",
-                    ("map", mapUid.ToString())));
+                shell.WriteError($"Map entity {mapUid} doesnt have MapComponent.");
                 continue;
             }
 
             if (!_map.MapExists(mapComp.MapId))
             {
-                shell.WriteError(Loc.GetString("cmu-cmd-znetwork-initialize-map-missing",
-                    ("mapId", mapComp.MapId.ToString())));
+                shell.WriteError($"Map with ID {mapComp.MapId} does not exist.");
                 continue;
             }
 
             if (_map.IsInitialized(mapComp.MapId))
             {
-                shell.WriteLine(Loc.GetString("cmu-cmd-znetwork-initialize-already",
-                    ("mapId", mapComp.MapId.ToString())));
+                shell.WriteLine($"Map with ID {mapComp.MapId} is already initialized.");
                 continue;
             }
-
             _map.InitializeMap(mapComp.MapId);
-            shell.WriteLine(Loc.GetString("cmu-cmd-znetwork-initialize-success",
-                ("mapId", mapComp.MapId.ToString())));
+            shell.WriteLine($"Map with ID {mapComp.MapId} has been initialized.");
         }
     }
 }
