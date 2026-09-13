@@ -83,6 +83,13 @@ public sealed class YautjaNubodyTest : GameTest
                     Assert.That(organComponent.Category, Is.Not.Null);
                     found.Add(organComponent.Category!.Value.Id, organ);
 
+                    Assert.Multiple(() =>
+                    {
+                        Assert.That(SEntMan.HasComponent<BodyPartHealthComponent>(organ), Is.EqualTo(ExternalOrgans.ContainsKey(organComponent.Category.Value.Id)),
+                            "external anatomy must retain regional damage support");
+                        Assert.That(SEntMan.HasComponent<OrganHealthComponent>(organ), Is.EqualTo(InternalOrgans.ContainsKey(organComponent.Category.Value.Id)),
+                            "internal anatomy must retain organ-health support");
+                    });
                 }
 
                 Assert.That(found.Keys, Is.EquivalentTo(ExternalOrgans.Keys.Concat(InternalOrgans.Keys)));
