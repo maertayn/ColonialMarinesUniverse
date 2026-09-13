@@ -13,6 +13,7 @@ using Robust.Shared.Maths;
 
 namespace Content.IntegrationTests.CMU14.Species;
 
+// CMU14 Test: Yautja CMU medical anatomy and visual-body integration.
 [TestFixture]
 [TestOf(typeof(SharedVisualBodySystem))]
 public sealed class YautjaNubodyTest : GameTest
@@ -45,7 +46,7 @@ public sealed class YautjaNubodyTest : GameTest
     [SidedDependency(Side.Server)] private HumanoidOrganAppearanceSystem _organAppearance = default!;
 
     [Test]
-    public async Task MedicalGraphPreservesYautjaVisuals()
+    public async Task MedicalGraphPreservesYautjaVisualsAndUsesCmuAnatomy()
     {
         await Server.WaitIdleAsync();
         await Server.WaitAssertion(() =>
@@ -97,6 +98,7 @@ public sealed class YautjaNubodyTest : GameTest
 
                 foreach (var category in ExternalOrgans.Keys)
                 {
+                    Assert.That(SEntMan.HasComponent<BodyPartHealthComponent>(found[category]), Is.True, category);
                     var visual = SEntMan.GetComponent<VisualOrganComponent>(found[category]);
                     Assert.Multiple(() =>
                     {
@@ -104,6 +106,9 @@ public sealed class YautjaNubodyTest : GameTest
                         Assert.That(visual.Profile.SkinColor, Is.EqualTo(Color.White), category);
                     });
                 }
+
+                foreach (var category in InternalOrgans.Keys)
+                    Assert.That(SEntMan.HasComponent<OrganHealthComponent>(found[category]), Is.True, category);
 
                 var head = SEntMan.GetComponent<VisualOrganComponent>(found["Head"]);
                 var torso = SEntMan.GetComponent<VisualOrganComponent>(found["Torso"]);

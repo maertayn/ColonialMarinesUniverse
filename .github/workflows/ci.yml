@@ -538,6 +538,7 @@ jobs:
               FullyQualifiedName~Content.IntegrationTests._RMC14
               | FullyQualifiedName~Content.IntegrationTests.Tests._RMC14.
           - name: cmu
+            # CMU14: Include both legacy underscore and current CMU test namespaces.
             filter: >-
               FullyQualifiedName~Content.IntegrationTests._CMU14
               | FullyQualifiedName~Content.IntegrationTests.CMU14.
