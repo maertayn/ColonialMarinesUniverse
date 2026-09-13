@@ -32,8 +32,6 @@ namespace Content.Shared.CMU14.Yautja;
 
 public sealed partial class YautjaCloakSystem : EntitySystem
 {
-    private const float MaximumCloakedMovingOpacity = 0.035f;
-
     [Dependency] private SharedActionsSystem _actions = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedHideableHumanoidLayersSystem _humanoidLayers = default!;
@@ -213,9 +211,7 @@ public sealed partial class YautjaCloakSystem : EntitySystem
             var activeInvisibility = EnsureComp<EntityActiveInvisibleComponent>(user);
             var cloakUser = EnsureComp<ThermalCloakUserComponent>(user);
             cloakUser.Opacity = bracer.Comp.CloakOpacity;
-            cloakUser.MovingOpacity = MathF.Min(
-                MathF.Max(bracer.Comp.CloakMovingOpacity, bracer.Comp.CloakOpacity),
-                MaximumCloakedMovingOpacity);
+            cloakUser.MovingOpacity = MathF.Max(bracer.Comp.CloakMovingOpacity, bracer.Comp.CloakOpacity);
             cloakUser.LerpSpeed = 0.33f;
             var isMoving = TryComp<PhysicsComponent>(user, out var physics)
                         && physics.LinearVelocity.LengthSquared() > 0.01f;

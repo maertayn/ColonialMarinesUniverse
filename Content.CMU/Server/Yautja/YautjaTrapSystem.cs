@@ -55,7 +55,7 @@ public sealed partial class YautjaTrapSystem : EntitySystem
 
     private void OnComponentStartup(Entity<YautjaTrapComponent> trap, ref ComponentStartup args)
     {
-        SetTrapVisibility(trap.Owner, trap.Comp.Armed);
+        UpdateTrapVisibility(trap);
     }
 
     private void OnUseInHand(Entity<YautjaTrapComponent> trap, ref UseInHandEvent args)
@@ -141,7 +141,7 @@ public sealed partial class YautjaTrapSystem : EntitySystem
         trap.Comp.TrapOwner = user;
         trap.Comp.Armed = true;
         Dirty(trap);
-        SetTrapVisibility(trap.Owner, true);
+        UpdateTrapVisibility(trap);
 
         var xform = Transform(trap);
         _transform.AnchorEntity(trap, xform);
@@ -169,7 +169,7 @@ public sealed partial class YautjaTrapSystem : EntitySystem
 
         trap.Comp.Armed = false;
         Dirty(trap);
-        SetTrapVisibility(trap.Owner, false);
+        UpdateTrapVisibility(trap);
 
         _transform.Unanchor(trap);
 
@@ -245,9 +245,9 @@ public sealed partial class YautjaTrapSystem : EntitySystem
         return true;
     }
 
-    private void SetTrapVisibility(EntityUid trap, bool armed)
+    private void UpdateTrapVisibility(Entity<YautjaTrapComponent> trap)
     {
-        var layer = armed ? VisibilityFlags.Yautja : VisibilityFlags.Normal;
-        _visibility.SetLayer(trap, (ushort) layer);
+        var layer = trap.Comp.Armed ? VisibilityFlags.Yautja : VisibilityFlags.Normal;
+        _visibility.SetLayer(trap.Owner, (ushort) layer);
     }
 }

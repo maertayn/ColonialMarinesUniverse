@@ -541,10 +541,10 @@ public sealed partial class YautjaBracerComponent : Component, IClothingSlots
     public SoundSpecifier CloakOffSound = new SoundPathSpecifier("/Audio/CMU14/Yautja/Equipment/pred_cloakoff.wav");
 
     [DataField]
-    public float CloakOpacity;
+    public float CloakOpacity = 0.02f;
 
     [DataField]
-    public float CloakMovingOpacity;
+    public float CloakMovingOpacity = 0.10f;
 
     [DataField]
     public bool CloakRestrictWeapons = true;

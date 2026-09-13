@@ -51,6 +51,14 @@ public sealed class YautjaTrapTrackingTest
             Assert.That(entities.GetComponent<VisibilityComponent>(trap).Layer,
                 Is.EqualTo((ushort) VisibilityFlags.Yautja));
 
+            Assert.That(trapSystem.TryDisarmTrap((trap, entities.GetComponent<YautjaTrapComponent>(trap)), hunter), Is.True);
+            Assert.That(entities.GetComponent<VisibilityComponent>(trap).Layer,
+                Is.EqualTo((ushort) VisibilityFlags.Normal));
+
+            Assert.That(trapSystem.TryArmTrap((trap, entities.GetComponent<YautjaTrapComponent>(trap)), hunter), Is.True);
+            Assert.That(entities.GetComponent<VisibilityComponent>(trap).Layer,
+                Is.EqualTo((ushort) VisibilityFlags.Yautja));
+
             var beforeTrigger = server.ResolveDependency<IGameTiming>().CurTime;
             Assert.That(trapSystem.TryTriggerTrap((trap, entities.GetComponent<YautjaTrapComponent>(trap)), prey), Is.True);
             var tracking = entities.GetComponent<YautjaTrackedPreyComponent>(prey);

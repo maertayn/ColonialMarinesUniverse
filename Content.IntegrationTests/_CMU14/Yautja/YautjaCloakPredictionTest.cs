@@ -30,7 +30,7 @@ public sealed class YautjaCloakPredictionTest
     private static readonly ProtoId<TagPrototype> HideContextMenuTag = "HideContextMenu";
 
     [Test]
-    public async Task ActiveCloakFadesBetweenInvisibleAndVeryTransparentWhileMoving()
+    public async Task ActiveCloakUsesConfiguredMovingOpacity()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Dirty = true });
         var server = pair.Server;
@@ -51,7 +51,7 @@ public sealed class YautjaCloakPredictionTest
             Assert.Multiple(() =>
             {
                 Assert.That(cloak.Opacity, Is.Zero);
-                Assert.That(cloak.MovingOpacity, Is.GreaterThanOrEqualTo(0.03f).And.LessThanOrEqualTo(0.04f));
+                Assert.That(cloak.MovingOpacity, Is.EqualTo(0.75f));
                 Assert.That(cloak.CurrentOpacity, Is.Zero);
                 Assert.That(invisible.Opacity, Is.Zero);
                 Assert.That(entMan.System<TagSystem>().HasTag(hunter, HideContextMenuTag), Is.True);
@@ -65,14 +65,14 @@ public sealed class YautjaCloakPredictionTest
                 Assert.That(invisible.Opacity, Is.EqualTo(cloak.CurrentOpacity));
             });
 
-            entMan.System<ThermalCloakSystem>().Update(1f);
+            entMan.System<ThermalCloakSystem>().Update(3f);
             Assert.That(cloak.CurrentOpacity, Is.EqualTo(cloak.MovingOpacity));
 
             entMan.System<SharedPhysicsSystem>().SetLinearVelocity(hunter, Vector2.Zero);
             entMan.System<ThermalCloakSystem>().Update(0.05f);
             Assert.That(cloak.CurrentOpacity, Is.GreaterThan(0f).And.LessThan(cloak.MovingOpacity));
 
-            entMan.System<ThermalCloakSystem>().Update(1f);
+            entMan.System<ThermalCloakSystem>().Update(3f);
             Assert.Multiple(() =>
             {
                 Assert.That(cloak.CurrentOpacity, Is.Zero);
@@ -84,6 +84,18 @@ public sealed class YautjaCloakPredictionTest
         });
 
         await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public void CloakOpacityHasSafeDefaultsWhenPrototypeValuesAreOmitted()
+    {
+        var bracer = new YautjaBracerComponent();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(bracer.CloakOpacity, Is.EqualTo(0.02f));
+            Assert.That(bracer.CloakMovingOpacity, Is.EqualTo(0.10f));
+        });
     }
 
     [Test]
