@@ -22,6 +22,7 @@
     reason: Distribution of controlled substances - wanted alive for prosecution
     recordName: Narcotics Dealer (Unknown)
     includePrints: true
+    includeLanguages: true
     deadCounts: false
     capturedFaxPaper: CMUPaperColonyAntagCaptured
   mindRoles:
@@ -36,9 +37,11 @@
   - type: AntagSelection
     selectionTime: JobsAssigned
     antags:
-    - !type:FixedAntagCount
+    - !type:RandomAntagCount
       proto: DrugDealer
-      count: 2
+      range:
+        min: 1
+        max: 2
 
 - type: entity
   parent: BaseMindRoleAntag

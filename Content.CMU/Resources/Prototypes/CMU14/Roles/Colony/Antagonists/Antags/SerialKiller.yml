@@ -18,6 +18,8 @@
     reason: Wanted for multiple homicides - suspect at large
     recordName: Serial Killer (Unknown)
     includePrints: true
+    includeDna: true
+    includeLanguages: true
     capturedFaxPaper: AUPaperSerialKillerCaptured
   mindRoles:
   - MindRoleSerialKiller
@@ -31,9 +33,11 @@
   - type: AntagSelection
     selectionTime: JobsAssigned
     antags:
-    - !type:FixedAntagCount
+    - !type:RandomAntagCount
       proto: SerialKiller
-      count: 2
+      range:
+        min: 1
+        max: 2
 
 - type: entity
   parent: BaseMindRoleAntag

@@ -438,3 +438,25 @@
     - type: StorageFill
       contents:
       - id: AU14WeaponPistolRXFM5
+
+- type: entity
+  parent: RMCGunCaseBase
+  id: AU14CaseCLFVeteranKeepsake
+  name: worn keepsake case
+  description: A scuffed personal case that has clearly traveled a long way. The lock is worn from daily use.
+  components:
+  - type: Item
+    size: Normal
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+    - 0,0,5,1
+    whitelist:
+      tags:
+      - RMCWeaponRevolverM44
+      - RMCSpeedLoaderM44
+  - type: StorageFill
+    contents:
+    - id: AU14WeaponRevolverM44Inscribed
+    - id: RMCSpeedLoaderM44
+      amount: 2

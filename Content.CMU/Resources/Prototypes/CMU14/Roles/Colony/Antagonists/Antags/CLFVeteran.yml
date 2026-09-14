@@ -39,6 +39,7 @@
     bounty: 1450
     reason: Known CLF insurgent - armed and dangerous
     recordName: CLF Veteran (Unknown)
+    includeLanguages: true
     capturedFaxPaper: AUPaperCLFVeteranCaptured
   mindRoles:
   - MindRoleCLFVeteran
@@ -52,9 +53,11 @@
   - type: AntagSelection
     selectionTime: JobsAssigned
     antags:
-    - !type:FixedAntagCount
+    - !type:RandomAntagCount
       proto: CLFVeteran
-      count: 2
+      range:
+        min: 1
+        max: 2
 
 - type: entity
   parent: BaseMindRoleAntag
@@ -75,5 +78,8 @@
 
 - type: startingGear
   id: AU14GearCLFVeteran
-  equipment:
-    suitstorage: AU14WeaponRevolverM44Inscribed
+  # Covert by design: one innocuous case in the job satchel, never a clothing slot.
+  # suitstorage dropped the revolver on the floor for jobs without the slot.
+  storage:
+    back:
+    - AU14CaseCLFVeteranKeepsake

@@ -1,0 +1,88 @@
+- type: antagSpecifier
+  id: Replicant
+  prefRoles: [ ReplicantRole ]
+  jobBlacklistGroup:
+  - AllGovforCommandStaff
+  - AllOpforCommandStaff
+  briefing:
+    text: replicant-role-greeting
+    color: MediumOrchid
+    sound: "/Audio/Ambience/Antag/headrev_start.ogg"
+  startingGear: AU14GearReplicant
+  components:
+  - type: Replicant
+  - type: Synth
+    changeBrain: false
+    canUseGuns: true
+    hideGeneration: true
+    useHumanHealthIcons: true
+  - type: ColonyBounty
+    bounty: 2600
+    reason: Malfunctioning synthetic infiltrator - assume no identity is genuine
+    recordName: Synth Infiltrator (Unknown)
+    capturedFaxPaper: CMUPaperColonyAntagCaptured
+  mindRoles:
+  - MindRoleReplicant
+
+- type: entity
+  id: Replicant
+  parent: BaseGameRule
+  components:
+  - type: GameRule
+  - type: ReplicantRule
+  - type: AntagSelection
+    selectionTime: JobsAssigned
+    antags:
+    - !type:FixedAntagCount
+      proto: Replicant
+      count: 1
+
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleReplicant
+  name: Synth Replicant Mind Role
+  components:
+  - type: MindRole
+    antagPrototype: ReplicantRole
+    exclusiveAntag: true
+    roleType: SoloAntagonist
+
+- type: antag
+  parent: CMUAntagColonyBase
+  id: ReplicantRole
+  name: roles-antag-replicant-name
+  setPreference: true
+  objective: roles-antag-replicant-objective
+
+- type: startingGear
+  id: AU14GearReplicant
+  equipment:
+    pocket1: CMUForgedTransponder
+
+- type: entity
+  parent: BaseItem
+  id: CMUForgedTransponder
+  name: unformatted transponder card
+  description: A programmable identification transponder. Its writable surface is still blank.
+  components:
+  - type: ForgedTransponder
+  - type: Item
+    size: Tiny
+  - type: Sprite
+    sprite: _RMC14/Objects/CMIDs/id.rsi
+    state: id_generic
+
+- type: entity
+  id: ActionReplicantAssumeIdentity
+  name: Assume Identity
+  description: Pick a member of the crew and quietly become them. The copy takes time and stillness.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+  - type: Sprite
+    layers:
+    - sprite: _RMC14/Objects/CMIDs/id.rsi
+      state: plain
+      map: ["enum.ActionVisuals.Icon"]
+  - type: InstantAction
+    event: !type:ReplicantTransformActionEvent
