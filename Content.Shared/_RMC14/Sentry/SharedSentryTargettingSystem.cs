@@ -15,6 +15,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
+using Robust.Shared.Physics; // CMU14
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._RMC14.Sentry;
@@ -385,12 +386,20 @@ public abstract partial class SharedSentryTargetingSystem : EntitySystem
             if (_container.IsEntityInContainer(target))
                 continue;
 
-            // CMU14: never lock what sentry fire cannot affect: bullets pass over
-            // weeds and floor resin, and invincible hive structures void all damage
-            if (HasComp<XenoWeedsComponent>(target)
-                || HasComp<ResinSlowdownModifierComponent>(target)
-                || HasComp<ResinSpeedupModifierComponent>(target)
-                || HasComp<InvincibleHiveStructureComponent>(target))
+            // CMU14: invincible hive structures void all sentry damage
+            if (HasComp<InvincibleHiveStructureComponent>(target))
+                continue;
+
+            // CMU14: replaces the per-component weed and resin filters. Projectiles only
+            // collide with hard fixtures (SharedProjectileSystem), so entities without one
+            // are overflown by sentry fire and must never be locked as targets
+            //if (HasComp<XenoWeedsComponent>(target)
+            //    || HasComp<ResinSlowdownModifierComponent>(target)
+            //    || HasComp<ResinSpeedupModifierComponent>(target))
+            //    continue;
+
+            // CMU14: mobs are always eligible, structures need a fixture bullets can hit
+            if (!HasComp<MobStateComponent>(target) && !HasHardFixture(target))
                 continue;
 
             // CMU14: factions flagged sentryProtected are never valid targets (e.g. Provost Office)
@@ -448,6 +457,21 @@ public abstract partial class SharedSentryTargetingSystem : EntitySystem
                 if (_friendlyNpcFactionBuffer.Contains(f.Id))
                     return true;
             }
+        }
+
+        return false;
+    }
+
+    // CMU14 Method
+    private bool HasHardFixture(EntityUid target)
+    {
+        if (!TryComp<FixturesComponent>(target, out var fixtures))
+            return false;
+
+        foreach (var fixture in fixtures.Fixtures.Values)
+        {
+            if (fixture.Hard)
+                return true;
         }
 
         return false;
