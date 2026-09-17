@@ -668,6 +668,19 @@ public sealed partial class XenoLeapSystem : EntitySystem
     public override void Update(float frameTime)
     {
         var time = _timing.CurTime;
+
+        // CMU14: a deleted leap target leaves LastHit dangling, which spams PVS resolve errors.
+        var leapers = EntityQueryEnumerator<XenoLeapComponent>();
+        while (leapers.MoveNext(out var uid, out var leap))
+        {
+            if (leap.LastHit is { } last && TerminatingOrDeleted(last))
+            {
+                leap.LastHit = null;
+                leap.LastHitAt = null;
+                Dirty(uid, leap);
+            }
+        }
+
         var leaping = EntityQueryEnumerator<XenoLeapingComponent>();
         while (leaping.MoveNext(out var uid, out var comp))
         {

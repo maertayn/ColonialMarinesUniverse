@@ -430969,4 +430969,18 @@ entities:
       containers:
         rmc_xeno_tunnel_mob_container: !type:Container
           ents: []
+- proto: AU14SpawnPointGOVFORAdjutant
+  entities:
+  - uid: 84969
+    components:
+    - type: Transform
+      pos: 62.5,10.5
+      parent: 1
+- proto: AU14SpawnPointGOVFORPlatCo
+  entities:
+  - uid: 84970
+    components:
+    - type: Transform
+      pos: 62.5,10.5
+      parent: 1
 ...
