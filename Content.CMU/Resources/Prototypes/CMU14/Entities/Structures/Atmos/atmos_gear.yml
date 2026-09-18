@@ -2,7 +2,7 @@
   parent: PortableScrubber
   id: RMCAirScrubberPortable
   name: '"Maid" SC-3 portable air scrubber'
-  description: A boxy scrubber that inhales a room's problems and traps them inside. Field crews call it the Maid; leave it in a room, come back to breathable air.
+  description: A boxy scrubber that inhales a room's problems and traps them inside. Field crews call it the Maid; leave it in a room, come back to breathable air. The speaker grille is held on by a single screw that rarely survives the first shift.
   components:
   - type: Transform
     noRot: false # maps rotate it, inherited noRot aborts map loads
@@ -36,12 +36,13 @@
     blacklist:
       components:
       - Xeno
+  - type: CMUAmbientMute
 
 - type: entity
   parent: RMCAirScrubberPortable
   id: RMCAirScrubberStationary
   name: '"Maid" SC-3S stationary air scrubber'
-  description: The bolted-down model of the Maid line. Same appetite as the portable, none of the wandering.
+  description: The bolted-down model of the Maid line. Same appetite as the portable, none of the wandering. The speaker grille rides on the same single screw, and it comes to the same end.
   components:
   - type: Transform
     noRot: false
@@ -63,7 +64,7 @@
   parent: RMCAirScrubberPortable
   id: RMCAirPumpPortable
   name: '"Straw" AP-4 portable air pump'
-  description: Siphons a room's air out and bottles it in its tank. Field crews call it the Straw, usually while standing in the room it is draining.
+  description: Siphons a room's air out and bottles it in its tank. Field crews call it the Straw, usually while standing in the room it is draining. Louder than the Maid and prouder of it; the speaker comes off with one screw, and most go missing before the crate is unpacked.
   components:
   - type: Transform
     noRot: false
@@ -89,7 +90,7 @@
   parent: RMCAirPumpPortable
   id: RMCAirPumpStationary
   name: '"Straw" AP-4S stationary air pump'
-  description: The stationary model. Large, securely attached, and every bit as thirsty as the portable.
+  description: The stationary model. Large, securely attached, and every bit as thirsty as the portable. The speaker is still one screw away from silence.
   components:
   - type: Transform
     noRot: false
