@@ -150,10 +150,6 @@ public sealed partial class RMCPowerSystem : SharedRMCPowerSystem
         if (HasComp<RMCPowerReceiverComponent>(ent))
             return;
 
-        // Wired into a vanilla APC net, leave it to PowerNetSystem.
-        if (HasComp<ExtensionCableReceiverComponent>(ent))
-            return;
-
         var receiver = EnsureComp<RMCPowerReceiverComponent>(ent);
         receiver.Channel = RMCPowerChannel.Environment;
         receiver.ActiveLoad = (int) ent.Comp.Load;
