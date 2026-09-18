@@ -12,6 +12,7 @@ using Content.Shared._RMC14.Chat;
 using Content.Shared._RMC14.Dialog;
 using Content.Shared._RMC14.Language.Prototypes;
 using InGameICChatType = Content.Shared.Chat.InGameICChatType;
+using Content.Shared._RMC14.Map;
 using Content.Shared._RMC14.Synth;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Actions;
@@ -44,6 +45,7 @@ using Content.Shared.Ghost.Components;
 using Content.Shared.Inventory;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Humanoid;
+using Content.Shared.Maps;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
@@ -59,6 +61,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Network;
+using Robust.Shared.Map;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Player;
@@ -110,6 +113,7 @@ public sealed partial class RiderSystem : EntitySystem
     [Dependency] private readonly SharedEyeSystem _eye = default!;
     [Dependency] private readonly EuiManager _eui = default!;
     [Dependency] private readonly DialogSystem _dialog = default!;
+    [Dependency] private readonly RMCMapSystem _rmcMap = default!;
 
     private const string RiderContainerSlot = "rider_hatchling_slot";
     private static readonly ProtoId<DamageTypePrototype> PunishDamage = "Blunt";
@@ -271,10 +275,16 @@ public sealed partial class RiderSystem : EntitySystem
             return;
 
         var fromCorpse = _mobState.IsDead(host);
+
+        // Gate the insert before reviving: a corpse ride that fails to insert would
+        // orphan the revival and a half-built RiddenComponent on the host
+        var container = _container.EnsureContainer<ContainerSlot>(host, RiderContainerSlot);
+        if (!_container.CanInsert(ent.Owner, container))
+            return;
+
         if (fromCorpse)
             ReviveCorpse(ent, host);
 
-        var container = _container.EnsureContainer<ContainerSlot>(host, RiderContainerSlot);
         if (!_container.Insert(ent.Owner, container))
             return;
 
@@ -410,28 +420,29 @@ public sealed partial class RiderSystem : EntitySystem
             $"{ToPrettyString(ent):rider} offered itself to {ToPrettyString(host):host}");
     }
 
-    private void OnRiderOfferAnswer(EntityUid host, ref RiderOfferEvent args)
+    private void OnRiderOfferAnswer(RiderOfferEvent args)
     {
-        if (!TryGetEntity(args.Rider, out var riderUid)
-            || !TryComp<RiderComponent>(riderUid, out var rider))
+        if (!TryGetEntity(args.Rider, out var riderNet)
+            || riderNet is not { } riderUid
+            || !TryComp<RiderComponent>(riderUid, out var rider)
+            || rider.OfferedTo is not { } host)
             return;
-
-        if (rider.OfferedTo == host)
-            rider.OfferedTo = null;
 
         if (!args.Accept)
         {
+            rider.OfferedTo = null;
             _popup.PopupEntity(Loc.GetString("rider-offer-refused"), riderUid, riderUid);
             return;
         }
 
-        if (rider.OfferedTo != host || _timing.CurTime >= rider.OfferExpiresAt)
+        if (_timing.CurTime >= rider.OfferExpiresAt)
         {
-            if (args.Accept)
-                _popup.PopupEntity(Loc.GetString("rider-offer-lapsed"), host, host);
-
+            _popup.PopupEntity(Loc.GetString("rider-offer-lapsed"), host, host);
             return;
         }
+
+        // A spent dialog answers once; a refused or missed host needs a fresh offer
+        rider.OfferedTo = null;
 
         // They may have walked off while thinking it over
         if (Transform(riderUid).MapID != Transform(host).MapID
@@ -478,6 +489,10 @@ public sealed partial class RiderSystem : EntitySystem
 
     private void SqueezeThrough(Entity<RiderComponent> ent, EntityUid door)
     {
+        // Corpses do not crawl; a body shoved against a hatch stays put
+        if (_mobState.IsDead(ent))
+            return;
+
         var doorPos = _xform.GetWorldPosition(door);
         var delta = doorPos - _xform.GetWorldPosition(ent);
         if (delta.Length() < 0.01f)
@@ -490,6 +505,14 @@ public sealed partial class RiderSystem : EntitySystem
             exit.Y = 0;
         else
             exit.X = 0;
+
+        // The far tile must be standing room: a wall or vacuum opposite the door
+        // would swallow the crossing
+        var landing = new MapCoordinates(doorPos + exit, Transform(ent).MapID);
+        if (!_rmcMap.TryGetTileDef(landing, out var landingTile)
+            || landingTile.ID == ContentTileDefinition.SpaceID
+            || _rmcMap.IsTileBlocked(landing))
+            return;
 
         _xform.SetWorldPosition(ent, doorPos + exit);
 
@@ -643,7 +666,7 @@ public sealed partial class RiderSystem : EntitySystem
     private void OnRiderEmoteAttempt(Entity<RiderComponent> ent, ref EmoteAttemptEvent args)
     {
         if (ent.Comp.Host is not null)
-            args.Cancelled = true;
+            args.Cancel();
     }
 
     // Deathgasp and suffocation gasps ignore action blocker, so they skip the
@@ -651,7 +674,7 @@ public sealed partial class RiderSystem : EntitySystem
     private void OnRiderBeforeEmote(Entity<RiderComponent> ent, ref BeforeEmoteEvent args)
     {
         if (ent.Comp.Host is not null)
-            args.Cancelled = true;
+            args.Cancel();
     }
 
     private void OnManifestMessageAttempt(Entity<RiderManifestComponent> ent, ref InGameICMessageAttemptEvent args)
@@ -1141,6 +1164,13 @@ public sealed partial class RiderSystem : EntitySystem
 
         RestoreHostLanguage(host);
 
+        // Component removal on a live rider must free it from the host's slot;
+        // a contained hatchling has no exit once RiddenComponent is gone
+        if (!TerminatingOrDeleted(host)
+            && !TerminatingOrDeleted(ent.Owner)
+            && _container.TryGetContainer(host, RiderContainerSlot, out var container))
+            _container.Remove(ent.Owner, container, force: true);
+
         ent.Comp.Host = null;
 
         if (TryComp<RiddenComponent>(host, out var ridden))
@@ -1297,8 +1327,8 @@ public sealed partial class RiderSystem : EntitySystem
             return;
         }
 
-        if (!_solutions.TryGetSolution(host, "bloodstream", out var solution)
-            || !PourMix(solution.Value, SurgeMix, RideIntensity(ent)))
+        if (!_solutions.TryGetSolution(host, "bloodstream", out var soln)
+            || !PourMix(soln.Value, SurgeMix, RideIntensity(ent)))
             return;
 
         // Spend only after the dose lands; a full bloodstream must not eat grip
@@ -1313,11 +1343,11 @@ public sealed partial class RiderSystem : EntitySystem
             $"{ToPrettyString(ent):rider} granted resilience to {ToPrettyString(host):host}");
     }
 
-    private bool PourMix(Solution solution, (string Reagent, float Dose)[] mix, float scale)
+    private bool PourMix(Entity<SolutionComponent> soln, (string Reagent, float Dose)[] mix, float scale)
     {
         var poured = false;
         foreach (var (reagent, dose) in mix)
-            poured |= _solutions.TryAddReagent(solution, reagent, FixedPoint2.New(dose * scale));
+            poured |= _solutions.TryAddReagent(soln, reagent, FixedPoint2.New(dose * scale), out _);
 
         return poured;
     }
@@ -1331,9 +1361,9 @@ public sealed partial class RiderSystem : EntitySystem
         }
 
         // The carrot for a host who has not accepted you: real medicine, no
-        // stims, visible to any scanner. The dose lands before grip is spent
-        if (!_solutions.TryGetSolution(host, "bloodstream", out var solution)
-            || !PourMix(solution.Value, CoaxMix, RideIntensity(ent)))
+        // stims, visible to any scanner. The dose lands before grip is spent.
+        if (!_solutions.TryGetSolution(host, "bloodstream", out var soln)
+            || !PourMix(soln.Value, CoaxMix, RideIntensity(ent)))
             return;
 
         if (!SpendGrip(ent, ent.Comp.CoaxCost))
@@ -1582,24 +1612,24 @@ public sealed partial class RiderSystem : EntitySystem
                 {
                     // TODO: fauna agitation
                     _popup.PopupEntity(Loc.GetString("rider-tell-heavy", ("entName", host)), host, Filter.Pvs(host), true);
-                    comp.NextTellAt += TimeSpan.FromSeconds(25);
+                    comp.NextTellAt = _timing.CurTime + TimeSpan.FromSeconds(25);
                 }
                 else if (ride >= TimeSpan.FromMinutes(25))
                 {
                     _popup.PopupEntity(Loc.GetString("rider-tell-medium", ("entName", host)), host, Filter.Pvs(host), true);
-                    comp.NextTellAt += TimeSpan.FromSeconds(40);
+                    comp.NextTellAt = _timing.CurTime + TimeSpan.FromSeconds(40);
                 }
                 else
                 {
                     _popup.PopupEntity(Loc.GetString("rider-tell-mild", ("entName", host)), host, Filter.Pvs(host), true);
-                    comp.NextTellAt += TimeSpan.FromSeconds(60);
+                    comp.NextTellAt = _timing.CurTime + TimeSpan.FromSeconds(60);
                 }
             }
 
             // Bedding and clothing traces after twenty minutes
             if (_timing.CurTime >= comp.NextShedAt)
             {
-                comp.NextShedAt += TimeSpan.FromMinutes(2);
+                comp.NextShedAt = _timing.CurTime + TimeSpan.FromMinutes(2);
                 ShedResidue(host);
             }
 
