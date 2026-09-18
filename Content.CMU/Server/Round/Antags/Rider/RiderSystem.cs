@@ -471,6 +471,9 @@ public sealed partial class RiderSystem : EntitySystem
         if (ent.Comp.Host != null || ent.Comp.SqueezingDoor != null)
             return;
 
+        // Contact only exists for doors that physically block SmallMobMask:
+        // welded airlocks (LayerChangeOnWeld swaps the layer to WallLayer),
+        // shutters (WallLayer) and poddoors (FullTileLayer).
         if (!TryComp<DoorComponent>(args.OtherEntity, out var door)
             || door.State is not (DoorState.Closed or DoorState.Closing or DoorState.Welded))
             return;

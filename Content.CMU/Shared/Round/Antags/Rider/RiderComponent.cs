@@ -115,7 +115,8 @@ public sealed partial class RiderComponent : Component
     public TimeSpan MuteDuration = TimeSpan.FromMinutes(1);
 
     /// <summary>
-    /// How long pressing against a closed door takes to squeeze through.
+    /// How long pressing against a blocking door takes to squeeze through.
+    /// Never applies to plain closed airlocks: See RiderSystem.OnSqueezeTouch.
     /// </summary>
     [DataField]
     public TimeSpan SqueezeDuration = TimeSpan.FromSeconds(2);
@@ -173,7 +174,7 @@ public sealed partial class RiderComponent : Component
     public TimeSpan MutedUntil;
 
     /// <summary>
-    /// The closed door currently being squeezed through, if any.
+    /// The blocking door currently being squeezed through, if any.
     /// </summary>
     public EntityUid? SqueezingDoor;
     public TimeSpan SqueezeDoneAt;

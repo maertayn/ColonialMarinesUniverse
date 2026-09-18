@@ -8,6 +8,7 @@ using Content.Shared._RMC14.CameraShake;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Dropship;
 using Content.Shared._RMC14.Marines;
+using Content.Shared.CMU14.Marines;
 using Content.Shared._RMC14.Rules;
 using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Xenonids.Hive;
@@ -142,7 +143,7 @@ public sealed class CMUHijackExtrasSystem : EntitySystem
         _surgeFired = true;
 
         var shipMapIds = new HashSet<MapId>();
-        var almayerQuery = EntityQueryEnumerator<AlmayerComponent, TransformComponent>();
+        var almayerQuery = EntityQueryEnumerator<WarshipComponent, TransformComponent>();
         while (almayerQuery.MoveNext(out _, out var xform))
             AddShipMapAndConnectedZLevelMapIds(shipMapIds, xform.MapUid);
 
