@@ -326823,7 +326823,7 @@ entities:
       parent: 1
       rot: -1.5707963267948966 rad
       pos: 124.5,-56.5
-- proto: RMCGeneratorFusion
+- proto: CMUGeneratorFusion
   entities:
   - uid: 4195
     components:

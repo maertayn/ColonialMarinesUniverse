@@ -565321,7 +565321,7 @@ entities:
       parent: 16290
     - type: Physics
       canCollide: False
-- proto: RMCGeneratorFusionColony
+- proto: CMUGeneratorThermo
   entities:
   - uid: 16280
     components:

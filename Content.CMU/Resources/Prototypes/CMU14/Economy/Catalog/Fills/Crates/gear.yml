@@ -329,7 +329,7 @@
   components:
   - type: StorageFill
     contents:
-    - id: CMUPortableGeneratorDragon
+    - id: CMUGeneratorPortableDragon
       amount: 1
     - id: CMSheetPhoron
       amount: 1
