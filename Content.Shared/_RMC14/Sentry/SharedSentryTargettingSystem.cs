@@ -307,14 +307,16 @@ public abstract partial class SharedSentryTargetingSystem : EntitySystem
         // This covers corporate NPCs, synthetics, and other entities that do not carry an ID.
         if (TryComp<NpcFactionMemberComponent>(target, out var targetFaction))
         {
+            // CMU14: hidden factions (CLF) are invisible to sentries. A disguised insurgent
+            // must be judged exactly like the colonist they appear to be.
             foreach (var allianceFriendly in sentry.Comp.AllianceFriendlyNpcFactions)
             {
-                if (targetFaction.Factions.Contains(allianceFriendly))
+                if (HasVisibleFaction(targetFaction, allianceFriendly.Id))
                     return false;
             }
             foreach (var faction in sentry.Comp.FriendlyFactions)
             {
-                if (targetFaction.Factions.Contains(faction))
+                if (HasVisibleFaction(targetFaction, faction))
                     return false;
             }
         }
@@ -332,6 +334,21 @@ public abstract partial class SharedSentryTargetingSystem : EntitySystem
         {
             if (_prototypes.TryIndex(faction, out NpcFactionPrototype? proto) && proto.SentryProtected)
                 return true;
+        }
+
+        return false;
+    }
+
+    // CMU14 Method: true only when the member holds the faction and that faction is
+    // not hidden. Unknown faction protos count as visible.
+    private bool HasVisibleFaction(NpcFactionMemberComponent member, string faction)
+    {
+        foreach (var f in member.Factions)
+        {
+            if (f.Id != faction)
+                continue;
+
+            return !_prototypes.TryIndex(f, out NpcFactionPrototype? proto) || !proto.Hidden;
         }
 
         return false;
@@ -454,7 +471,8 @@ public abstract partial class SharedSentryTargetingSystem : EntitySystem
         {
             foreach (var f in targetNpc.Factions)
             {
-                if (_friendlyNpcFactionBuffer.Contains(f.Id))
+                // CMU14: hidden membership can never make a target friendly to the sentry
+                if (_friendlyNpcFactionBuffer.Contains(f.Id) && HasVisibleFaction(targetNpc, f.Id))
                     return true;
             }
         }
