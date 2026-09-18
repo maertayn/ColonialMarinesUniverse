@@ -1111,9 +1111,20 @@ public abstract partial class SharedDropshipSystem : EntitySystem
 
         var map = _transform.GetMap(user.Owner);
 
-        // Prevent double hijack.
-        if (TryComp(map, out EvacuationProgressComponent? evacuation) &&
-            evacuation.DropShipCrashed)
+        // CMU14: Prevent double hijack. The progress component sits on the deck the first
+        // crash landed on, which need not be this hijacker's deck, so scan the ship z-network.
+        var crashLanded = false;
+        foreach (var connectedMap in _zLevels.GetAllNetworkMaps(map))
+        {
+            if (TryComp(connectedMap, out EvacuationProgressComponent? evacuation) &&
+                evacuation.DropShipCrashed)
+            {
+                crashLanded = true;
+                break;
+            }
+        }
+
+        if (crashLanded)
         {
             var msg = Loc.GetString("rmc-dropship-invalid-hijack");
 
