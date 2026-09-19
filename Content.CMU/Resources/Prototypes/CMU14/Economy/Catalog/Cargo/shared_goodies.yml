@@ -123,6 +123,12 @@
         crate: CMUCrateFirefightingArmor
       - cost: 800
         crate: CMUCrateAtmosFireResponse
+      - cost: 1500
+        crate: CMUCrateTychoRadsuit
+      - cost: 1800
+        crate: CMUCrateRadsuit
+      - cost: 900
+        crate: CMUCrateEVA
       - cost: 400
         crate: RMCAirPumpPortable
       - cost: 300
