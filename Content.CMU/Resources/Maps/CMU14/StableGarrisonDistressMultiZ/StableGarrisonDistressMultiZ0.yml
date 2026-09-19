@@ -156362,7 +156362,7 @@ entities:
     - type: Transform
       pos: 255.7445,-155.43619
       parent: 1
-- proto: GasPipeStraightAlt2
+- proto: CMUGasPipeStraightAlt2
   entities:
   - uid: 12961
     components:
@@ -156378,7 +156378,7 @@ entities:
     - type: Transform
       pos: 113.5,-4.5
       parent: 1
-- proto: GasThermoMachineFreezer
+- proto: CMUGasThermoMachineFreezer
   entities:
   - uid: 12963
     components:
@@ -162690,7 +162690,7 @@ entities:
       fuel: 5
       lit: True
     - type: AlwaysHot
-- proto: RMCCanisterBlue
+- proto: CMUCanisterOxygen
   entities:
   - uid: 14575
     components:

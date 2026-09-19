@@ -76721,7 +76721,7 @@ entities:
     - type: Transform
       pos: 187.57178,-120.36726
       parent: 1
-- proto: GasPipeStraightAlt2
+- proto: CMUGasPipeStraightAlt2
   entities:
   - uid: 2691
     components:
