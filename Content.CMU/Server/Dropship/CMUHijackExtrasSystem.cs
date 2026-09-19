@@ -103,16 +103,6 @@ public sealed class CMUHijackExtrasSystem : EntitySystem
                 if (TryComp(xeno, out ActorComponent? actor))
                 {
                     var session = actor.PlayerSession;
-                    Entity<MindComponent> mind;
-
-                    if (_mind.TryGetMind(session, out var mindId, out var mindComp))
-                        mind = (mindId, mindComp);
-                    else
-                        mind = _mind.CreateMind(session.UserId);
-
-                    var ghost = _ghost.SpawnGhost((mind.Owner, mind.Comp), xeno);
-                    if (ghost != null)
-                        EnsureComp<JoinXenoCooldownIgnoreComponent>(ghost.Value);
 
                     var origin = _transform.GetMoverCoordinates(xeno);
                     _popup.PopupCoordinates(
@@ -122,8 +112,30 @@ public sealed class CMUHijackExtrasSystem : EntitySystem
                         true,
                         PopupType.MediumXeno);
 
+                    var rejoined = false;
                     if (comp.CountedInSlots && _hive.GetHive(xeno) is { } hive)
-                        _larvaQueue.AddToLarvaQueueFront(hive, session.UserId);
+                    {
+                        if (_hive.JoinBurrowedLarva(hive, session, ignorePoolGate: true))
+                            rejoined = true;
+                        else
+                            _larvaQueue.AddToLarvaQueueFront(hive, session.UserId);
+
+                        _hive.ChangeBurrowedLarva(hive, 1);
+                    }
+
+                    if (!rejoined)
+                    {
+                        Entity<MindComponent> mind;
+
+                        if (_mind.TryGetMind(session, out var mindId, out var mindComp))
+                            mind = (mindId, mindComp);
+                        else
+                            mind = _mind.CreateMind(session.UserId);
+
+                        var ghost = _ghost.SpawnGhost((mind.Owner, mind.Comp), xeno);
+                        if (ghost != null)
+                            EnsureComp<JoinXenoCooldownIgnoreComponent>(ghost.Value);
+                    }
                 }
 
                 QueueDel(xeno);
