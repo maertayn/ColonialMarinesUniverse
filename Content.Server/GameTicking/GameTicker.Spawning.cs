@@ -753,6 +753,9 @@ namespace Content.Server.GameTicking
             }
 */
 
+            // CMU14: give back the player's old role slots before the new assignment takes
+            // one, so respawning reopens closed roles instead of burning a slot per death.
+            _stationJobs.RefundPlayerJobs(player.UserId);
             _stationJobs.TryAssignJob(station, jobPrototype, player.UserId);
 
             if (lateJoin)

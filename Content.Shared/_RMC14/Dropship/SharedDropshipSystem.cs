@@ -41,6 +41,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
+using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
@@ -694,6 +695,29 @@ public abstract partial class SharedDropshipSystem : EntitySystem
             return;
         }
 
+        // CMU14 Begin: recall guards
+        if (terminal.Comp.LastSummonAt is { } lastSummon && _timing.CurTime - lastSummon < terminal.Comp.SummonCooldown)
+        {
+            _popup.PopupEntity("This terminal is still recharging.", terminal, args.Actor, PopupType.MediumCaution);
+            return;
+        }
+
+        // Only abandoned ships can be pulled remotely: anyone aboard, be it crew, boarders
+        // or hijackers, keeps the ship where it is.
+        if (Transform(computerId.Value).GridUid is { } shipGrid)
+        {
+            var actors = EntityQueryEnumerator<ActorComponent, TransformComponent>();
+            while (actors.MoveNext(out _, out _, out var actorXform))
+            {
+                if (actorXform.GridUid != shipGrid)
+                    continue;
+
+                _popup.PopupEntity("There is still someone aboard that dropship!", terminal, args.Actor, PopupType.MediumCaution);
+                return;
+            }
+        }
+        // CMU14 End
+
         if (!TryDropshipLaunchPopup(terminal, args.Actor, false))
             return;
 
@@ -705,6 +729,7 @@ public abstract partial class SharedDropshipSystem : EntitySystem
 
         _ui.CloseUi(terminal.Owner, DropshipTerminalUiKey.Key, args.Actor);
         _popup.PopupEntity("This dropship is now on its way.", terminal, args.Actor, PopupType.Medium);
+        terminal.Comp.LastSummonAt = _timing.CurTime; // CMU14
     }
 
     private void OnAttachmentPointMapInit<TComp, TEvent>(Entity<TComp> ent, ref TEvent args) where TComp : IComponent?
