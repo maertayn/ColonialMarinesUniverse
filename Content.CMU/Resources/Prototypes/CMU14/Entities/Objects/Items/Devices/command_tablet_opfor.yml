@@ -26,3 +26,4 @@
   - type: CMUAdminTablet
   - type: MarineCommunicationsComputer
     announceAuthor: rmc-announcement-author-highcommand
+    canPrintCommendations: false
