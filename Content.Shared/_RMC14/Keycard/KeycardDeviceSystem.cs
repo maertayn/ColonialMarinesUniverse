@@ -161,7 +161,7 @@ public sealed partial class KeycardDeviceSystem : EntitySystem
         if (ent.Comp.Mode is not { } target)
             return;
 
-        var current = _alertLevel.Get() ?? RMCAlertLevels.Green;
+        var current = _alertLevel.Get(ent) ?? RMCAlertLevels.Green; // CMU14
         if (target == current)
 >>>>>>> 0b52b842 (Admin command tablet)
         {
