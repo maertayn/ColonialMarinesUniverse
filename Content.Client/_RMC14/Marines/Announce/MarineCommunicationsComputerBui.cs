@@ -1,8 +1,10 @@
 using Content.Client.UserInterface.Controls;
+using Content.Shared._RMC14.AlertLevel; // CMU14: admin tablet alert level control
 using Content.Shared._RMC14.Marines.Announce;
 using Content.Shared._RMC14.Marines.ControlComputer;
 using Content.Shared._RMC14.Overwatch;
 using Content.Shared._RMC14.TacticalMap;
+using Content.Shared.CMU14.Administration; // CMU14: admin tablet alert level control
 using Content.Shared.CMU14.ForceOnForce;
 using Robust.Client.Player;
 using JetBrains.Annotations;
@@ -65,6 +67,24 @@ public sealed class MarineCommunicationsComputerBui(EntityUid owner, Enum uiKey)
             computer.CanCreateEcho)
         {
             _window.EchoButton.OnPressed += _ => SendPredictedMessage(new MarineCommunicationsEchoSquadMsg());
+        }
+
+        // CMU14: admin tablet alert level and faction controls
+        if (EntMan.HasComponent<CMUAdminTabletComponent>(Owner))
+        {
+            _window.Tablet = Owner;
+            for (var level = 0; level <= (int) RMCAlertLevels.Delta; level++)
+            {
+                var name = Loc.GetString($"rmc-alert-{((RMCAlertLevels) level).ToString().ToLowerInvariant()}");
+                _window.AlertLevelOption.AddItem(name, level);
+            }
+            var current = (int) (EntMan.System<RMCAlertLevelSystem>().Get() ?? RMCAlertLevels.Green);
+            _window.AlertLevelOption.SelectId(current);
+            _window.AlertLevelOption.OnItemSelected += args => _window.AlertLevelOption.SelectId(args.Id);
+            _window.AlertLevelButton.OnPressed += _ =>
+                SendMessage(new CMUAdminTabletSetAlertLevelMsg((RMCAlertLevels) _window.AlertLevelOption.SelectedId));
+            _window.TabletFactionButton.OnPressed += _ => SendMessage(new CMUAdminTabletToggleFactionMsg());
+            _window.AdminSection.Visible = true;
         }
 
         if (EntMan.TryGetComponent(Owner, out MarineCommunicationsComputerComponent? communicationsEvac) &&

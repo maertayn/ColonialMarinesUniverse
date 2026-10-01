@@ -16,3 +16,13 @@
   - type: MarineControlComputer
     faction: opfor
     canPrintCommendations: false
+
+- type: entity
+  parent: AU14TabletOpfor
+  id: CMUTabletOpforAdmin
+  name: admin opfor command tablet
+  suffix: Admin, DO NOT MAP, CMU
+  components:
+  - type: CMUAdminTablet
+  - type: MarineCommunicationsComputer
+    announceAuthor: rmc-announcement-author-highcommand
