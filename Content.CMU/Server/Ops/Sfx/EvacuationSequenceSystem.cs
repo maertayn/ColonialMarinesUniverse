@@ -4,6 +4,8 @@ using Content.Shared.CMU14.Ops.Sfx;
 using Content.Shared.CMU14.ZLevels.Core.EntitySystems;
 using Content.Shared.CMU14.ZLevels.Ordnance;
 using Content.Shared._RMC14.Evacuation;
+using Content.Shared._RMC14.AlertLevel;
+using Content.Shared.CMU14.Marines;
 using Content.Shared._RMC14.OrbitalCannon;
 using Content.Shared.CCVar;
 using Robust.Shared.Configuration;
@@ -24,6 +26,7 @@ public sealed partial class EvacuationSequenceSystem : EntitySystem
     [Dependency] private  SharedMapSystem _map = default!;
     [Dependency] private  IRobustRandom _random = default!;
     [Dependency] private  CMUSharedZLevelsSystem _zLevels = default!;
+    [Dependency] private  RMCAlertLevelSystem _alertLevel = default!;
 
     private static readonly ProtoId<ScriptedSoundSequencePrototype> SelfDestructSequence = "SelfDestructSequence";
     private static readonly ProtoId<ScriptedSoundSequencePrototype> SelfDestructEngineSequence = "SelfDestructEngineSequence";
@@ -44,10 +47,14 @@ public sealed partial class EvacuationSequenceSystem : EntitySystem
 
     private void OnEnabled(ref EvacuationEnabledEvent ev)
     {
-        if (!_cfg.GetCVar(CCVars.EnableEvacSfx)) return;
-
         if (TryComp<EvacuationProgressComponent>(ev.Map, out var progress) && progress.SelfDestructAt == null)
             return;
+
+        // Destruct arms Delta so locks, doors, displays and lights follow the countdown.
+        // The sequence narrates, so the alert announcement is skipped to keep MU/TH/UR the only voice.
+        _alertLevel.Set(RMCAlertLevels.Delta, null, sendAnnouncement: false, context: ev.Map);
+
+        if (!_cfg.GetCVar(CCVars.EnableEvacSfx)) return;
 
         if (!_scriptedSound.TryGetActiveSequence(SelfDestructSequence, ev.Map, out _))
             _scriptedSound.StartSequence(SelfDestructSequence, ev.Map);
@@ -58,6 +65,12 @@ public sealed partial class EvacuationSequenceSystem : EntitySystem
 
     private void OnDisabled(ref EvacuationDisabledEvent ev)
     {
+        // Abort stands the ship down, the lowered alert announcement carries the cancel.
+        // The destruct timer is already cleared by now, so Delta itself is the tell.
+        if (HasComp<WarshipComponent>(ev.Map)
+            && _alertLevel.Get(ev.Map) == RMCAlertLevels.Delta)
+            _alertLevel.Set(RMCAlertLevels.Red, null, context: ev.Map);
+
         if (!_cfg.GetCVar(CCVars.EnableEvacSfx)) return;
 
         if (_scriptedSound.TryGetActiveSequence(SelfDestructSequence, ev.Map, out var seq))

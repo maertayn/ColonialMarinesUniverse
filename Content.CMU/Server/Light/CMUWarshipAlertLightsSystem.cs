@@ -1,6 +1,7 @@
 using Content.Server._RMC14.Light;
 using Content.Shared._RMC14.AlertLevel;
 using Content.Shared.CMU14.Marines;
+using Content.Shared.CMU14.ZLevels.Core.EntitySystems;
 using Content.Shared.Light.Components;
 using Robust.Server.GameObjects;
 
@@ -23,15 +24,16 @@ public sealed partial class CMUWarshipAlertLightsSystem : EntitySystem
 
     [Dependency] private PointLightSystem _pointLight = default!;
     [Dependency] private RMCAlertLevelSystem _alertLevel = default!;
+    [Dependency] private CMUSharedZLevelsSystem _zLevels = default!;
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<PoweredLightComponent, MapInitEvent>(OnLightMapInit);
+        SubscribeLocalEvent<PoweredLightComponent, ComponentStartup>(OnLightStartup);
         SubscribeLocalEvent<RMCBreakLightOnAttackComponent, MapInitEvent>(OnRmcLightMapInit);
         SubscribeLocalEvent<RMCAlertLevelChangedEvent>(OnAlertChanged);
     }
 
-    private void OnLightMapInit(Entity<PoweredLightComponent> ent, ref MapInitEvent args)
+    private void OnLightStartup(Entity<PoweredLightComponent> ent, ref ComponentStartup args)
         => ApplyAlertColor(ent);
 
     private void OnRmcLightMapInit(Entity<RMCBreakLightOnAttackComponent> ent, ref MapInitEvent args)
@@ -39,16 +41,20 @@ public sealed partial class CMUWarshipAlertLightsSystem : EntitySystem
 
     private void OnAlertChanged(ref RMCAlertLevelChangedEvent args)
     {
-        ApplyToWarshipFixtures<PoweredLightComponent>(args.Level);
-        ApplyToWarshipFixtures<RMCBreakLightOnAttackComponent>(args.Level);
+        ApplyToWarshipFixtures<PoweredLightComponent>(args.Level, args.Ship);
+        ApplyToWarshipFixtures<RMCBreakLightOnAttackComponent>(args.Level, args.Ship);
     }
 
-    private void ApplyToWarshipFixtures<T>(RMCAlertLevels level) where T : IComponent
+    private void ApplyToWarshipFixtures<T>(RMCAlertLevels level, EntityUid? ship) where T : IComponent
     {
         var query = EntityQueryEnumerator<T, TransformComponent>();
         while (query.MoveNext(out var uid, out _, out var xform))
         {
             if (!IsOnWarship(xform))
+                continue;
+
+            // A ship filter only matters when more than one warship exists, then match its whole z-network
+            if (ship != null && !_zLevels.IsSameZNetwork(xform.MapUid, ship.Value))
                 continue;
 
             ApplyAlertColor(uid, level);
@@ -57,10 +63,11 @@ public sealed partial class CMUWarshipAlertLightsSystem : EntitySystem
 
     private void ApplyAlertColor(EntityUid uid)
     {
-        if (!IsOnWarship(Transform(uid)))
+        var xform = Transform(uid);
+        if (!IsOnWarship(xform))
             return;
 
-        ApplyAlertColor(uid, _alertLevel.Get());
+        ApplyAlertColor(uid, _alertLevel.Get(xform.MapUid));
     }
 
     private void ApplyAlertColor(EntityUid uid, RMCAlertLevels? level)
@@ -82,7 +89,15 @@ public sealed partial class CMUWarshipAlertLightsSystem : EntitySystem
 
     private bool IsOnWarship(TransformComponent xform)
     {
-        return HasComp<WarshipComponent>(xform.MapUid)
-            || (xform.GridUid is { } grid && HasComp<WarshipComponent>(grid));
+        // Grid fallback is display-only; alert-level reads resolve through the map entity.
+        if (HasComp<WarshipComponent>(xform.MapUid)
+            || (xform.GridUid is { } grid && HasComp<WarshipComponent>(grid)))
+            return true;
+
+        // Multi-z warships tag only the primary deck, other decks resolve through the z-network
+        return xform.MapUid is { } map
+            && _zLevels.TryGetZNetwork(map, out var network)
+            && _zLevels.TryGetMapAtDepth(network.Value, 0, out var primary)
+            && HasComp<WarshipComponent>(primary);
     }
 }
