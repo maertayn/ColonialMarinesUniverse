@@ -16,7 +16,7 @@
   weight: 10
   minplayers: 0
   maxplayers: 400
-  GhostsNeeded: 2
+  ghostsNeeded: 2
   roundstart: false
 
 - type: thirdParty
@@ -25,10 +25,10 @@
   displayName: Free Company Raiders (Survivors)
   entrymethod: ground
   weight: 5
-  GhostsNeeded: 0
+  ghostsNeeded: 0
   roundstart: true
   announcearrival: ''
-  blacklistedgamemodes:
+  blacklistedGamemodes:
   - insurgency
   - forceonforce
   - colonyfall
