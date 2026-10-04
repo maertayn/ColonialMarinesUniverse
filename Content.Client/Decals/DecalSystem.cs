@@ -118,7 +118,6 @@ namespace Content.Client.Decals
                 return false;
             }
 
-            // DirtyField(chunkEnt.Value.Owner, decals, nameof(DecalChunkComponent.Decals)); // CMU14: delta states are manual, dirtying the dictionary field would be a no op
             Dirty(chunkEnt.Value.Owner, decals);
             return true;
         }
