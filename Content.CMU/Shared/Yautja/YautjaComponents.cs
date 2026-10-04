@@ -667,10 +667,10 @@ public sealed partial class YautjaBracerComponent : Component, IClothingSlots
     public bool NotificationSound = true;
 
     [DataField]
-    public EntProtoId StabilisingCrystalPrototype = "CMUYautjaStabilisingCrystal";
+    public EntProtoId StabilisingCrystalPrototype = "CMUYautjaAutoInjector";
 
     [DataField]
-    public EntProtoId HumanStabilisingCrystalPrototype = "CMUYautjaHumanStabilisingCrystal";
+    public EntProtoId HumanStabilisingCrystalPrototype = "CMUYautjaThrallAutoInjector";
 
     [DataField]
     public EntProtoId HuntingTrapPrototype = "CMUYautjaHuntingTrap";
