@@ -1817,6 +1817,9 @@ public sealed partial class YautjaRelayBeaconComponent : Component
     public bool AllowCustomDestinations = true;
 
     [DataField]
+    public bool YoungbloodOnly;
+
+    [DataField]
     public EntityUid? AddTeleporterLocationAction;
 
     [DataField]

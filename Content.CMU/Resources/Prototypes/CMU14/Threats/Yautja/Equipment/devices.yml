@@ -2241,6 +2241,7 @@
     - CMUYautjaBodyMesh
     - CMUYautjaHuntingPouch
     - CMUYautjaMedicompFull
+    - CMUYautjaYoungbloodRelayBeacon
     - CMUYautjaLantern
 
 - type: entity
