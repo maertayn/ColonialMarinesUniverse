@@ -454,7 +454,6 @@ public sealed partial class DecalSystem : SharedDecalSystem
             return;
         }
 
-        // DirtyField(chunk.Owner, chunk.Comp2, nameof(DecalChunkComponent.Decals)); // CMU14: delta states are manual, dirtying the dictionary field would be a no op
         Dirty(chunk.Owner, chunk.Comp2);
     }
 
