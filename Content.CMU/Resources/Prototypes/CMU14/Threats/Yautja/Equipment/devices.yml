@@ -1100,6 +1100,8 @@
     tags:
     - DiscreteHealthAnalyzer
     - CMUYautjaMedicompItem
+  - type: HealthScanner
+    allowXenoTargets: true
 
 - type: entity
   parent: CMAutoInjector

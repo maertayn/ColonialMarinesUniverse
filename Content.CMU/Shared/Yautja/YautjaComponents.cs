@@ -2015,6 +2015,9 @@ public sealed partial class YautjaHuntConsoleComponent : Component
             HuntCall("serpents_small", "cmu-yautja-hunt-call-serpents-small", 4, 1f, SerpentPrey()),
             HuntCall("serpents_group", "cmu-yautja-hunt-call-serpents-group", 6, 1.2f, SerpentPrey()),
             HuntCall("serpents_large", "cmu-yautja-hunt-call-serpents-large", 8, 1.4f, SerpentPrey()),
+            HuntCall("tribal_small", "cmu-yautja-hunt-call-tribal-small", 8, 1f, TribalPrey()),
+            HuntCall("tribal_group", "cmu-yautja-hunt-call-tribal-group", 12, 1.2f, TribalPrey()),
+            HuntCall("tribal_large", "cmu-yautja-hunt-call-tribal-large", 15, 1.4f, TribalPrey()),
             HuntCall("elite_mixed_small", "cmu-yautja-hunt-call-elite-mixed-small", 4, 1.5f, ElitePrey()),
             HuntCall("elite_mixed_group", "cmu-yautja-hunt-call-elite-mixed-group", 6, 2f, ElitePrey()),
             HuntCall("elite_mixed_large", "cmu-yautja-hunt-call-elite-mixed-large", 8, 2.5f, ElitePrey()),
@@ -2102,6 +2105,17 @@ public sealed partial class YautjaHuntConsoleComponent : Component
             Entity("CMXenoLurker", 2),
             Entity("CMXenoPraetorian"),
             Entity("CMXenoRavager"),
+        };
+    }
+
+    private static List<YautjaHuntSpawnEntry> TribalPrey()
+    {
+        return new List<YautjaHuntSpawnEntry>
+        {
+            Entity("AU14MobTribalLeader"),
+            Entity("AU14MobTribalSpear", 4),
+            Entity("AU14MobTribalBowman", 2),
+            Entity("AU14MobTribalShaman", 2),
         };
     }
 

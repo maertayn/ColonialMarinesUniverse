@@ -55,7 +55,8 @@ public sealed partial class YautjaCasterSystem : EntitySystem
 
         if (_net.IsClient)
         {
-            PopupMode(ent, args.User, "cmu-yautja-caster-mode-next", mode.Value);
+            // Same message and mode as the server branch so popup prediction deduplicates them
+            PopupMode(ent, args.User, "cmu-yautja-caster-mode-set", mode.Value);
             return;
         }
 
@@ -91,7 +92,8 @@ public sealed partial class YautjaCasterSystem : EntitySystem
 
         if (_net.IsClient)
         {
-            PopupMode(ent, args.UserUid, "cmu-yautja-caster-mode-next", mode);
+            // Same message and mode as the server branch so popup prediction deduplicates them
+            PopupMode(ent, args.UserUid, "cmu-yautja-caster-mode-set", mode);
             return;
         }
 
@@ -361,9 +363,7 @@ public sealed partial class YautjaCasterSystem : EntitySystem
             return;
 
         var text = Loc.GetString(message, ("mode", Loc.GetString(mode.Name)));
-        if (_net.IsClient)
-            _popup.PopupPredicted(text, user, user, PopupType.Medium);
-        else
-            _popup.PopupClient(text, user, user, PopupType.Medium);
+        // Popups auto-predict: one call shows locally on the client and dedups against the server copy
+        _popup.PopupClient(text, user, user, PopupType.Medium);
     }
 }

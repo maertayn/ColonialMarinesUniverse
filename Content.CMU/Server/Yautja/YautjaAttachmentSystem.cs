@@ -604,7 +604,8 @@ public sealed partial class YautjaAttachmentSystem : EntitySystem
 
     private void OnStoredGearThrowAttempt(Entity<YautjaStoredGearComponent> ent, ref ThrowItemAttemptEvent args)
     {
-        if (!ent.Comp.Deployed)
+        // Standalone gear with no bracer to retract into stays throwable
+        if (ent.Comp.Bracer is null)
             return;
 
         TryRetractStoredGear(ent, args.User);
@@ -613,9 +614,6 @@ public sealed partial class YautjaAttachmentSystem : EntitySystem
 
     private void OnStoredGearFellDownThrowAttempt(Entity<YautjaStoredGearComponent> ent, ref FellDownThrowAttemptEvent args)
     {
-        if (!ent.Comp.Deployed)
-            return;
-
         args.Cancelled = true;
     }
 
@@ -634,7 +632,7 @@ public sealed partial class YautjaAttachmentSystem : EntitySystem
 
     private void OnStoredGearUnequippedHand(Entity<YautjaStoredGearComponent> ent, ref GotUnequippedHandEvent args)
     {
-        if (!ent.Comp.Deployed || ent.Comp.Retracting)
+        if (ent.Comp.Retracting)
             return;
 
         // This event is raised from inside container removal. Wait until the transfer has completed before
@@ -645,7 +643,6 @@ public sealed partial class YautjaAttachmentSystem : EntitySystem
     private void OnStoredGearHandRemovalCompleted(YautjaStoredGearHandRemovalCompletedEvent args)
     {
         if (!TryComp(args.Gear, out YautjaStoredGearComponent? stored) ||
-            !stored.Deployed ||
             stored.Retracting)
         {
             return;
@@ -656,17 +653,11 @@ public sealed partial class YautjaAttachmentSystem : EntitySystem
 
     private void OnStoredGearDropped(Entity<YautjaStoredGearComponent> ent, ref DroppedEvent args)
     {
-        if (!ent.Comp.Deployed)
-            return;
-
         TryRetractStoredGear(ent, args.User);
     }
 
     private void OnStoredGearRMCDropped(Entity<YautjaStoredGearComponent> ent, ref RMCDroppedEvent args)
     {
-        if (!ent.Comp.Deployed)
-            return;
-
         TryRetractStoredGear(ent, args.User);
     }
 
