@@ -11,23 +11,11 @@ using Robust.Shared.Maths;
 namespace Content.Client.CMU14.Interface;
 
 /// <summary>
-///     Scanlines drawn straight over whatever is beneath, with no render target involved.
+///     Scanlines drawn straight over whatever is beneath, with no render target involved - the half of
+///     <see cref="CrtScreenControl"/> that works on live scrolling text, which the capturing pass does
+///     not: it fails there by drawing a stale copy rather than by throwing. No roll bar, since an
+///     overlay can only add pixels, never move them.
 /// </summary>
-/// <remarks>
-///     <para>
-///     The cheap half of <see cref="CrtScreenControl"/>, for surfaces that want the raster but must
-///     not be captured. Scanlines only darken pixels, so unlike the roll bar they need no copy of the
-///     source to sample at an offset - and that is the whole point here. Capturing a live, scrolling,
-///     constantly-rebuilt subtree such as the chat means its clipping and scroll offsets have to
-///     survive a re-entrant render pass, and a stale or misaligned copy is drawn opaque over the real
-///     thing, so it fails by showing the player old text rather than by throwing.
-///     </para>
-///     <para>
-///     Nothing here animates. The shader drifts its phase with <c>TIME</c>; over a block of text
-///     being read that is motion for its own sake, and the lines are indistinguishable standing
-///     still.
-///     </para>
-/// </remarks>
 public sealed class CrtScanlineOverlay : Control
 {
     /// <summary>
@@ -37,6 +25,9 @@ public sealed class CrtScanlineOverlay : Control
     private const float Darkening = 0.85f;
 
     [Dependency] private readonly IConfigurationManager _cfg = default!;
+
+    /// <summary>Scanline depth; null falls through to the cvar.</summary>
+    public float? Intensity { get; set; }
 
     public CrtScanlineOverlay()
     {
@@ -53,9 +44,10 @@ public sealed class CrtScanlineOverlay : Control
         if (!StyleNano.CrtUiEnabled)
             return;
 
-        var intensity = _cfg.GetCVar(CCVars.CMUCrtEffectIntensity);
-        if (intensity <= 0f)
+        if (_cfg.GetCVar(CCVars.CMUCrtEffectIntensity) <= 0f)
             return;
+
+        var intensity = Intensity ?? _cfg.GetCVar(CCVars.CMUCrtEffectIntensity);
 
         var size = PixelSize;
         if (size.X <= 0 || size.Y <= 0)

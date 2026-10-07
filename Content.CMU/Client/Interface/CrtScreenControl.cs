@@ -13,23 +13,6 @@ namespace Content.Client.CMU14.Interface;
 ///     Draws <see cref="Source"/> through the CRT shader - scanlines, crawling grain, and a roll bar
 ///     that shears the image sideways as it passes.
 /// </summary>
-/// <remarks>
-///     <para>
-///     The shear is why this renders the source into a texture first rather than laying an overlay on
-///     top. An overlay can only add pixels over what is beneath it; it can never move them. Once the
-///     UI is in a texture the shader can sample it at an offset, which is what produces the tear.
-///     </para>
-///     <para>
-///     Sits <em>after</em> <see cref="Source"/> in the tree, so the source has already drawn normally
-///     by the time this runs; the shaded copy is opaque and covers it. That avoids having to suppress
-///     the source's own drawing, which the UI system offers no hook for - a parent cannot skip its
-///     children, and hiding the source would stop <c>RenderControl</c> reaching it too.
-///     </para>
-///     <para>
-///     Once the source is a texture, bloom and barrel curvature become possible in the same pass.
-///     Neither is implemented yet.
-///     </para>
-/// </remarks>
 public sealed class CrtScreenControl : Control
 {
     private const string ShaderId = "CMUCrtTerminal";
@@ -58,6 +41,13 @@ public sealed class CrtScreenControl : Control
     public float? Curvature { get; set; }
 
     public float? Vignette { get; set; }
+
+    /// <summary>
+    ///     Scanline depth; null falls through to the cvar. Overridable because the shipped 0.5 is tuned for
+    ///     surfaces that carry chrome and mid-tones, and on a near-black ground it moves a channel by about
+    ///     six of 255 - measurably a raster, and invisible to look at.
+    /// </summary>
+    public float? Intensity { get; set; }
 
     /// <summary>
     ///     Seconds between roll bars; null falls through to the cvar. Overridable for the same reason
@@ -150,9 +140,10 @@ public sealed class CrtScreenControl : Control
         if (!StyleNano.CrtUiEnabled)
             return;
 
-        var intensity = _cfg.GetCVar(CCVars.CMUCrtEffectIntensity);
-        if (intensity <= 0f)
+        if (_cfg.GetCVar(CCVars.CMUCrtEffectIntensity) <= 0f)
             return;
+
+        var intensity = Intensity ?? _cfg.GetCVar(CCVars.CMUCrtEffectIntensity);
 
         var size = PixelSize;
         if (size.X <= 0 || size.Y <= 0)
@@ -222,13 +213,6 @@ public sealed class CrtScreenControl : Control
     /// <summary>
     ///     Converts an sRGB colour to linear for use as a shader uniform.
     /// </summary>
-    /// <remarks>
-    ///     <see cref="Color"/> components are sRGB. The render target is <c>Rgba8Srgb</c>, so the GPU
-    ///     encodes linear to sRGB on write - handing sRGB components straight to the shader means
-    ///     they get encoded a second time and publish far brighter than the colour chosen. Near
-    ///     blacks suffer worst: 7/255 arriving as roughly 48/255 is the difference between invisible
-    ///     and a pale band around the picture.
-    /// </remarks>
     private static Vector3 Linear(Color srgb)
     {
         var linear = Color.FromSrgb(srgb);
