@@ -495,57 +495,6 @@ namespace Content.Client.Lobby.UI
         {
             SpriteView.OverrideDirection = (Direction)((int)direction % 4 * 2);
         }
+
     }
-
-        /// <summary>Internal, not private: <see cref="Content.Client.LateJoin.LateJoinGui"/> reuses this
-        /// same classification so a department's rail-side view groups jobs the same way character
-        /// setup does, instead of re-deriving (and risking drifting from) the same heuristic.</summary>
-        internal static (string Key, string Title) GetMilitaryJobSegment(JobPrototype job)
-        {
-            var id = job.ID;
-            var name = job.LocalizedName;
-
-            if (id is "AU14JobGOVFORVehicleCommander")
-                return ("flight", Loc.GetString("humanoid-profile-editor-segment-flight"));
-
-            if (ContainsAny(id, name, "MilitaryDoctor"))
-                return ("support", Loc.GetString("humanoid-profile-editor-segment-support"));
-
-            if (job.MarineAuthorityLevel > 0
-                    || ContainsAny(id, name, "PlatCo", "Adjutant", "PlatOp", "Commander", "Command", "Advisor"))
-                return ("command", Loc.GetString("humanoid-profile-editor-segment-command"));
-
-            if (ContainsAny(id, name, "Pilot", "Dropship", "Crew Chief", "DCC", "VehicleCrewman"))
-                return ("flight", Loc.GetString("humanoid-profile-editor-segment-flight"));
-
-            if (ContainsAny(id, name, "Officer", "Chief")) // after Crew Chief
-                return ("officer", Loc.GetString("humanoid-profile-editor-segment-officer"));
-
-            if (ContainsAny(id, name, "Doctor", "AuxTech", "Police", "Synth", "Working Joe", "Auxiliary", "DroneOperator", "Nurse", "EngineeringTech", "Correspondent"))
-                return ("support", Loc.GetString("humanoid-profile-editor-segment-support"));
-
-            if (ContainsAny(id, name, "Leader", "Sergeant", "RadioTelephone"))
-                return ("leader", Loc.GetString("humanoid-profile-editor-segment-leader"));
-
-            return ("line", Loc.GetString("humanoid-profile-editor-segment-line"));
-        }
-
-        /// <summary>Internal, not private: see the remarks on <see cref="GetMilitaryJobSegment"/>.</summary>
-        internal static int GetJobSortGroup(DepartmentPrototype department, JobPrototype job)
-        {
-            if (department.Faction != "govfor" && department.Faction != "opfor")
-                return 0;
-
-            return GetMilitaryJobSegment(job).Key switch
-            {
-                "command" => 0,
-                "officer" => 1,
-                "flight" => 2,
-                "support" => 3,
-                "leader" => 4,
-                _ => 5,
-            };
-        }
-
-
 }
