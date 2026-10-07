@@ -241,7 +241,7 @@ public sealed partial class CmuTopMenuBarUIController : UIController
             _baseTooltips[button] = tooltip;
         }
 
-        button.ToolTip = _input.TryGetKeyBinding(button.BoundKey, out var binding)
+        button.ToolTip = button.BoundKey is { } boundKey && _input.TryGetKeyBinding(boundKey, out var binding)
             ? $"{tooltip} ({binding.GetKeyString()})"
             : tooltip;
 
@@ -319,7 +319,7 @@ public sealed partial class CmuTopMenuBarUIController : UIController
 
     private static Color? KeyColor(MenuButton button)
     {
-        var alert = button.HasStyleClass(MenuButton.StyleClassRedTopButton);
+        var alert = button.HasStyleClass(MenuButton.StyleClassLabelTopButton);
 
         // Keycaps carry printed legends in the plastic's ink; an open window lights them green.
         if (_housing is { } housing && button.HasStyleClass(StyleNano.StyleClassCmuMenuKeyCap))

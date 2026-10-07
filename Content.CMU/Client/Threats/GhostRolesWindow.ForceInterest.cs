@@ -14,7 +14,7 @@ public sealed partial class GhostRolesWindow
         entry.OnInterestChanged += (id, interested) => OnForceInterestChanged?.Invoke(id, interested);
         CrtLobbyTheme.Apply(entry);
         EntryContainer.AddChild(entry);
-        _entries.Add(new EntryState(entry, force.Name));
+        _entries.Add(new EntryState(entry, null!, null!, force.Name, string.Empty));
         if (!_updatingEntries)
             UpdateVisibleEntries();
     }
