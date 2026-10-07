@@ -16,6 +16,8 @@ cmu-ui-options-temperature-fahrenheit-tooltip = Switches medical scanners, patie
 cmu-ui-options-voting = Voting
 cmu-ui-options-vote-ui-large = Larger vote popup
 cmu-ui-options-vote-ui-large-tooltip = Draws votes with wider options and taller rows. Easier to read on high resolutions and ultrawide displays.
+cmu-ui-options-fof-unidentified-marker = Unidentified force markers
+cmu-ui-options-fof-unidentified-marker-tooltip = Show a question mark instead of the name for players whose uniform your faction does not recognize.
 
 cmu-ui-options-general-construction = Construction
 cmu-ui-options-construction-mode = Construction Mode

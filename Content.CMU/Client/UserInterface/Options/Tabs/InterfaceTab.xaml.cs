@@ -93,6 +93,7 @@ public sealed partial class InterfaceTab : Control
         var crtUiEnabled = Control.AddOption(new OptionCrtUiEnabled(Control, _cfg, CrtUiEnabledCheckBox));
         crtUiEnabled.PreviewValueChanged += UpdateCrtUiOptionsPreview;
         Control.AddOptionCheckBox(CCVars.CMUVoteUiLarge, VoteUiLargeCheckBox);
+        Control.AddOptionCheckBox(CCVars.ForceOnForceUnidentifiedMarkerEnabled, FoFUnidentifiedMarkerCheckBox);
 
         Control.AddOptionCheckBox(CVars.DiscordEnabled, DiscordRich);
 
