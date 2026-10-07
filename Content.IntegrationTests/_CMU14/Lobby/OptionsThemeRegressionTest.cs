@@ -7,6 +7,7 @@ using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using Content.Client.CMU14.Interface;
 using Content.Client.CMU14.UserInterface.Options;
+using Content.Client.CMU14.UserInterface.Options.Tabs;
 using Content.Client.Lobby;
 using Content.Client.Options.UI;
 using Content.Client.Options.UI.Tabs;
@@ -69,20 +70,20 @@ public sealed class OptionsThemeRegressionTest : GameTest
             Assert.That(emotes.Expanded, Is.False);
             Assert.That(general.Visible, Is.True);
 
-            var cmu = menu.FindControl<CmuTab>("CmuTab");
+            var cmu = menu.FindControl<InterfaceTab>("InterfaceTab");
             var accessibility = menu.FindControl<AccessibilityTab>("AccessibilityTab");
-            foreach (var name in new[]
+            var audio = menu.FindControl<AudioTab>("AudioTab");
+            foreach (var (name, home) in new (string Name, Control Home)[]
                      {
-                         "ExplosionScreenShakeEnabledCheckBox", "ExplosionScreenShakeIgnoreFarCheckBox",
-                         "FirearmScreenShakeEnabledCheckBox", "MuteScriptedSoundsCheckBox",
+                         ("ExplosionScreenShakeEnabledCheckBox", accessibility),
+                         ("ExplosionScreenShakeIgnoreFarCheckBox", accessibility),
+                         ("FirearmScreenShakeEnabledCheckBox", accessibility),
+                         ("MuteScriptedSoundsCheckBox", audio),
                      })
             {
-                Assert.That(Descendants(cmu).Count(control => control.Name == name), Is.EqualTo(1), name);
-                Assert.That(Descendants(accessibility).Any(control => control.Name == name), Is.False, name);
+                Assert.That(Descendants(home).Count(control => control.Name == name), Is.EqualTo(1), name);
+                Assert.That(Descendants(cmu).Any(control => control.Name == name), Is.False, name);
             }
-
-            Assert.That(Descendants(cmu).OfType<CheckBox>().Single(control => control.Name == "ChatCrtHazeCheckBox"), Is.Not.Null);
-            Assert.That(Descendants(cmu).OfType<OptionColorSlider>().Single(control => control.Name == "CrtUiColorSlider"), Is.Not.Null);
         });
     }
 
@@ -193,6 +194,8 @@ public sealed class OptionsThemeRegressionTest : GameTest
             var appearance = Descendants(setup).OfType<CmuAppearanceOptions>().Single();
             Assert.That(Descendants(appearance).OfType<OptionDropDown>()
                 .Single(control => control.Name == "UiFontDropDown").Button.ItemCount, Is.EqualTo(6));
+            Assert.That(Descendants(appearance).OfType<CheckBox>().Single(control => control.Name == "ChatCrtHazeCheckBox"), Is.Not.Null);
+            Assert.That(Descendants(appearance).OfType<OptionColorSlider>().Single(control => control.Name == "CrtUiColorSlider"), Is.Not.Null);
             Descendants(appearance).OfType<CheckBox>()
                 .Single(control => control.Name == "CrtUiEnabledCheckBox").Pressed = false;
             setup.SaveAndContinue();
