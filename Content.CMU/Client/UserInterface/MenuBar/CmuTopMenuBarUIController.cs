@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Numerics;
-using Content.Client._CMU14.Interface;
+using Content.Client.CMU14.Interface;
 using Content.Client._RMC14.Language.Systems;
 using Content.Client.Stylesheets;
 using Content.Client.UserInterface.Controls;
@@ -21,7 +21,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using static Robust.Client.UserInterface.Controls.BaseButton;
 
-namespace Content.Client._CMU14.UserInterface.MenuBar;
+namespace Content.Client.CMU14.UserInterface.MenuBar;
 
 /// <summary>
 ///     Turns the top menu bar into grouped, captioned keys: your own tools, then help, then staff
