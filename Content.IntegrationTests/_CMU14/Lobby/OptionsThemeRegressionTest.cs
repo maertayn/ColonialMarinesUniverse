@@ -50,8 +50,8 @@ public sealed class OptionsThemeRegressionTest : GameTest
             {
                 Assert.That(Descendants(emotes).OfType<OptionButton>().Count(), Is.EqualTo(8));
                 Assert.That(Descendants(general).OfType<CheckBox>().Count(), Is.EqualTo(3));
-                Assert.That(emotes.Expanded, Is.False);
-                Assert.That(general.Expanded, Is.False);
+                Assert.That(emotes.Expanded, Is.True);
+                Assert.That(general.Expanded, Is.True);
             });
 
             var emotePicker = Descendants(emotes).OfType<OptionButton>().First();
@@ -67,7 +67,7 @@ public sealed class OptionsThemeRegressionTest : GameTest
             Assert.That(general.Visible, Is.False);
             search.SelectionStart = 0;
             search.InsertAtCursor(string.Empty);
-            Assert.That(emotes.Expanded, Is.False);
+            Assert.That(emotes.Expanded, Is.True);
             Assert.That(general.Visible, Is.True);
 
             var cmu = menu.FindControl<InterfaceTab>("InterfaceTab");
@@ -120,8 +120,10 @@ public sealed class OptionsThemeRegressionTest : GameTest
                 Assert.That(haze.Visible, Is.True);
 
                 styles.PreviewCrtUi(false, "#58CCFF");
-                var neutral = ((StyleBoxFlat) backing.PanelOverride!).BackgroundColor;
-                Assert.That(neutral.R, Is.EqualTo(neutral.G));
+                // CMU14: preview-off clears the override and hands the panel to the neutral
+                // stylesheet rule (LobbyGui re-style contract), so neutrality is the null override.
+                Assert.That(backing.PanelOverride, Is.Null,
+                    "preview-off must clear the backing override instead of leaving a preview tint");
                 Assert.That(haze.Visible, Is.False);
                 Assert.That(screen.Visible, Is.False);
                 Assert.That(lobby.CharacterPreview.IgnoreAllegianceToggle.Label.FontOverride, Is.Null);
