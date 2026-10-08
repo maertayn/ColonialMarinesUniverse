@@ -80,3 +80,24 @@ cmu-ui-options-chat-speech-sounds-tooltip = The short voice sounds that play whe
 cmu-ui-options-privacy = Privacy
 cmu-ui-options-hide-round-end-username = Hide my username on the round-end screen
 cmu-ui-options-hide-round-end-username-tooltip = Other players see your character at round end, but not the account that played them.
+
+cmu-ui-options-group-hud = HUD
+cmu-ui-options-new-player-icons = New player icons
+cmu-ui-options-new-player-icons-tooltip = Shows new player icons, including on mentor and department head roles.
+cmu-ui-options-combat-mode-cursor = Combat mode on cursor
+cmu-ui-options-combat-mode-cursor-tooltip = Shows combat mode indicators next to your cursor.
+cmu-ui-options-hud-theme = HUD theme
+cmu-ui-options-hud-layout = HUD layout
+cmu-ui-options-center-separated-viewport = Center the game view
+cmu-ui-options-center-separated-viewport-tooltip = Separated layout only. The chat panel pushes the game view left of center; this pads it back to the middle of the window, at the cost of a slightly narrower view.
+cmu-ui-options-separated-hud-status-side = Status alerts side
+cmu-ui-options-separated-hud-status-side-tooltip = Separated layout only. Which side of the game view your status alerts sit on.
+
+cmu-ui-options-group-chat-panel = Chat panel
+cmu-ui-options-chat-housing = Chat housing
+cmu-ui-options-chat-housing-tooltip = Separated layout only. Draws the chat panel as a terminal: a molded housing, the chat on a rounded screen, and the menu bar as keycaps. Off keeps the flat panel.
+cmu-ui-options-menu-bar-style = Menu bar keys
+cmu-ui-options-menu-bar-style-tooltip = How the buttons above the chat are drawn. The chat housing uses its own keycaps, so this only applies while the housing is off.
+
+cmu-ui-options-group-other = Other
+cmu-ui-options-discord-rich = Discord Rich Presence
