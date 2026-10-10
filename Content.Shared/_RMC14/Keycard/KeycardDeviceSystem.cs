@@ -95,7 +95,6 @@ public sealed partial class KeycardDeviceSystem : EntitySystem
         }
 
         var time = _timing.CurTime;
-<<<<<<< HEAD
 
         // CMU14: cluster cooldown between alert steps, one step per ceremony
         if (ent.Comp.LastStep is { } lastStep && lastStep + ent.Comp.Cooldown > time)
@@ -106,26 +105,12 @@ public sealed partial class KeycardDeviceSystem : EntitySystem
             return;
         }
 
-||||||| parent of 0b52b842 (Admin command tablet)
-=======
-
-        // CMU14: cluster cooldown between alert steps, one step per ceremony
-        if (ent.Comp.LastStep is { } lastStep && lastStep + ent.Comp.Cooldown > time)
-        {
-            var remaining = lastStep + ent.Comp.Cooldown - time;
-            _popup.PopupClient(Loc.GetString("rmc-keycard-device-cooldown",
-                ("seconds", (int) remaining.TotalSeconds)), ent, args.User, PopupType.SmallCaution);
-            return;
-        }
-
->>>>>>> 0b52b842 (Admin command tablet)
         ent.Comp.LastActivated = time;
         Dirty(ent);
 
         if (!AllEnabled(ent))
             return;
 
-<<<<<<< HEAD
         // CMU14: was a fixed red alert switch, now steps one level toward the armed target
         // switch (ent.Comp.Mode)
         // {
@@ -143,48 +128,11 @@ public sealed partial class KeycardDeviceSystem : EntitySystem
 
         var current = _alertLevel.Get(ent) ?? RMCAlertLevels.Green; // CMU14
         if (target == current)
-||||||| parent of 0b52b842 (Admin command tablet)
-        switch (ent.Comp.Mode)
-=======
-        // CMU14: was a fixed red alert switch, now steps one level toward the armed target
-        // switch (ent.Comp.Mode)
-        // {
-        //     case KeycardDeviceMode.None:
-        //         return;
-        //     case KeycardDeviceMode.RedAlert:
-        //         _alertLevel.Set(RMCAlertLevels.Red, args.User);
-        //         break;
-        //     default:
-        //         Log.Warning($"Unknown {nameof(KeycardDeviceMode)}: {ent.Comp.Mode}");
-        //         return;
-        // }
-        if (ent.Comp.Mode is not { } target)
-            return;
-
-        var current = _alertLevel.Get(ent) ?? RMCAlertLevels.Green; // CMU14
-        if (target == current)
->>>>>>> 0b52b842 (Admin command tablet)
         {
-<<<<<<< HEAD
             var name = Loc.GetString($"rmc-alert-{current.ToString().ToLowerInvariant()}");
             _popup.PopupEntity(Loc.GetString("rmc-keycard-device-already", ("level", name)),
                 ent, args.User, PopupType.SmallCaution);
             return;
-||||||| parent of 0b52b842 (Admin command tablet)
-            case KeycardDeviceMode.None:
-                return;
-            case KeycardDeviceMode.RedAlert:
-                _alertLevel.Set(RMCAlertLevels.Red, args.User);
-                break;
-            default:
-                Log.Warning($"Unknown {nameof(KeycardDeviceMode)}: {ent.Comp.Mode}");
-                return;
-=======
-            var name = Loc.GetString($"rmc-alert-{current.ToString().ToLowerInvariant()}");
-            _popup.PopupClient(Loc.GetString("rmc-keycard-device-already", ("level", name)),
-                ent, args.User, PopupType.SmallCaution);
-            return;
->>>>>>> 0b52b842 (Admin command tablet)
         }
 
         // CMU14: ladder levels step one rung toward the target
