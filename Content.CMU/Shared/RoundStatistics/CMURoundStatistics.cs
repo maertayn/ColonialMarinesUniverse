@@ -40,6 +40,8 @@ public enum CMURoundStatisticsOutcome : byte
     ColonyFallSurvivorVictory,
     Stalemate,
     ObjectiveVictory,
+    FoFMinorVictory,
+    FoFMajorVictory,
 }
 
 [Serializable, NetSerializable]
