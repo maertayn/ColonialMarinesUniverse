@@ -76,7 +76,9 @@
     - CMU14ActionXenoPathogenPsychicWhisper
     - CMU14ActionXenoPathogenPsychicRadiance
     - CMU14ActionXenoPathogenGiveOrder
+    - CMU14ActionXenoPathogenWordQueen
     - CMU14ActionXenoPathogenPheromones
+    - ActionXenoManageHive
   - type: XenoRegen
     healOffWeeds: true
     restHealMultiplier: 2.0
@@ -97,7 +99,6 @@
     physicalFormActions:
     - CMU14ActionXenoPathogenParalyzingSlash
     - CMU14ActionXenoPathogenBlightWave
-    - CMU14ActionXenoPathogenWordQueen
   # Needed for heal action logic
   - type: XenoHeal
   # Needed for leader granting
