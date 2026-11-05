@@ -1,0 +1,10 @@
+name: ZZ Wave Test
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+jobs:
+  wave:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "wave fired for ${{ github.event.workflow_run.head_branch }} sha ${{ github.event.workflow_run.head_sha }}"
