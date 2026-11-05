@@ -1,0 +1,7 @@
+name: ZZ Fast CI
+on: [pull_request]
+jobs:
+  quick:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo fast

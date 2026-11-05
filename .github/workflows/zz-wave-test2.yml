@@ -1,0 +1,10 @@
+name: ZZ Wave Test 2
+on:
+  workflow_run:
+    workflows: [ZZ Fast CI]
+    types: [completed]
+jobs:
+  wave:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "wave2 head_sha=${{ github.event.workflow_run.head_sha }}"
