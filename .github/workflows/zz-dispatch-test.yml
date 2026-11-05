@@ -1,0 +1,8 @@
+name: ZZ Dispatch Test
+on:
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "dispatched-by-sha-ok ${{ github.sha }}"
