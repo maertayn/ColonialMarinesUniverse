@@ -29,7 +29,6 @@ jobs:
     outputs:
       serve: ${{ steps.gate.outputs.serve }}
       chunk: ${{ steps.gate.outputs.chunk }}
-      # CMU14: last output removed; the dispatcher finalize pass owns the marker flip
     steps:
       - name: Decide
         id: gate
@@ -55,6 +54,11 @@ jobs:
             if (wrJobs.some(j => j.name.startsWith('Testcases /')))
               return;
 
+            // CMU14: waves gate PR merges; nothing re-fires default-branch
+            // suites, and CI plus the nightly already cover them
+            if (wr.event !== 'pull_request')
+              return;
+
             let pr = null;
             let klass = 0;
             if (wr.event === 'pull_request') {
@@ -71,16 +75,17 @@ jobs:
             const checkRuns = await github.paginate(github.rest.checks.listForRef, {
               ...context.repo, ref: headSha, per_page: 100,
             });
+            // CMU14: cancelled legs carry no verdict and go back in the pool
             const present = new Set(
-              checkRuns.filter(c => c.name.startsWith('Testcases /')).map(c => c.name.slice(11).trim())
+              checkRuns.filter(c => c.name.startsWith('Testcases /') && c.conclusion !== 'cancelled')
+                .map(c => c.name.slice(11).trim())
             );
             const missing = SHARDS.filter(s => !present.has(s.name));
             if (missing.length === 0)
               return;
 
-            // CMU14: a PR that owes shards must never read all-green. a pending
-            // marker goes up the moment demand exists; the dispatcher finalize
-            // pass flips it terminal once the final chunk's legs settle
+            // CMU14: pending from the first demand so the PR never reads green
+            // while it still owes a suite; the dispatcher finalize flips it
             let markerRun = checkRuns
               .filter(c => c.name === 'Testcases Complete')
               .sort((a, b) => Date.parse(b.started_at) - Date.parse(a.started_at))[0];
@@ -119,43 +124,25 @@ jobs:
               const cs = await github.paginate(github.rest.checks.listForRef, {
                 ...context.repo, ref: other.head.sha, per_page: 100,
               });
-              // CMU14: only a settled marker means served; a pending marker is
-              // queued or mid-suite demand this gate must still yield to
+              // CMU14: only a settled marker counts; pending is still demand
               if (cs.some(c => c.name === 'Testcases Complete' && c.status === 'completed')) continue;
               core.info(`yielding to #${other.number} (${ok} < ${klass})`);
               return;
             }
 
-            // CMU14: wave-run supersession removed. workflow_run run records
-            // carry the default branch's sha, not the triggering run's sha, so a
-            // master-triggered gate matched EVERY in-flight wave and cancelled
-            // them all on every merge. same-shard dedupe is the present-set (any
-            // status) plus the per-shard concurrency groups; stale master suites
-            // finish and post checks on their own dead sha, nothing reads them
-            // const waves = await github.paginate(github.rest.actions.listWorkflowRuns, {
-            //   ...context.repo, workflow_id: 'ci-shards.yml', per_page: 100,
-            // });
-            // for (const w of waves) {
-            //   if (w.status === 'completed' || w.id === context.runId) continue;
-            //   if (w.head_sha !== headSha) continue;
-            //   try { await github.rest.actions.cancelWorkflowRun({ ...context.repo, run_id: w.id }); }
-            //   catch (e) { core.info(`cancel ${w.id}: ${e.status}`); }
-            // }
-
-            // reserve: admit only what starts immediately beside the helper
-            // reserve. count in-progress jobs across EVERY workflow: builds,
+            // reserve: admit only what starts immediately beside the helpers,
             // guards and labels are exactly what the reserve exists for
             let busy = 0;
-            // CMU14: repo-wide listing. the workflow-scoped call without an id
-            // renders workflows//runs and 404s, killing every wave at the census
-            const liveRuns = await github.paginate(github.rest.actions.listRepoWorkflowRuns, {
+            // CMU14: raw request, the bundled octokit lacks the method and runs
+            // never approach one page
+            const live = await github.request('GET /repos/{owner}/{repo}/actions/runs', {
               ...context.repo, status: 'in_progress', per_page: 100,
             });
-            for (const lr of liveRuns) {
-              const js = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
+            for (const lr of live.data.workflow_runs) {
+              const jobs = await github.rest.actions.listJobsForWorkflowRun({
                 ...context.repo, run_id: lr.id, per_page: 100,
               });
-              busy += js.filter(j => j.status === 'in_progress').length;
+              busy += jobs.data.jobs.filter(j => j.status === 'in_progress').length;
             }
             const free = POOL - busy;
             const size = Math.min(CHUNK, missing.length);
@@ -166,13 +153,22 @@ jobs:
 
             core.setOutput('chunk', JSON.stringify(missing.slice(0, CHUNK)));
             core.setOutput('serve', 'true');
-            // CMU14: flag the marker when this admission closes the suite; the
-            // dispatcher waits for these legs to settle before flipping it
             if (missing.length <= CHUNK) {
               await github.rest.checks.update({
                 ...context.repo,
                 check_run_id: markerRun.id,
                 output: {title: 'final chunk admitted', summary: 'Last wave admitted; marker settles when its legs finish.'},
+              });
+            }
+
+            // CMU14: announce on admission, before the legs have runners;
+            // queued legs are invisible and a second gate would re-admit
+            for (const s of missing.slice(0, CHUNK)) {
+              await github.rest.checks.create({
+                ...context.repo,
+                name: `Testcases / ${s.name}`,
+                head_sha: headSha,
+                status: 'in_progress',
               });
             }
 
@@ -345,6 +341,38 @@ jobs:
           bash "$GITHUB_WORKSPACE/.github/scripts/report_test_failures.sh" \
             "$status" test-output.log "Testcases / ${shard}"
 
+      # CMU14: settle by name on the PR head. job check runs land on the
+      # default branch sha, invisible to the gate; always() posts the verdict
+      # even on cancellation
+      - name: Settle shard on PR head
+        if: always()
+        uses: actions/github-script@v9.0.0
+        with:
+          script: |
+            const name = `Testcases / ${process.env.SHARD_NAME}`;
+            const conclusion = process.env.JOB_STATUS === 'success' ? 'success'
+              : process.env.JOB_STATUS === 'cancelled' ? 'cancelled' : 'failure';
+            const head = context.payload.workflow_run.head_sha;
+            const checks = await github.paginate(github.rest.checks.listForRef, {
+              ...context.repo, ref: head, per_page: 100,
+            });
+            const mine = checks.filter(c => c.name === name && c.status !== 'completed');
+            if (mine.length === 0) {
+              await github.rest.checks.create({
+                ...context.repo, name, head_sha: head,
+                status: 'completed', conclusion,
+              });
+            }
+            for (const c of mine) {
+              await github.rest.checks.update({
+                ...context.repo, check_run_id: c.id,
+                status: 'completed', conclusion,
+              });
+            }
+        env:
+          SHARD_NAME: ${{ matrix.shard.name }}
+          JOB_STATUS: ${{ job.status }}
+
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v7
@@ -358,25 +386,3 @@ jobs:
             !bin/Content.IntegrationTests/TestResults/**/*.dmp
           if-no-files-found: ignore
           retention-days: 3
-
-  # CMU14 complete job removed: it posted success at final-chunk admission,
-  # before the last legs ran, and green even with failed shards. the gate now
-  # posts a pending marker when demand exists and flags the final admission;
-  # ci-dispatcher.yml's finalize pass flips the marker terminal once the legs settle
-  # complete:
-  #   name: Testcases Complete
-  #   needs: serve
-  #   if: needs.serve.outputs.serve == 'true' && needs.serve.outputs.last == 'true'
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 3
-  #   steps:
-  #     - uses: actions/github-script@v9.0.0
-  #       with:
-  #         script: |
-  #           await github.rest.checks.create({
-  #             ...context.repo,
-  #             name: 'Testcases Complete',
-  #             head_sha: context.payload.workflow_run.head_sha,
-  #             status: 'completed',
-  #             conclusion: 'success',
-  #           });
