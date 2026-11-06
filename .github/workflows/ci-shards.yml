@@ -146,16 +146,17 @@ jobs:
             // reserve. count in-progress jobs across EVERY workflow: builds,
             // guards and labels are exactly what the reserve exists for
             let busy = 0;
-            // CMU14: repo-wide listing. the workflow-scoped call without an id
-            // renders workflows//runs and 404s, killing every wave at the census
-            const liveRuns = await github.paginate(github.rest.actions.listRepoWorkflowRuns, {
+            // CMU14: direct calls with explicit .data shapes; paginate wraps this
+            // route's pages instead of extracting runs, and run_id: undefined
+            // 404s the census. in-progress runs stay far below one page
+            const live = await github.rest.actions.listRepoWorkflowRuns({
               ...context.repo, status: 'in_progress', per_page: 100,
             });
-            for (const lr of liveRuns) {
-              const js = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
+            for (const lr of live.data.workflow_runs) {
+              const jobs = await github.rest.actions.listJobsForWorkflowRun({
                 ...context.repo, run_id: lr.id, per_page: 100,
               });
-              busy += js.filter(j => j.status === 'in_progress').length;
+              busy += jobs.data.jobs.filter(j => j.status === 'in_progress').length;
             }
             const free = POOL - busy;
             const size = Math.min(CHUNK, missing.length);
