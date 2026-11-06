@@ -55,6 +55,13 @@ jobs:
             if (wrJobs.some(j => j.name.startsWith('Testcases /')))
               return;
 
+            // CMU14: waves serve PR evidence only. push-event gates (master/staging/
+            // stable) would start a 35-leg suite at klass 0, outranking every PR,
+            // then stall after one chunk: the dispatcher only re-fires open PRs.
+            // default-branch evidence is CI plus the nightly full suite
+            if (wr.event !== 'pull_request')
+              return;
+
             let pr = null;
             let klass = 0;
             if (wr.event === 'pull_request') {
