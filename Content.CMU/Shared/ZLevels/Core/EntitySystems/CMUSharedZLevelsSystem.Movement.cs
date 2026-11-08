@@ -12,6 +12,7 @@ using Content.Shared.Chasm;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Prototypes;
+using Content.Shared.Ghost.Components;
 using Content.Shared.Movement.Pulling.Components;
 using Content.Shared.Movement.Pulling.Systems;
 using Content.Shared.Movement.Events;
@@ -2115,6 +2116,10 @@ public abstract partial class CMUSharedZLevelsSystem
                 DebugLogFalling(ent, "move-down-success", "result=z-map");
             return true;
         }
+
+        // Ghosts are exempt from pit falls
+        if (HasComp<GhostComponent>(ent))
+            return false;
 
         //welp, that default Chasm behavior. Not really good, but ok for now.
         if (HasComp<ChasmFallingComponent>(ent))
