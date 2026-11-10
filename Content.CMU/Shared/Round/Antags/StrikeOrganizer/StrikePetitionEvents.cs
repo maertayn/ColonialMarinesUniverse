@@ -13,6 +13,12 @@ namespace Content.Shared.CMU14.Round.Antags.StrikeOrganizer;
 public sealed class StrikeSignAcceptEvent : EntityEventArgs { }
 
 /// <summary>
+/// Raised on the signer when the sign dialog is dismissed without an answer.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class StrikeSignCancelEvent : EntityEventArgs { }
+
+/// <summary>
 /// DoAfter event for the petition signing process.
 /// </summary>
 [Serializable, NetSerializable]
@@ -39,11 +45,12 @@ public sealed partial class StrikeFaxTransmitActionEvent : InstantActionEvent { 
 public sealed record StrikeFaxSendEvent(string Message = "") : DialogInputEvent(Message);
 
 /// <summary>
-/// Temporary component placed on a colonist who was offered a petition to sign.
-/// Stores the petition for the accept handler. Always re-offerable: the dialog can
-/// outlive the offer invisibly, so a pending offer must never hard-block.
+/// Server-side offer state for a pending petition signature: stores the petition for
+/// the accept handler. Nothing reads it client-side, so it must not replicate. Removed
+/// on accept or dialog dismissal, and stale answers re-check the gates themselves, so
+/// it never hard-blocks a re-offer.
 /// </summary>
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent]
 public sealed partial class StrikeSignPendingComponent : Component
 {
     public EntityUid Petition;

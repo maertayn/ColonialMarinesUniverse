@@ -68,6 +68,13 @@ cmu-strike-fax-input = The radio pack reaches only the Colonial Marshal Bureau. 
 cmu-strike-fax-communique-title = Strike Communique
 cmu-strike-fax-sent = Your communique is on the wire. Do not expect a reply.
 
+## Round-end roster: mid-round converts, invisible to the round-start antag summary
+## that ColonyAntagSummarySystem walks
+cmu-strike-summary-header = Strike participants:
+cmu-strike-summary-entry = {"["}bold]{$name}[/bold] ([italic]{$user}[/italic]): {$status}
+cmu-strike-summary-alive = still on strike
+cmu-strike-summary-dead = fell on the line
+
 ## Succession: first signer after the organizer's fall
 cmu-strike-succession-briefing = The organizer has fallen, and your signature was the first after. The strike looks to you now: hold the stances, carry the cause. Whoever holds the radio pack holds the press.
 

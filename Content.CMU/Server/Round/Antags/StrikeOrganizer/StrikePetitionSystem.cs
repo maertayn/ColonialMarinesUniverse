@@ -38,6 +38,7 @@ public sealed partial class StrikePetitionSystem : EntitySystem
     [Dependency] private PopupSystem _popup = default!;
     [Dependency] private IPrototypeManager _proto = default!;
     [Dependency] private RoleSystem _role = default!;
+    [Dependency] private StrikeOrganizerRuleSystem _rule = default!;
     [Dependency] private SuspectDescriptionSystem _suspectDescription = default!;
     [Dependency] private WantedSystem _wanted = default!;
 
@@ -47,31 +48,12 @@ public sealed partial class StrikePetitionSystem : EntitySystem
         SubscribeLocalEvent<StrikePetitionComponent, ExaminedEvent>(OnPetitionExamined);
         SubscribeLocalEvent<StrikePetitionComponent, EntityTerminatingEvent>(OnPetitionTerminating);
         SubscribeLocalEvent<StrikeSignPendingComponent, StrikeSignAcceptEvent>(OnSignAccepted);
+        SubscribeLocalEvent<StrikeSignPendingComponent, StrikeSignCancelEvent>(OnSignCancelled);
         SubscribeLocalEvent<StrikePetitionComponent, StrikeSignDoAfterEvent>(OnSignDoAfter);
         SubscribeLocalEvent<StrikeOrganizerPackComponent, GetItemActionsEvent>(OnPackGetItemActions);
         SubscribeLocalEvent<StrikeOrganizerPackComponent, StrikeRedraftActionEvent>(OnPackRedraft);
         SubscribeLocalEvent<StrikeOrganizerPackComponent, StrikeFaxTransmitActionEvent>(OnPackTransmit);
         SubscribeLocalEvent<StrikeOrganizerPackComponent, StrikeFaxSendEvent>(OnPackFaxSend);
-    }
-
-    /// <summary>
-    /// The venture ledger lives on the rule so no paper's destruction can erase the
-    /// strike. Unlinked petitions (no rolled rule) are relics of a finished strike.
-    /// </summary>
-    private StrikeOrganizerRuleComponent? ResolveVenture()
-    {
-        StrikeOrganizerRuleComponent? found = null;
-        var query = EntityQueryEnumerator<StrikeOrganizerRuleComponent>();
-        while (query.MoveNext(out _, out var rule))
-        {
-            if (rule.VentureRolled)
-            {
-                found = rule;
-                break;
-            }
-        }
-
-        return found;
     }
 
     private bool IsDeadOrCrit(EntityUid target)
@@ -115,7 +97,7 @@ public sealed partial class StrikePetitionSystem : EntitySystem
         args.Handled = true;
         var signer = args.User;
 
-        if (ResolveVenture() is not { } venture)
+        if (_rule.ResolveVenture() is not { } venture)
         {
             _popup.PopupEntity(Loc.GetString("cmu-strike-no-venture"), signer, signer);
             return;
@@ -163,7 +145,8 @@ public sealed partial class StrikePetitionSystem : EntitySystem
             Loc.GetString("cmu-strike-sign-dialog-title"),
             Loc.GetString("cmu-strike-sign-dialog-message",
                 ("grievance", grievance), ("clfStance", clf), ("govforStance", govfor)),
-            new StrikeSignAcceptEvent());
+            new StrikeSignAcceptEvent(),
+            new StrikeSignCancelEvent());
     }
 
     private void OnSignAccepted(EntityUid uid, StrikeSignPendingComponent comp, StrikeSignAcceptEvent args)
@@ -193,6 +176,9 @@ public sealed partial class StrikePetitionSystem : EntitySystem
         _popup.PopupEntity(Loc.GetString("cmu-strike-sign-begin"), uid, uid);
     }
 
+    private void OnSignCancelled(EntityUid uid, StrikeSignPendingComponent comp, StrikeSignCancelEvent args)
+        => RemComp<StrikeSignPendingComponent>(uid);
+
     private void OnSignDoAfter(EntityUid uid, StrikePetitionComponent comp, StrikeSignDoAfterEvent args)
     {
         if (args.Cancelled || args.Handled)
@@ -205,19 +191,31 @@ public sealed partial class StrikePetitionSystem : EntitySystem
         if (IsDeadOrCrit(signer) || HasComp<StrikeParticipantComponent>(signer))
             return;
 
-        if (ResolveVenture() is not { } venture)
+        if (_rule.ResolveVenture() is not { } venture)
             return;
 
-        ConvertSigner((uid, comp), venture, signer);
+        // Offer-time gates can be stale by conversion: the dialog and do-after leave
+        // time for the signer to be recruited by another exclusive antag
+        if (_mind.TryGetMind(signer, out EntityUid mindId, out _)
+            && _role.MindIsExclusiveAntagonist(mindId))
+        {
+            _popup.PopupEntity(Loc.GetString("cmu-strike-sign-refused-antag"), signer, signer);
+            return;
+        }
+
+        if (IsInBlockedDepartment(signer, comp))
+        {
+            _popup.PopupEntity(Loc.GetString("cmu-strike-sign-refused-dept"), signer, signer);
+            return;
+        }
+
+        ConvertSigner(venture, signer);
     }
 
-    private void ConvertSigner(Entity<StrikePetitionComponent> petition, StrikeOrganizerRuleComponent venture, EntityUid signer)
+    private void ConvertSigner(StrikeOrganizerRuleComponent venture, EntityUid signer)
     {
         venture.Participants.Add(signer);
-
-        var participant = EnsureComp<StrikeParticipantComponent>(signer);
-        participant.Petition = petition;
-        participant.Organizer = venture.Organizer;
+        EnsureComp<StrikeParticipantComponent>(signer);
 
         // Succession: the first signer after the organizer's fall carries the strike forward.
         // The pack is the physical press; whoever holds it prints.
@@ -226,7 +224,6 @@ public sealed partial class StrikePetitionSystem : EntitySystem
         if (previousOrganizer is { } former && (TerminatingOrDeleted(former) || _mobState.IsDead(former)))
         {
             venture.Organizer = signer;
-            participant.Organizer = signer;
             succeeded = true;
         }
 
@@ -306,7 +303,7 @@ public sealed partial class StrikePetitionSystem : EntitySystem
 
     private void OnPetitionExamined(EntityUid uid, StrikePetitionComponent comp, ExaminedEvent args)
     {
-        if (ResolveVenture() is not { } venture)
+        if (_rule.ResolveVenture() is not { } venture)
         {
             args.PushText(Loc.GetString("cmu-petition-examine-relic"));
             return;
@@ -336,7 +333,7 @@ public sealed partial class StrikePetitionSystem : EntitySystem
     private void OnPetitionTerminating(EntityUid uid, StrikePetitionComponent comp, ref EntityTerminatingEvent args)
     {
         // Paper burns; the strike does not. Make sure the organizer knows to redraft.
-        if (ResolveVenture() is not { } venture || venture.Organizer is not { } organizer)
+        if (_rule.ResolveVenture() is not { } venture || venture.Organizer is not { } organizer)
             return;
 
         if (TerminatingOrDeleted(organizer))
@@ -359,6 +356,8 @@ public sealed partial class StrikePetitionSystem : EntitySystem
         args.Handled = true;
         Spawn(PetitionPrototype, Transform(args.Performer).Coordinates);
         _popup.PopupEntity(Loc.GetString("cmu-strike-redraft-done"), args.Performer, args.Performer);
+        _adminLog.Add(LogType.Mind, LogImpact.Medium,
+            $"{ToPrettyString(args.Performer)} redrafted a strike petition");
     }
 
     private void OnPackTransmit(Entity<StrikeOrganizerPackComponent> ent, ref StrikeFaxTransmitActionEvent args)
